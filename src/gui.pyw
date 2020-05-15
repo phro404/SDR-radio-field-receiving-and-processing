@@ -52,9 +52,7 @@ class Userinterface:
 	  
 	def get_file_path(self):	#get-method for file path
 		return self.__file_path
-		
-		
-		
+	
 	def closeAll(self):
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
@@ -82,7 +80,6 @@ class Userinterface:
 		if ((len(unorderedList) < 2) or len(unorderedList) % 2 == 1):   #to few or an odd number of files had been selected
 			 tk.messagebox.showinfo("Error", "Wrong data selection, please pick again.")
 			 return 0
-
 		orderedList = []
 		foundflag = 0
 		for  i in range(0, 24):

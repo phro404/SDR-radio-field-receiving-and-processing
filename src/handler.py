@@ -5,8 +5,9 @@ import sys
 from time import sleep
 import signal
 from dump1090ToPipe import Dump1090ToPipe
+from socket_client_class import Client_socket
 
-numPipes = 1
+numPipes = 2
 	
 class Handler1:
 	def __init__(self):
@@ -29,13 +30,18 @@ class Handler1:
 				process.join()
 				
 		print("Handler1 started")
+		
+		socketClientObj = Client_socket()
+		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exception_queue, self.exit))
+		
 		dump1090ToPipeObj = Dump1090ToPipe()
 		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exception_queue, self.exit))
+		
 		for process in self.processes.values():
 			process.start()
 		sleep(2)
 		while not exit.is_set():
-			outputQueue.put("Loop start")
+			outputQueue.put("Handler1 Loop start")
 			allAlive = True
 			for key in self.processes.keys():
 				if(not self.processes[key].is_alive()):
