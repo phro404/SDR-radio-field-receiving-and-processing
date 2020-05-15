@@ -2,9 +2,10 @@ from time import sleep
 import subprocess
 import os
 import socket
+import signal
 
 class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
-	retries = 10
+	retries = 10 #Maximum TCP Connecting Retries
 	
 	def __init__(self, port=30005, host='localhost'):
 		self.port = port
@@ -52,10 +53,9 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 					pipe_out.send([len(data), data[0], data[1], h, data[8], data[9:].hex()])
 					self.subprocessAlive(exception_queue, exit)
 				except Exception as e:
-					self.dump1090process.kill()
 					exception_queue.put(["Probleme beim Empfangen der TCP Beast Messages: ", e])
 					exit.set()
-			
+			os.killpg(os.getpgid(self.dump1090process.pid), signal.SIGTERM)	#self.dump1090process.terminate() and kill() not working ¯\_(ツ)_/¯
 			s.close()
 			return
 			    

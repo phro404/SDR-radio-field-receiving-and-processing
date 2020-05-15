@@ -40,8 +40,10 @@ class Userinterface:
 
 
 	def __openexplorer_button_action__(self):   #method for second button, opens the file-explorer
-		self.__file_path = filedialog.askopenfilenames()
-
+		unorderedList = filedialog.askopenfilenames()
+		self.__file_path = self.orderPathList(unorderedList)
+		print(self.__file_path)
+			
 	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
 		main1 = handler.Handler1()
 		self.handlerProcess = multiprocessing.Process(target=main1.run, args=(self.exit, self.outputQueue))
@@ -50,6 +52,8 @@ class Userinterface:
 	  
 	def get_file_path(self):	#get-method for file path
 		return self.__file_path
+		
+		
 		
 	def closeAll(self):
 		self.first_button.config(state=tk.DISABLED, bg = "black")
@@ -72,6 +76,45 @@ class Userinterface:
 		self.getOutput()
 		if (self.exit.is_set()):			
 			self.closeAll()
+			
+	def orderPathList(self, unorderedList):
+
+		if ((len(unorderedList) < 2) or len(unorderedList) % 2 == 1):   #to few or an odd number of files had been selected
+			 tk.messagebox.showinfo("Error", "Wrong data selection, please pick again.")
+			 return 0
+
+		orderedList = []
+		foundflag = 0
+		for  i in range(0, 24):
+			for j in unorderedList:
+				if (-1 != j.rfind("lvl_reply_")):   #rfind returns '-1' if element is not found
+					tempindex = j.rfind("lvl_reply_")   #rfind returns position in string if sub-string is found 
+
+					#generating string for hour-search
+					if(i < 10):
+						tempstr = "0" + str(i)
+					else:
+						tempstr = str(i)
+
+					if(-1 != j.rfind(tempstr, (tempindex + 21))):   #checking hour
+						orderedList.append(j)
+
+						#searching for matching amp_hist file element by element
+						for k in unorderedList:
+							if (-1 != k.rfind("amp_hist_")):
+								tempindex = k.rfind("amp_hist_")
+								if(-1 != k.rfind(tempstr, (tempindex + 20))):
+									orderedList.append(k)
+									foundflag = 1
+									break
+
+						if (foundflag == 0):	#no matching amp_hist file found in whole list
+							tk.messagebox.showinfo("Error", "Wrong data selection, please pick again.")
+							return 0
+						else:
+							foundflag = 0
+
+		return orderedList
 		
 gui = Userinterface()
 gui.window.after(100, gui.loop)
