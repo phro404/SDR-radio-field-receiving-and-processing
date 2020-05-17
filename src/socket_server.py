@@ -7,7 +7,7 @@ s = socket.socket()
 print ("Socket successfully created")
           
 s.bind(('localhost', 8012)) #TODO: choose correct arguments here
-print ("socket binded to %s" %(port)) 
+print ("socket binded to 8012") 
   
 s.listen(5)      
 print ("socket is listening")            
