@@ -4,6 +4,7 @@ from tkinter import filedialog
 import handler
 import multiprocessing
 from time import sleep
+from visualization import visualization
 
 class Userinterface:
 	
@@ -110,8 +111,8 @@ class Userinterface:
 							return 0
 						else:
 							foundflag = 0
-
-		return orderedList
+		print(orderedList)
+		visualization(orderedList)
 		
 gui = Userinterface()
 gui.window.after(100, gui.loop)
