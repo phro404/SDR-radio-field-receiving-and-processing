@@ -1,4 +1,4 @@
-class dp(object):							#dp = data-printer you swine 
+class dp(object):							#dp = data-printer 
 
     def __init__(self): 
 	import visualization						#for liveplot
