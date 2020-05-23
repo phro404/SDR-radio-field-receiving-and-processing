@@ -6,8 +6,9 @@ from time import sleep
 import signal
 from dump1090ToPipe import Dump1090ToPipe
 from socket_client_class import Client_socket
+from telegramProcessing import TelegramProcessing
 
-numPipes = 2
+numPipes = 3
 	
 class Handler1:
 	def __init__(self):
@@ -37,11 +38,15 @@ class Handler1:
 		dump1090ToPipeObj = Dump1090ToPipe()
 		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exception_queue, self.exit))
 		
+		telegramProcessingObj = TelegramProcessing()
+		self.processes["telegramProcessing"] = multiprocessing.Process(target=telegramProcessingObj.run, args=(self.pipes[1][1], self.pipes[0][1], self.pipes[2][0], self.exit))
+		
 		for process in self.processes.values():
 			process.start()
+		print("All started")
 		sleep(2)
 		while not exit.is_set():
-			outputQueue.put("Handler1 Loop start")
+			#outputQueue.put("Handler1 Loop start")
 			allAlive = True
 			for key in self.processes.keys():
 				if(not self.processes[key].is_alive()):
@@ -57,9 +62,7 @@ class Handler1:
 					outputQueue.put("\n")
 			sleep(0.1)
 			
-			if(self.pipes[0][1].poll()):
-				outputQueue.put(self.pipes[0][1].recv())
-			outputQueue.put("Loop End")
+			#outputQueue.put("Loop End")
 			
 		stopAllProcesses()
 		outputQueue.put("Handler1 stopped")	

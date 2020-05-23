@@ -4,6 +4,13 @@ import os
 import socket
 import signal
 
+#Die Pipe gibt Listen aus mit dem Inhalt:
+#[0]: 49(AC), 50(SS), 51(SL)
+#[1]: Timestamp in Sekunden
+#[2]: Signal-Pegel
+#[3]: ICAO Addresse
+#[4]: Telegramm in Hex
+
 class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 	retries = 10 #Maximum TCP Connecting Retries
 	
@@ -49,10 +56,23 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 			while not(exit.is_set()):
 				try:
 					data = s.recv(64)
-					h = int.from_bytes(data[2:7], byteorder='big')
-					pipe_out.send([len(data), data[0], data[1], h, data[8], data[9:].hex()])
+					if (len(data) <= 16): 	#Fehlerhaftes Paket Empfangen
+						print("Fehlerhaftes Paket von dump1090 empfangen")
+						continue
+					msgType = data[1]
+					timeStamp = int.from_bytes(data[2:8],byteorder='big') / (10**7)
+					signalPower = int.from_bytes(data[8:12],byteorder='big')/(10**5) * (-1)
+					if data[12] == 0:
+						icao = data[13:16].hex()
+					else:
+						icao = data[12:16].hex()
+					msg = data[16:].hex()
+					
+					pipe_out.send([msgType, timeStamp, signalPower, icao, msg])
+					
 					self.subprocessAlive(exception_queue, exit)
 				except Exception as e:
+					print("Fehler: " + str(e))
 					exception_queue.put(["Probleme beim Empfangen der TCP Beast Messages: ", e])
 					exit.set()
 			os.killpg(os.getpgid(self.dump1090process.pid), signal.SIGTERM)	#self.dump1090process.terminate() and kill() not working ¯\_(ツ)_/¯

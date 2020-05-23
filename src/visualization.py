@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 #=================================== Import of the relevant libraries ======================================
 
-def visualization(orderedList):
+def visualization(orderedList, livePlot):
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0	  # Counter for the index number of orderedList
-			
+		
 	row_counter_lvl_reply = 0	   # Counter for all rows in the level_reply CSV file
 	data_row_counter_lvl_reply = 0  # Counter of all rows with useful data in the level_reply CSV file
 	ac_test_rx_succ_sum = 0		 # Sum of all A/C test replies, which have been received successfully
@@ -52,7 +52,7 @@ def visualization(orderedList):
 	   
 		if (row_counter_data_paths % 2) == 0:
 		 
-			# Read lvl_reply CSV file
+		# Read lvl_reply CSV file
 			with open(orderedList[row_counter_data_paths]) as csv_data_lvl_reply:
 				lvl_reply_data = csv.reader(csv_data_lvl_reply, delimiter=';')
 				
@@ -88,11 +88,11 @@ def visualization(orderedList):
 						occupancy_channel_sum = occupancy_channel_sum + float(row[3])	   # Build the sum of the hole occupancy of the channel
 
 					row_counter_lvl_reply += 1  # Increment the level_reply row counter
-		
+			
 				data_row_counter_lvl_reply = data_row_counter_lvl_reply + (row_counter_lvl_reply - 1) # Get the number of all rows with useful data
 				
 		else:
-					
+				
 			# Read amp_hist CSV file
 			with open(orderedList[row_counter_data_paths]) as csvdata_amp_hist:
 				amp_hist_data = csv.reader(csvdata_amp_hist, delimiter=',') # we need ; for reading amp_hist_2019-11-07_test
@@ -145,7 +145,7 @@ def visualization(orderedList):
 						str_time_end = row[0]
 				
 					row_counter_amp_hist += 1   # Increment the amp_hist row counter
-		
+			
 		row_counter_data_paths += 1  # Increment the data_paths row counter
 
 
@@ -155,15 +155,15 @@ def visualization(orderedList):
 	for i in range(int(45/step_level)):
 		if counter_ac_test_replies_per_level[i] == 0:
 			counter_ac_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		ac_test_reply_succ[i] = ac_test_reply_succ[i] / counter_ac_test_replies_per_level[i]	 # Estimate the A/C successrate
+			ac_test_reply_succ[i] = ac_test_reply_succ[i] / counter_ac_test_replies_per_level[i]	 # Estimate the A/C successrate
 
 		if counter_s_long_test_replies_per_level[i] == 0:
 			counter_s_long_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		s_long_test_reply_succ[i] = s_long_test_reply_succ[i] / counter_s_long_test_replies_per_level[i]	 # Estimate the Mode S Long successrate
+			s_long_test_reply_succ[i] = s_long_test_reply_succ[i] / counter_s_long_test_replies_per_level[i]	 # Estimate the Mode S Long successrate
 
 		if counter_s_short_test_replies_per_level[i] == 0:
 			counter_s_short_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		s_short_test_reply_succ[i] = s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i]	 # Estimate the Mode S Short successrate
+			s_short_test_reply_succ[i] = s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i]	 # Estimate the Mode S Short successrate
 
 
 	# Get the star time and the stop time as a timestamp
@@ -188,8 +188,13 @@ def visualization(orderedList):
 
 
 	#============================================= Plotting ====================================================
-	f, axs = plt.subplots(2,2,figsize=(12, 7))  # Size of the subplot frames
-			
+	if livePlot == True:
+		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
+		plt.clf()								   # When "livePlot == True" then overwrite the old plot
+	else:
+		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
+		
+
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
@@ -203,7 +208,7 @@ def visualization(orderedList):
 			total = sum(pie_values_test_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
-		return my_autopct_for_pie_test_replies
+			return my_autopct_for_pie_test_replies
 		
 	axes_test_replies.pie(pie_values_test_replies, labels=pie_labels_test_replies, colors=pie_colors_test_replies, autopct=make_autopct_for_pie_test_replies(pie_values_test_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Decoding of all test replies (abs.: {test_tx_sum})')
@@ -222,7 +227,7 @@ def visualization(orderedList):
 			total = sum(pie_values_all_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
-		return my_autopct_for_pie_all_replies
+			return my_autopct_for_pie_all_replies
 
 	axes_all_replies.pie(pie_values_all_replies, labels=pie_labels_all_replies, colors=pie_colors_all_replies, autopct=make_autopct_for_pie_all_replies(pie_values_all_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Distribution of all received types \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
@@ -250,22 +255,25 @@ def visualization(orderedList):
 	plt.legend(['A/C Replies', 'Mode S Long replies', 'Mode S Short replies'])		  # Legend
 	plt.grid(True)																	  # Grid
 	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
-			
+		
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
-							
+						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
-			
+		
 
-	start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}' # Edit the start time string
-	start_time_for_plotname = start_time_for_plotname.replace(':', '-')
-	end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'	   # Edit the end time string
-	end_time_for_plotname = end_time_for_plotname.replace(':', '-')
-	plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}')   # Create the plot name
-			
-	# plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{orderedList[0][-17:-4]}_to_{orderedList[len(orderedList)-2][-17:-4]}')	# Alternative plot name (apropos of the file names)
-			  
+	if livePlot == True:
+		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_{orderedList[0][-17:-4]}')	# Alternative plot name (apropos of the file names)
+		plotname = plotname.replace('.', '-')
+	else:
+		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}' # Edit the start time string
+		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
+		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'	   # Edit the end time string
+		end_time_for_plotname = end_time_for_plotname.replace(':', '-')
+		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}')   # Create the plot name
+		# plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{orderedList[0][-17:-4]}_to_{orderedList[len(orderedList)-2][-17:-4]}')	# Alternative plot name (apropos of the file names)
+		# plotname = plotname.replace('.', '-')
+
 	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 
 	plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
-
