@@ -73,7 +73,8 @@ class Userinterface:
 	def loop(self):
 		self.window.after(100, self.loop)
 		self.getOutput()
-		if (self.exit.is_set()):			
+		if (self.exit.is_set()):
+			print("Gui exit")			
 			self.closeAll()
 			
 	def orderPathList(self, unorderedList):
@@ -112,7 +113,7 @@ class Userinterface:
 						else:
 							foundflag = 0
 		print(orderedList)
-		visualization(orderedList)
+		visualization(orderedList, False)
 		
 gui = Userinterface()
 gui.window.after(100, gui.loop)

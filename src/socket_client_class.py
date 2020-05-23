@@ -17,7 +17,8 @@ class Client_socket:
 		config.read('import_init_data.conf')
 		
 		if ('SOCKET' in config):
-			print("Socket configuration section found.")
+			pass
+			#print("Socket configuration section found.")
 		else:
 			print("No socket configuration section available!")
 
@@ -71,8 +72,8 @@ class Client_socket:
 					
 				for container in self.localInputBuffer:
 					data_dict = json.loads(data_recv)	#convert JSON-string into dictionary
-					#pipe_out.send(data_dict)
-					print(data_dict)
+					pipe_out.send(data_dict)
+					#print(data_dict)
 
 				self.localInputBuffer = []
 			except Exception as e:
