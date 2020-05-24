@@ -1,4 +1,5 @@
 import multiprocessing
+import time
 
 class TelegramProcessing:
 	def __init__(self):
@@ -7,6 +8,7 @@ class TelegramProcessing:
 		self.out_buffer = []
 		
 	def processing(self):
+		t0 = time.time()
 		#defining dictionaries
 		Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 		  'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'text_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
@@ -87,6 +89,10 @@ class TelegramProcessing:
 		self.out_buffer.append(Slist)
 		self.out_buffer.append(Llist)
 		self.out_buffer.append(AClist)
+		
+		t1 = time.time()
+		totaltime = t1 - t0
+		time.sleep(0.99 - totaltime)
 		
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
 		#Um z.B. im Falle eines schwerwiegenden Errors das KOMPLETTE Programm zu beenden kann der Befehl "exit.set()" benutzt werden
