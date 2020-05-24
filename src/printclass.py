@@ -9,7 +9,7 @@ class dp(object):							#dp = data-printer
 
     def sort(self)
 	raw_pipe_out.poll():						#polling
-		data = war_pipe_out.recv()				#receive piped data
+		data = raw_pipe_out.recv()				#receive piped data
 		local_buffer.append(data)				#get piped date in local buffer
 
 	self.lvl = Dlist["time"] + "," + Dlist["rx_cnt"] + "," + Dlist["rx_avg_lvl"] + "," + Dlist["curr_ch_occ"] + "," + Dlist["curr_planes"] + "," + Dlist["test_tx_cnt"] + "," + Dlist["test_rx_succ_cnt_s"] + "," + Dlist["test_rx_succ_cnt_l"] + "," + Dlist["test_rx_succ_cnt_ac"] + "," + Dlist["test_succ_lvl_s"] + "," + Dlist["test_succ_lvl_l"] + "," +Dlist["test_succ_lvl_ac"] + "," +Dlist["test_avg_lvl_s"] + "," + Dlist["test_avg_lvl_l"] + "," + Dlist["test_avg_lvl_ac"] + "\n
