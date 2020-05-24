@@ -47,16 +47,16 @@ class TelegramProcessing:
 				if (d_element[0] == 50):	#modeS short detected
 					chOccCnt += 0.000064
 					if (d_element[2] < -46):
-						ACList['-46'] += 1
+						SList['-46'] += 1
 					else:
-						AClist[str(round(d_element[2],0))[0:3]] += 1
+						Slist[str(round(d_element[2],0))[0:3]] += 1
 						
 				if (d_element[0] == 51):	#modeL long detected
 					chOccCnt += 0.000120
 					if (d_element[2] < -46):
-						ACList['-46'] += 1
+						LList['-46'] += 1
 					else:
-						AClist[str(round(d_element[2],0))[0:3]] += 1
+						Llist[str(round(d_element[2],0))[0:3]] += 1
 
 				foundflag = 0
 				for address in ICAO_list:
