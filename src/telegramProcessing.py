@@ -35,7 +35,9 @@ class TelegramProcessing:
 		if (len(self.dump1090_buffer) > 0):
 			ICAO_list = []
 			for d_element in self.dump1090_buffer:
-				counter +=1; lvl_sum += d_element[2]
+				counter +=1; 
+				if (d_element[2] != 'None')
+					lvl_sum += d_element[2]
 
 				if (d_element[0] == 49):	#modeA/C detected
 					chOccCnt += 0.0000203
@@ -70,7 +72,7 @@ class TelegramProcessing:
 					ICAO_list.append(d_element[3])
 
 
-				if (len(self.socket_buffer) > 0):
+				'''if (len(self.socket_buffer) > 0):
 					for s_element in self.socket_buffer:
 						if (s_element[1] != d_element[4]):	#dump1090 output does not match with a send test-telegram TODO: check when socket ready !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							Dlist['rx_cnt'] +=1
@@ -87,11 +89,11 @@ class TelegramProcessing:
 							Dlist['test_avg_lvl_l'] += d_element[2]
 							lCnt += 1 
 						else:
-							print("Exception while matching socket data occured.")
+							print("Exception while matching socket data occured.")'''
 							
 		#checking for amount of telegrams that should be received
 		s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
-		if (len(self.socket_buffer) > 0):
+		'''if (len(self.socket_buffer) > 0):
 			for test_element in self.socket_buffer:
 				if (test_element[0] == "s"):
 					s_test_cnt += 1
@@ -100,7 +102,7 @@ class TelegramProcessing:
 				elif (test_element[0] == "ac"):
 					ac_test_cnt += 1
 				else:
-					print("Unknown telegram-type received by socket")
+					print("Unknown telegram-type received by socket")'''
 	
 		if (s_test_cnt > 0):
 			Dlist['test_succ_lvl_s'] = (sCnt/s_test_cnt) * 100
@@ -160,6 +162,7 @@ class TelegramProcessing:
 				self.dump1090_buffer.append(data)
 				
 			self.processing()	
+			time.sleep(1)
 			
 			for data in self.out_buffer:
 				print(data)
