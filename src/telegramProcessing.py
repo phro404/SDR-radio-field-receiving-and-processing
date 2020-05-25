@@ -51,7 +51,7 @@ class TelegramProcessing:
 					else:
 						Slist[str(round(d_element[2],0))[0:3]] += 1
 						
-				if (d_element[0] == 51):	#modeL long detected
+				if (d_element[0] == 51):	#modeS long detected
 					chOccCnt += 0.000120
 					if(d_element[2] > -46):
 						Llist['-46'] += 1
