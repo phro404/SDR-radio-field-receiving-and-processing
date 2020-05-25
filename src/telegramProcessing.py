@@ -23,6 +23,8 @@ class TelegramProcessing:
 		  '-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 		  '-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
 		
+		counter = 0; chOccCnt = 0; sCnt = 0; lCnt = 0; acCnt = 0; lvl_sum = 0
+		
 		#filling dictionaries
 		if (len(self.dump1090_buffer) > 0):
 			current_datetime = datetime.now()
@@ -33,7 +35,6 @@ class TelegramProcessing:
 
 			Dlist['test_tx_cnt'] = len(self.socket_buffer)
 
-			counter = 0; chOccCnt = 0; sCnt = 0; lCnt = 0; acCnt = 0; lvl_sum = 0
 			ICAO_list = []
 
 			for d_element in self.dump1090_buffer:
