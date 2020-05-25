@@ -20,25 +20,23 @@ while True:
 
 	#create dictionary 
 	testdict = {'format': unkown, 'payload': 0}
-
+	
 	try:
 		while True:
-		    #creating test data
-		    temp_rand = randint(1,3)
-		    if (temp_rand == 1):
-		    	testdict['format'] = 's'
-		    elif (temp_rand == 2):
-			testdict['format'] = 'l'
-		    else:
-			testdict['format'] = 'ac'
-		    	
-		    testdict['payload'] = hex(randint(0,2**112))
-
-		    	
-		    #sending test data
-		    testdict = json.dumps(testdict)	#converting dictionary in json-string
-		    time.sleep(randint(1,1000000)/4000000)	#wait a random time up to 0.25s
-		    c.send(testdict.encode('ascii'))
+			#creating test data
+			temp_rand = randint(1,3)
+			if (temp_rand == 1):
+				testdict['format'] = 's'
+			elif (temp_rand == 2):
+				testdict['format'] = 'l'
+			else:
+				testdict['format'] = 'ac'
+			
+			testdict['payload'] = hex(randint(0,2**112))
+			#sending test data
+			testdict = json.dumps(testdict)	#converting dictionary in json-string
+			time.sleep(randint(1,1000000)/4000000)	#wait a random time up to 0.25s
+			c.send(testdict.encode('ascii'))
 						
 	except:
 		pass
