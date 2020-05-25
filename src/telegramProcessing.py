@@ -91,51 +91,53 @@ class TelegramProcessing:
 						else:
 							print("Exception while matching socket data occured.")
 							
-			#checking for amount of telegrams that should be received
-			s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
-			for test_element in self.socket_buffer:
-				if (test_element[0] == "s"):
-					s_test_cnt += 1
-				elif (test_element[0] == "l"):
-					l_test_cnt += 1
-				elif (test_element[0] == "ac"):
-					ac_test_cnt += 1
-				else:
-					print("Unknown telegram-type received by socket")
+		#checking for amount of telegrams that should be received
+		s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
+		for test_element in self.socket_buffer:
+			if (test_element[0] == "s"):
+				s_test_cnt += 1
+			elif (test_element[0] == "l"):
+				l_test_cnt += 1
+			elif (test_element[0] == "ac"):
+				ac_test_cnt += 1
+			else:
+				print("Unknown telegram-type received by socket")
 	
-
-			Dlist['test_succ_lvl_s'] = (sCnt/s_test_Cnt) * 100		
-			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_Cnt) * 100	
+		if (s_test_Cnt > 0):
+			Dlist['test_succ_lvl_s'] = (sCnt/s_test_Cnt) * 100
+		if (ac_test_Cnt > 0):
+			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_Cnt) * 100
+		if (l_test_Cnt > 0):
 			Dlist['test_succ_lvl_l'] = (lCnt/l_test_Cnt) * 100	
 			
-			if (lCnt > 0):
-				Dlist['test_avg_lvl_l'] /= lCnt
-			if (sCnt > 0):
-				Dlist['test_avg_lvl_s'] /= sCnt
-			if (acCnt > 0):
-				Dlist['test_avg_lvl_ac'] /= acCnt
-			if (counter > 0):
-				Dlist['rx_avg_lvl'] = (lvl_sum / counter)
+		if (lCnt > 0):
+			Dlist['test_avg_lvl_l'] /= lCnt
+		if (sCnt > 0):
+			Dlist['test_avg_lvl_s'] /= sCnt
+		if (acCnt > 0):
+			Dlist['test_avg_lvl_ac'] /= acCnt
+		if (counter > 0):
+			Dlist['rx_avg_lvl'] = (lvl_sum / counter)
 			
-			time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
-			if (time_difference > 0):	#more than one telegram received
-				Dlist['curr_ch_occ'] = (chOccCnt / time_difference)		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
-			if (len(self.dump1090_buffer) == 1):
-				if (self.dump1090_buffer[0][0] == 49):	#modeA/C detected
-					Dlist['curr_ch_occ'] = (0.0000203 / 1)			
-				elif (self.dump1090_buffer[0][0] == 50):	#modeS short detected
-					Dlist['curr_ch_occ'] = (0.000064 / 1)					
-				elif (self.dump1090_buffer[0][0] == 51):	#modeS long detected
-					Dlist['curr_ch_occ'] = (0.000120 / 1)						
-				else:
-					print("Unknown telegram-type detected")
+		time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
+		if (time_difference > 0):	#more than one telegram received
+			Dlist['curr_ch_occ'] = (chOccCnt / time_difference)		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
+		if (len(self.dump1090_buffer) == 1):
+			if (self.dump1090_buffer[0][0] == 49):	#modeA/C detected
+				Dlist['curr_ch_occ'] = (0.0000203 / 1)			
+			elif (self.dump1090_buffer[0][0] == 50):	#modeS short detected
+				Dlist['curr_ch_occ'] = (0.000064 / 1)					
+			elif (self.dump1090_buffer[0][0] == 51):	#modeS long detected
+				Dlist['curr_ch_occ'] = (0.000120 / 1)						
+			else:
+				print("Unknown telegram-type detected")
 				
 			Dlist['curr_planes'] = len(ICAO_list)
 
-			self.out_buffer.append(Dlist)
-			self.out_buffer.append(Slist)
-			self.out_buffer.append(Llist)
-			self.out_buffer.append(AClist)
+		self.out_buffer.append(Dlist)
+		self.out_buffer.append(Slist)
+		self.out_buffer.append(Llist)
+		self.out_buffer.append(AClist)
 		
 		t1 = time.time()
 		totaltime = t1 - t0
