@@ -119,8 +119,11 @@ class TelegramProcessing:
 			Dlist['test_avg_lvl_ac'] /= acCnt
 		if (counter > 0):
 			Dlist['rx_avg_lvl'] = (lvl_sum / counter)
-			
-		time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
+		
+		if (len(self.dump1090_buffer) > 0):
+			time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
+		else:
+			time_difference = 0
 		if (time_difference > 0):	#more than one telegram received
 			Dlist['curr_ch_occ'] = (chOccCnt / time_difference)		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
 		if (len(self.dump1090_buffer) == 1):
