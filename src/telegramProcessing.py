@@ -94,7 +94,7 @@ class TelegramProcessing:
 			Dlist['test_avg_lvl_s'] /= sCnt
 			Dlist['test_avg_lvl_ac'] /= acCnt
 			Dlist['rx_avg_lvl'] = (lvl_sum / counter)
-			Dlist['curr_ch_occ'] = (chOccCnt / (self.dump1090_buffer[len(self.dump1090_buffer)][1] - self.dump1090_buffer[0][1]))		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
+			Dlist['curr_ch_occ'] = (chOccCnt / (self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]))		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
 			Dlist['curr_planes'] = len(ICAO_list)
 
 			self.out_buffer.append(Dlist)
