@@ -1,5 +1,6 @@
 import multiprocessing
 import time
+from datetime import datetime
 
 class TelegramProcessing:
 	def __init__(self):
@@ -24,10 +25,11 @@ class TelegramProcessing:
 		
 		#filling dictionaries
 		if (len(self.dump1090_buffer) > 0):
-			Dlist['time'] = self.dump1090_buffer[0][1]	#using earliest timestamp
-			Slist['time'] = self.dump1090_buffer[0][1]
-			Llist['time'] = self.dump1090_buffer[0][1]
-			AClist['time'] = self.dump1090_buffer[0][1]
+			current_datetime = datetime.now()
+			Dlist['time'] = current_datetime	#giving timestamp
+			Slist['time'] = current_datetime
+			Llist['time'] = current_datetime
+			AClist['time'] = current_datetime
 
 			Dlist['test_tx_cnt'] = len(self.socket_buffer)
 
@@ -44,19 +46,22 @@ class TelegramProcessing:
 					else:
 						AClist[str(round(d_element[2],0))[0:3]] += 1
 			
-				if (d_element[0] == 50):	#modeS short detected
+				elif (d_element[0] == 50):	#modeS short detected
 					chOccCnt += 0.000064
 					if(d_element[2] > -46):
 						Slist['-46'] += 1
 					else:
 						Slist[str(round(d_element[2],0))[0:3]] += 1
 						
-				if (d_element[0] == 51):	#modeS long detected
+				elif (d_element[0] == 51):	#modeS long detected
 					chOccCnt += 0.000120
 					if(d_element[2] > -46):
 						Llist['-46'] += 1
 					else:
 						llist[str(round(d_element[2],0))[0:3]] += 1
+						
+				else:
+					print("Unknown telegram-type detected")
 						
 				foundflag = 0
 				for address in ICAO_list:
@@ -67,34 +72,64 @@ class TelegramProcessing:
 					ICAO_list.append(d_element[3])
 
 
-				if(len(self.socket_buffer) > 0):
+				if (len(self.socket_buffer) > 0):
 					for s_element in self.socket_buffer:
-						if (s_element != d_element[4]):	#dump1090 output does not match with a send test-telegram TODO: check when socket ready !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+						if (s_element[1] != d_element[4]):	#dump1090 output does not match with a send test-telegram TODO: check when socket ready !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 							Dlist['rx_cnt'] +=1
-						elif (s_element == d_element[4] and d_element[0] == 49):	#modeA/C test-telegram matched
+						elif (s_element[1] == d_element[4] and d_element[0] == 49):	#modeA/C test-telegram matched
 							Dlist['test_rx_succ_cnt_ac'] += 1
 							Dlist['test_avg_lvl_ac'] += d_element[2]
 							acCnt += 1 
-						elif (s_element == d_element[4] and d_element[0] == 50):	#modeS short test-telegram matched
+						elif (s_element[1] == d_element[4] and d_element[0] == 50):	#modeS short test-telegram matched
 							Dlist['test_rx_succ_cnt_s'] += 1
 							Dlist['test_avg_lvl_s'] += d_element[2]
 							sCnt += 1 
-						elif (s_element == d_element[4] and d_element[0] == 51):	#modeS long test-telegram matched
+						elif (s_element[1] == d_element[4] and d_element[0] == 51):	#modeS long test-telegram matched
 							Dlist['test_rx_succ_cnt_l'] += 1
 							Dlist['test_avg_lvl_l'] += d_element[2]
 							lCnt += 1 
 						else:
 							print("Exception while matching socket data occured.")
+							
+			#checking for amount of telegrams that should be received
+			s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
+			for test_element in self.socket_buffer:
+				if (test_element[0] == "s"):
+					s_test_cnt += 1
+				elif (test_element[0] == "l"):
+					l_test_cnt += 1
+				elif (test_element[0] == "ac"):
+					ac_test_cnt += 1
+				else:
+					print("Unknown telegram-type received by socket")
 	
 
-			Dlist['test_succ_lvl_s'] = 33		#tbd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			Dlist['test_succ_lvl_ac'] = 33		#tbd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			Dlist['test_succ_lvl_l'] = 33		#tbd!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			Dlist['test_avg_lvl_l'] /= lCnt
-			Dlist['test_avg_lvl_s'] /= sCnt
-			Dlist['test_avg_lvl_ac'] /= acCnt
-			Dlist['rx_avg_lvl'] = (lvl_sum / counter)
-			Dlist['curr_ch_occ'] = (chOccCnt / (self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]))		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
+			Dlist['test_succ_lvl_s'] = (sCnt/s_test_Cnt) * 100		
+			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_Cnt) * 100	
+			Dlist['test_succ_lvl_l'] = (lCnt/l_test_Cnt) * 100	
+			
+			if (lCnt > 0):
+				Dlist['test_avg_lvl_l'] /= lCnt
+			if (sCnt > 0):
+				Dlist['test_avg_lvl_s'] /= sCnt
+			if (acCnt > 0):
+				Dlist['test_avg_lvl_ac'] /= acCnt
+			if (counter > 0):
+				Dlist['rx_avg_lvl'] = (lvl_sum / counter)
+			
+			time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
+			if (time_difference > 0):	#more than one telegram received
+				Dlist['curr_ch_occ'] = (chOccCnt / time_difference)		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
+			if (len(self.dump1090_buffer) == 1):
+				if (self.dump1090_buffer[0][0] == 49):	#modeA/C detected
+					Dlist['curr_ch_occ'] = (0.0000203 / 1)			
+				elif (self.dump1090_buffer[0][0] == 50):	#modeS short detected
+					Dlist['curr_ch_occ'] = (0.000064 / 1)					
+				elif (self.dump1090_buffer[0][0] == 51):	#modeS long detected
+					Dlist['curr_ch_occ'] = (0.000120 / 1)						
+				else:
+					print("Unknown telegram-type detected")
+				
 			Dlist['curr_planes'] = len(ICAO_list)
 
 			self.out_buffer.append(Dlist)
