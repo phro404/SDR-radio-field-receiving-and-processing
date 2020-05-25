@@ -41,9 +41,9 @@ class TelegramProcessing:
 
 				if (d_element[0] == 49):	#modeA/C detected
 					chOccCnt += 0.0000203
-					if(d_element[2] > -46):
+					if(d_element[2] > -46 and d_element[2] != None):
 						AClist['-46'] += 1
-					else:
+					elif (d_element[2] != None):
 						AClist[str(round(d_element[2],0))[0:3]] += 1
 			
 				elif (d_element[0] == 50):	#modeS short detected
