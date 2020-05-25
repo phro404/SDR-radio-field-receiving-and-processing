@@ -91,15 +91,16 @@ class TelegramProcessing:
 							
 		#checking for amount of telegrams that should be received
 		s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
-		for test_element in self.socket_buffer:
-			if (test_element[0] == "s"):
-				s_test_cnt += 1
-			elif (test_element[0] == "l"):
-				l_test_cnt += 1
-			elif (test_element[0] == "ac"):
-				ac_test_cnt += 1
-			else:
-				print("Unknown telegram-type received by socket")
+		if (len(self.socket_buffer) > 0):
+			for test_element in self.socket_buffer:
+				if (test_element[0] == "s"):
+					s_test_cnt += 1
+				elif (test_element[0] == "l"):
+					l_test_cnt += 1
+				elif (test_element[0] == "ac"):
+					ac_test_cnt += 1
+				else:
+					print("Unknown telegram-type received by socket")
 	
 		if (s_test_cnt > 0):
 			Dlist['test_succ_lvl_s'] = (sCnt/s_test_cnt) * 100
@@ -134,6 +135,9 @@ class TelegramProcessing:
 				print("Unknown telegram-type detected")
 				
 			Dlist['curr_planes'] = len(ICAO_list)
+		
+		if (Dlist['rx_cnt'] == 0):
+			Dlist['rx_cnt'] = len(self.dump1090_buffer)
 
 		self.out_buffer.append(Dlist)
 		self.out_buffer.append(Slist)
