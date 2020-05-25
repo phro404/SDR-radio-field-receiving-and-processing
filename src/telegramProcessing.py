@@ -142,10 +142,7 @@ class TelegramProcessing:
 		
 		t1 = time.time()
 		totaltime = t1 - t0
-		try:
-			time.sleep(0.99 - totaltime)
-		except:
-			time.sleep(0.99 - totaltime)
+		#time.sleep(0.99 - totaltime)
 		
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
 		#Um z.B. im Falle eines schwerwiegenden Errors das KOMPLETTE Programm zu beenden kann der Befehl "exit.set()" benutzt werden
