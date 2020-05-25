@@ -48,6 +48,8 @@ class Handler1:
 		while not exit.is_set():
 			#outputQueue.put("Handler1 Loop start")
 			allAlive = True
+			while (self.pipes[2][1].poll()):
+				print(self.pipes[2][1].recv())
 			for key in self.processes.keys():
 				if(not self.processes[key].is_alive()):
 					outputQueue.put("Stopped Running: " + key)
