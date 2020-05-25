@@ -19,7 +19,7 @@ while True:
 
 
 	#create dictionary 
-	testdict = {'format': unkown, 'payload': 0}
+	testdict = {'format': 'unkown', 'payload': 0}
 	
 	try:
 		while True:
