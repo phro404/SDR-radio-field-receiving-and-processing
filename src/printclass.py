@@ -28,9 +28,9 @@ class dp(object):							#dp = data-printer
 	from datetime import datetime					#import time from system
 	now = datetime.now()
 	
-	if (d !=  now.strftime("%d.%m.%Y_%H"))				#check for new hour
+	if (d !=  now.strftime("%d.%m.%Y_%H")):				#check for new hour
 		d = now.strftime("%d.%m.%Y_%H")				#set d as timedefinition
-		visualization.visualization(orderedList, True)		#function for life plot
+	visualization.visualization(orderedList, True)		#function for life plot
 	
 	import os
 	os.chdir("..")
