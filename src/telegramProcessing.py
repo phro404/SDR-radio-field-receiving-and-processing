@@ -25,10 +25,10 @@ class TelegramProcessing:
 		
 		counter = 0; chOccCnt = 0; sCnt = 0; lCnt = 0; acCnt = 0; lvl_sum = 0
 		current_datetime = datetime.now()
-		Dlist['time'] = current_datetime	#giving timestamp
-		Slist['time'] = current_datetime
-		Llist['time'] = current_datetime
-		AClist['time'] = current_datetime
+		Dlist['time'] = str(current_datetime)	#giving timestamp
+		Slist['time'] = str(current_datetime)
+		Llist['time'] = str(current_datetime)
+		AClist['time'] = str(current_datetime)
 		Dlist['test_tx_cnt'] = len(self.socket_buffer)
 		
 		#filling dictionaries
