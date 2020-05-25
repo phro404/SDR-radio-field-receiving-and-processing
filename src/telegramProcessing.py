@@ -36,12 +36,12 @@ class TelegramProcessing:
 			ICAO_list = []
 			for d_element in self.dump1090_buffer:
 				counter +=1; 
-				if (d_element[2] != 'None'):	#we still habe to check because lvl is not available for modeA/C
+				if (d_element[2] != None):	#we still habe to check because lvl is not available for modeA/C
 					lvl_sum += d_element[2]
 
 				if (d_element[0] == 49):	#modeA/C detected
 					chOccCnt += 0.0000203
-					if(d_elemnt[2] > -46):
+					if(d_element[2] > -46):
 						AClist['-46'] += 1
 					else:
 						AClist[str(round(d_element[2],0))[0:3]] += 1
