@@ -19,7 +19,7 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 		self.host = host
 		devnull = open(os.devnull, 'wb')
 		curDir = os.getcwd()	#get working directory
-		args = (curDir+'/dump1090', '--net', '--modeac', '--fix', '--fix')
+		args = (curDir+'/dump1090', '--net', '--modeac', '--fix', '--fix', '--gain', '49,6')
 		self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
 		sleep(1)
 		return
