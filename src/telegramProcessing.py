@@ -103,12 +103,12 @@ class TelegramProcessing:
 			else:
 				print("Unknown telegram-type received by socket")
 	
-		if (s_test_Cnt > 0):
-			Dlist['test_succ_lvl_s'] = (sCnt/s_test_Cnt) * 100
-		if (ac_test_Cnt > 0):
-			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_Cnt) * 100
-		if (l_test_Cnt > 0):
-			Dlist['test_succ_lvl_l'] = (lCnt/l_test_Cnt) * 100	
+		if (s_test_cnt > 0):
+			Dlist['test_succ_lvl_s'] = (sCnt/s_test_cnt) * 100
+		if (ac_test_cnt > 0):
+			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_cnt) * 100
+		if (l_test_cnt > 0):
+			Dlist['test_succ_lvl_l'] = (lCnt/l_test_cnt) * 100	
 			
 		if (lCnt > 0):
 			Dlist['test_avg_lvl_l'] /= lCnt
