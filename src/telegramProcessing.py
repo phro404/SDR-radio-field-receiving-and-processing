@@ -24,7 +24,7 @@ class TelegramProcessing:
 		  '-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
 		
 		counter = 0; chOccCnt = 0; sCnt = 0; lCnt = 0; acCnt = 0; lvl_sum = 0
-		current_datetime = datetime.now()
+		current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		Dlist['time'] = str(current_datetime)	#giving timestamp
 		Slist['time'] = str(current_datetime)
 		Llist['time'] = str(current_datetime)
