@@ -1,6 +1,8 @@
 import socket	
 import json
 import time 
+from random import randint
+
 while True:
 	#create a socket object 
 	s = socket.socket()		  
@@ -16,31 +18,27 @@ while True:
 	print ('Got connection from', addr) 
 
 
-	#create test data with json
-	testlist=[1,2,3,4,5]
-	teststring='ModeS_Short'
-	testint = 60
+	#create dictionary 
+	testdict = {'format': unkown, 'payload': 0}
 
-	testcontainer = {
-		'payload1': 'firstpayload',
-		'payload2': 'secondpayload',
-		'payload3': 'thirdpayload'}
-
-	testdict = {
-		'format': teststring,
-		'payload': testcontainer,
-		'amount': '10',
-		'duration_in_sec': testint,
-		'repeats': 2}
-
-	testdict = json.dumps(testdict) #converting dictionary in json-string
-
-
-	#sending test data
 	try:
-		while True: 
-			time.sleep(3)
-			c.send(testdict.encode('ascii'))
+		while True:
+		    #creating test data
+		    temp_rand = randint(1,3)
+		    if (temp_rand == 1):
+		    	testdict['format'] = 's'
+		    elif (temp_rand == 2):
+			testdict['format'] = 'l'
+		    else:
+			testdict['format'] = 'ac'
+		    	
+		    testdict['payload'] = hex(randint(0,2**112))
+
+		    	
+		    #sending test data
+		    testdict = json.dumps(testdict)	#converting dictionary in json-string
+		    time.sleep(randint(1,1000000)/4000000)	#wait a random time up to 0.25s
+		    c.send(testdict.encode('ascii'))
 						
 	except:
 		pass
