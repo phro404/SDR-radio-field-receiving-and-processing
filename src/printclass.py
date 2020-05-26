@@ -23,9 +23,10 @@ class dp(object):							#dp = data-printer
 	from datetime import datetime					#import time from system
 	now = datetime.now()
 	
-	if (d !=  now.strftime("%d.%m.%Y_%H"))				#check for new hour
-		d = now.strftime("%d.%m.%Y_%H")				#set d as timedefinition
-		visualization.visualization(orderedList, True)		#function for life plot
+	livePlotStart = false						#EDIT05.26.2020 for liveplot criteria
+	if (d !=  now.strftime("%Y.%m.%d_%H"))				#check for new hour
+		d = now.strftime("%Y.%m.%d_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
+		livePlotStart = true 					#EDIT05.26.2020  for starting a live plot when first line is printed
 	
 	import os
 	os.chdir("..")
@@ -41,8 +42,12 @@ class dp(object):							#dp = data-printer
 	f = open(name ,"a")						#open data with name, if not existing creat
 	f.write(self.amp)						#print string in data
 	f.close()
+	
+	if(livePlotStart==true)							#if first line in data written start liveplot
+		visualization.visualization(orderedList, True)
+		livePlotStart = false
 
-
+		
     def run(self)
 	self.sort()
 	self.print()
