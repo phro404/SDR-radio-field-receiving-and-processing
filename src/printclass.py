@@ -1,3 +1,5 @@
+import os
+
 class dp(object):							#dp = data-printer 
 
     def __init__(self): 
@@ -36,7 +38,6 @@ class dp(object):							#dp = data-printer
 
 
 	
-	import os
 	os.chdir("..")
 	os.chdir("data")
 
