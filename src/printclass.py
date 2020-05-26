@@ -11,14 +11,27 @@ class dp(object):							#dp = data-printer
 
 
 	def sort(self):
+		local_buffer = []
+		Slist = []
+		Llist = []
+		AClist = []
+		
 		while(raw_pipe_out.poll()):						#polling
 			data = raw_pipe_out.recv()				#receive piped data
 			local_buffer.append(data)				#get piped date in local buffer
 
-		Dlist = local_buffer[0]
-		Slist = local_buffer[1]
-		Llist = local_buffer[2]
-		AClist = local_buffer[3]
+		for dataPackage in local_buffer:
+			if not (dataPackage is dict):
+				print("Pipe-Packet ist kein Wörterbuch")
+				break
+				
+			if (dataPackage['type'] == 'S Short Reply'):
+				Slist = dataPackage
+			elif (dataPackage['type'] == 'S Long Reply'):
+				Llist = dataPackage
+			elif (dataPackage['type'] == 'AC Reply):
+				AClist = dataPackage
+		
 		
 		self.lvl = Dlist["time"] + "," + Dlist["rx_cnt"] + "," + Dlist["rx_avg_lvl"] + "," + Dlist["curr_ch_occ"] + "," + Dlist["curr_planes"] + "," + Dlist["test_tx_cnt"] + "," + Dlist["test_rx_succ_cnt_s"] + "," + Dlist["test_rx_succ_cnt_l"] + "," + Dlist["test_rx_succ_cnt_ac"] + "," + Dlist["test_succ_lvl_s"] + "," + Dlist["test_succ_lvl_l"] + "," +Dlist["test_succ_lvl_ac"] + "," +Dlist["test_avg_lvl_s"] + "," + Dlist["test_avg_lvl_l"] + "," + Dlist["test_avg_lvl_ac"] + "\n
 		
@@ -27,14 +40,14 @@ class dp(object):							#dp = data-printer
 		self.amp = self.amp + AClist["time"]+"," + AClist["type"]+"," + AClist["total"]+"," + AClist["-90"]+"," + AClist["-89"]+"," + AClist["-88"]+"," + AClist["-87"]+"," + AClist["-86"]+"," + AClist["-85"]+"," + AClist["-84"]+"," + AClist["-83"]+"," + AClist["-82"]+"," + AClist["-81"]+"," + AClist["-80"]+"," + AClist["-79"]+"," + AClist["-78"]+"," + AClist["-77"]+"," + AClist["-76"]+"," + AClist["-75"]+"," + AClist["-74"]+"," + AClist["-73"]+"," + AClist["-72"]+"," + AClist["-71"]+"," + AClist["-70"]+"," + AClist["-69"]+"," + AClist["-68"]+"," + AClist["-67"]+"," + AClist["-66"]+"," + AClist["-65"]+"," + AClist["-64"]+"," + AClist["-63"]+"," + AClist["-62"]+"," + AClist["-61"]+"," + AClist["-60"]+"," + AClist["-59"]+"," + AClist["-58"]+"," + AClist["-57"]+"," + AClist["-56"]+"," + AClist["-55"]+"," + AClist["-54"]+"," + AClist["-53"]+"," + AClist["-52"]+"," + AClist["-51"]+"," + AClist["-50"]+"," + AClist["-49"]+"," + AClist["-48"]+"," + AClist["-47"]+"," + AClist["-46"] + "\n"
 
 
-	def print(self):	
+	def write(self):	
 		now = datetime.now()
 		
 
 		livePlotStart = false						#EDIT05.26.2020 for liveplot criteria
 		if (d !=  now.strftime("%Y.%m.%d_%H")):				#check for new hour
 			d = now.strftime("%Y.%m.%d_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
-			livePlotStart = true 					#EDIT05.26.2020  for starting a live plot when first line is printed
+			livePlotStart = True 					#EDIT05.26.2020  for starting a live plot when first line is printed
 
 
 		
@@ -52,11 +65,14 @@ class dp(object):							#dp = data-printer
 		f.write(self.amp)						#print string in data
 		f.close()
 		
-		if(livePlotStart==true):							#if first line in data written start liveplot
+		if(livePlotStart == True):						#if first line in data written start liveplot
 			visualization.visualization(orderedList, True)
-			livePlotStart = false
 
 		
-	def run(self):
+	def run(self, in_pipe, exit):
+		while (not exit.is_set()):
 		self.sort()
-		self.print()
+		self.write()
+		
+		
+		
