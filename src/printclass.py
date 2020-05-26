@@ -1,38 +1,19 @@
+from datetime import datetime
 import os
-import visualization
-from datetime import datetime	
+import visualization	
 
-class dp(object):							#dp = data-printer 
+class dp(object):
 
 	def __init__(self): 
 		self.lvl = ""							#defines string for lvl_reply_date prints
 		self.amp = ""							#defines string for amp_hist_date prints
 		d = "0000"							#defines string for first usage of self.print
 
-
 	def sort(self):
-		local_buffer = []
-		Slist = []
-		Llist = []
-		AClist = []
-		
-		while(raw_pipe_out.poll()):						#polling
+		while(raw_pipe_out.poll()):					#polling
 			data = raw_pipe_out.recv()				#receive piped data
 			local_buffer.append(data)				#get piped date in local buffer
 
-		for dataPackage in local_buffer:
-			if not (dataPackage is dict):
-				print("Pipe-Packet ist kein Wörterbuch")
-				break
-				
-			if (dataPackage['type'] == 'S Short Reply'):
-				Slist = dataPackage
-			elif (dataPackage['type'] == 'S Long Reply'):
-				Llist = dataPackage
-			elif (dataPackage['type'] == 'AC Reply):
-				AClist = dataPackage
-		
-		
 		self.lvl = Dlist["time"] + "," + Dlist["rx_cnt"] + "," + Dlist["rx_avg_lvl"] + "," + Dlist["curr_ch_occ"] + "," + Dlist["curr_planes"] + "," + Dlist["test_tx_cnt"] + "," + Dlist["test_rx_succ_cnt_s"] + "," + Dlist["test_rx_succ_cnt_l"] + "," + Dlist["test_rx_succ_cnt_ac"] + "," + Dlist["test_succ_lvl_s"] + "," + Dlist["test_succ_lvl_l"] + "," +Dlist["test_succ_lvl_ac"] + "," +Dlist["test_avg_lvl_s"] + "," + Dlist["test_avg_lvl_l"] + "," + Dlist["test_avg_lvl_ac"] + "\n
 		
 		self.amp = Slist["time"] + "," + Slist["type"] + "," + Slist["total"] + "," + Slist["-90"] + "," + Slist["-89"] + "," + Slist["-88"] + "," + Slist["-87"] + "," + Slist["-86"] + "," + Slist["-85"] + "," + Slist["-84"] + "," + Slist["-83"] + "," + Slist["-82"] + "," + Slist["-81"] + "," + Slist["-80"] + "," + Slist["-79"] + "," + Slist["-78"] + "," + Slist["-77"] + "," + Slist["-76"] + "," + Slist["-75"] + "," + Slist["-74"] + "," + Slist["-73"] + "," + Slist["-72"] + "," + Slist["-71"] + "," + Slist["-70"] + "," + Slist["-69"] + "," + Slist["-68"] + "," + Slist["-67"] + "," + Slist["-66"] + "," + Slist["-65"] + "," + Slist["-64"] + "," + Slist["-63"] + "," + Slist["-62"] + "," + Slist["-61"] + "," + Slist["-60"] + "," + Slist["-59"] + "," + Slist["-58"] + "," + Slist["-57"] + "," + Slist["-56"] + "," + Slist["-55"] + "," + Slist["-54"] + "," + Slist["-53"] + "," + Slist["-52"] + "," + Slist["-51"] + "," + Slist["-50"] + "," + Slist["-49"] + "," + Slist["-48"] + "," + Slist["-47"] + "," + Slist["-46"] + "\n"
@@ -40,19 +21,16 @@ class dp(object):							#dp = data-printer
 		self.amp = self.amp + AClist["time"]+"," + AClist["type"]+"," + AClist["total"]+"," + AClist["-90"]+"," + AClist["-89"]+"," + AClist["-88"]+"," + AClist["-87"]+"," + AClist["-86"]+"," + AClist["-85"]+"," + AClist["-84"]+"," + AClist["-83"]+"," + AClist["-82"]+"," + AClist["-81"]+"," + AClist["-80"]+"," + AClist["-79"]+"," + AClist["-78"]+"," + AClist["-77"]+"," + AClist["-76"]+"," + AClist["-75"]+"," + AClist["-74"]+"," + AClist["-73"]+"," + AClist["-72"]+"," + AClist["-71"]+"," + AClist["-70"]+"," + AClist["-69"]+"," + AClist["-68"]+"," + AClist["-67"]+"," + AClist["-66"]+"," + AClist["-65"]+"," + AClist["-64"]+"," + AClist["-63"]+"," + AClist["-62"]+"," + AClist["-61"]+"," + AClist["-60"]+"," + AClist["-59"]+"," + AClist["-58"]+"," + AClist["-57"]+"," + AClist["-56"]+"," + AClist["-55"]+"," + AClist["-54"]+"," + AClist["-53"]+"," + AClist["-52"]+"," + AClist["-51"]+"," + AClist["-50"]+"," + AClist["-49"]+"," + AClist["-48"]+"," + AClist["-47"]+"," + AClist["-46"] + "\n"
 
 
-	def write(self):	
+	def print(self):	
 		now = datetime.now()
 		
-
 		livePlotStart = false						#EDIT05.26.2020 for liveplot criteria
 		if (d !=  now.strftime("%Y.%m.%d_%H")):				#check for new hour
 			d = now.strftime("%Y.%m.%d_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
 			livePlotStart = True 					#EDIT05.26.2020  for starting a live plot when first line is printed
 
-
-		
-		os.chdir("..")
-		os.chdir("data")
+		os.chdir("..")							#change directory one up
+		os.chdir("data")						#change directory to data for print
 
 
 		name = "lvl_reply_" + d + ".csv"				#set name lvl_reply_date
@@ -65,14 +43,11 @@ class dp(object):							#dp = data-printer
 		f.write(self.amp)						#print string in data
 		f.close()
 		
-		if(livePlotStart == True):						#if first line in data written start liveplot
+		if(livePlotStart == True):					#if first line in data written start liveplot
 			visualization.visualization(orderedList, True)
 
 		
 	def run(self, in_pipe, exit):
-		while (not exit.is_set()):
 		self.sort()
-		self.write()
-		
-		
-		
+		self.print()
+	
