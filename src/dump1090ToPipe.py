@@ -56,8 +56,17 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 			while not(exit.is_set()):
 				try:
 					dataFull = s.recv(4096)
+					print("Socket-Packet:" + dataFull.hex())
 					dataFull = dataFull.decode('iso-8859-1')
 					for data in dataFull.split("\n\n\n"):
+					
+						testData = data[1:]	#Check if single 0x1A in packet
+						testData.replace(chr(0x1A)*2, "")
+						if (chr(0x1A) in testData):
+							print("Das bearbeitete Paket scheint aus mehreren Paketen zu bestehen: " + str(data))
+							continue
+						
+						data.replace(chr(0x1A)*2, chr(0x1A))	#0x1A1A to 0x1A
 						data = data.encode('iso-8859-1')
 						
 						if (len(data) == 0):	#string.split also returns empty strings
@@ -66,6 +75,12 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 						if (len(data) <= 10): 	#Fehlerhaftes Paket Empfangen
 							print("Fehlerhaftes Paket von dump1090 empfangen")
 							continue
+						
+						if (data[0] != 0x1A):
+							print("Fehler: Paket hat nicht als erstes Byte 0x1A")
+							continue	
+						
+						
 						msgType = data[1]
 						timeStamp = time() - startTime	#dump1090 liefert falsche Zeitwerte
 						signalPower = int.from_bytes(data[2:6],byteorder='big')/(10**5) * (-1)

@@ -7,9 +7,10 @@ import signal
 from dump1090ToPipe import Dump1090ToPipe
 from socket_client_class import Client_socket
 from telegramProcessing import TelegramProcessing
+from fileWriter import FileWriter
 
 numPipes = 3
-	
+
 class Handler1:
 	def __init__(self):
 		self.processes = {} 	#all processes are stored inside here
@@ -22,7 +23,7 @@ class Handler1:
 					
 					
 	def run(self, exit, outputQueue):
-	
+			
 		def stopAllProcesses():
 			self.exit.set()
 			print("Starting to terminate Processes")
@@ -41,6 +42,11 @@ class Handler1:
 		telegramProcessingObj = TelegramProcessing()
 		self.processes["telegramProcessing"] = multiprocessing.Process(target=telegramProcessingObj.run, args=(self.pipes[1][1], self.pipes[0][1], self.pipes[2][0], self.exit))
 		
+		fileWriterObj = FileWriter()
+		self.processes["fileWriter"] = multiprocessing.Process(target=fileWriterObj.run, args=(self.pipes[2][1], self.exit))
+		
+		
+		
 		for process in self.processes.values():
 			process.start()
 		print("All started")
@@ -48,8 +54,8 @@ class Handler1:
 		while not exit.is_set():
 			#outputQueue.put("Handler1 Loop start")
 			allAlive = True
-			while (self.pipes[2][1].poll()):
-				print(self.pipes[2][1].recv())
+			#while (self.pipes[2][1].poll()):
+			#	print(self.pipes[2][1].recv())
 			for key in self.processes.keys():
 				if(not self.processes[key].is_alive()):
 					outputQueue.put("Stopped Running: " + key)

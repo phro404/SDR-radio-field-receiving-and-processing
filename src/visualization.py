@@ -262,16 +262,15 @@ def visualization(orderedList, livePlot):
 		
 
 	if livePlot == True:
-		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_{orderedList[0][-17:-4]}')	# Alternative plot name (apropos of the file names)
-		plotname = plotname.replace('.', '-')
+		time_for_liveplotname = f'{str_time_begin[0:10]}_{orderedList[0][-6:-4]}'   # Edit the start time string with hour
+		time_for_liveplotname = time_for_liveplotname.replace(':', '-')
+		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_{time_for_liveplotname}.pdf')    # Create the liveplot name (apropos of the file names)  
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}' # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
-		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'	   # Edit the end time string
+		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'       # Edit the end time string
 		end_time_for_plotname = end_time_for_plotname.replace(':', '-')
-		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}')   # Create the plot name
-		# plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{orderedList[0][-17:-4]}_to_{orderedList[len(orderedList)-2][-17:-4]}')	# Alternative plot name (apropos of the file names)
-		# plotname = plotname.replace('.', '-')
+		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}.pdf')   # Create the plot name
 
 	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 

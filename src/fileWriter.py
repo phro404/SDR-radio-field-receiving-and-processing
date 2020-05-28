@@ -1,15 +1,21 @@
 import os
 import visualization
 from datetime import datetime	
+from time import sleep
 
 class FileWriter(object):							
 
 	def __init__(self): 
 		self.lvl = ""							#defines string for lvl_reply_date prints
 		self.amp = ""							#defines string for amp_hist_date prints
-		self.d = "0000"							#defines string for first usage of self.print
+		self.d = ""			#defines string for first usage of self.print
+		
+		self.lvlFirstLine = "time,rx_cnt,rx_avg_lvl,curr_ch_occ,curr_planes,test_tx_cnt,test_rx_succ_cnt_s,test_rx_succ_cnt_l,test_rx_succ_cnt_ac,test_succ_lvl_s,test_succ_lvl_l,test_succ_lvl_ac,test_avg_lvl_s,test_avg_lvl_l,test_avg_lvl_ac\n"
 
-
+		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"
+		self.numFiles = 0
+		
+	
 	def sort(self, raw_pipe_out):
 		local_buffer = []
 		Slist = {}
@@ -17,25 +23,32 @@ class FileWriter(object):
 		AClist = {}
 		Dlist = {}
 		
+		while(not raw_pipe_out.poll()):
+			sleep(0.05)
+		
 		while(raw_pipe_out.poll()):						#polling
-			print("ljhglkjhlkjkjhh")
 			data = raw_pipe_out.recv()				#receive piped data
+			#print("fileWriter polling: " + str(data))
 			local_buffer.append(data)				#get piped date in local buffer
+			sleep(0.05)
 
 		for dataPackage in local_buffer:
-			print('fileWriter' + str(dataPackage))
-			if not (dataPackage is dict):
-				print("Pipe-Packet ist kein Wörterbuch")
+			for key, value in dataPackage.items():
+				if (not isinstance(value, str)):
+					dataPackage[key] = str(value)
+			#print('fileWriter' + str(dataPackage))
+			if not isinstance(dataPackage, dict):
+				print("Pipe-Packet ist kein Wörterbuch sondern: " + str(type(dataPackage)))
 				break
-		
-			if (dataPackage['type'] == 'S Short Reply'):
+			if ('rx_cnt' in dataPackage.keys()):
+				Dlist = {**Dlist, **dataPackage}
+			elif (dataPackage['type'] == 'S Short Reply'):
 				Slist = {**Slist, **dataPackage}
 			elif (dataPackage['type'] == 'S Long Reply'):
 				Llist = {**Llist, **dataPackage}
 			elif (dataPackage['type'] == 'AC Reply'):
 				AClist = {**AClist, **dataPackage}
-			elif ('rx_cnt' in datapackage.keys()):
-				Dlist = {**Dlist, **dataPackage}
+
 		
 		if not (len(Dlist) < 15):
 			self.lvl = Dlist["time"] + "," + Dlist["rx_cnt"] + "," + Dlist["rx_avg_lvl"] + "," + Dlist["curr_ch_occ"] + "," + Dlist["curr_planes"] + "," + Dlist["test_tx_cnt"] + "," + Dlist["test_rx_succ_cnt_s"] + "," + Dlist["test_rx_succ_cnt_l"] + "," + Dlist["test_rx_succ_cnt_ac"] + "," + Dlist["test_succ_lvl_s"] + "," + Dlist["test_succ_lvl_l"] + "," +Dlist["test_succ_lvl_ac"] + "," +Dlist["test_avg_lvl_s"] + "," + Dlist["test_avg_lvl_l"] + "," + Dlist["test_avg_lvl_ac"] + "\n"
@@ -50,30 +63,45 @@ class FileWriter(object):
 
 	def write(self):	
 		now = datetime.now()
-		
 
-		livePlotStart = False						#EDIT05.26.2020 for liveplot criteria
-		if (self.d !=  now.strftime("%d.%m.%Y_%H")):				#check for new hour
-			self.d = now.strftime("%d.%m.%Y_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
-			livePlotStart = True 					#EDIT05.26.2020  for starting a live plot when first line is printed
+		plotNow = False						#EDIT05.26.2020 for liveplot criteria
+		if (self.d !=  now.strftime("%Y.%m.%d_%H")):				#check for new hour
+			self.d = now.strftime("%Y.%m.%d_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
+			
+			name_lvl = "../data/lvl_reply_" + self.d + ".csv"				#set name lvl_reply_date
+			f = open(name_lvl ,"a")						#open data with name, if not existing create
+			f.write(self.lvlFirstLine)						#print string in data
+			f.close()
+			
+			name_amp = "../data/amp_hist_" + self.d + ".csv"				#set name lvl_reply_date
+			f = open(name_amp ,"a")						#open data with name, if not existing create
+			f.write(self.ampFirstLine)						#print string in data
+			f.close()
+			
+			plotNow = True 					#EDIT05.26.2020  for starting a live plot when first line is printed
+			
+			self.numFiles = self.numFiles + 1
+			if (self.numFiles == 1):
+				self.oldOrderedList = [os.path.abspath("../data/lvl_reply_" + self.d + ".csv"), os.path.abspath("../data/lvl_reply_" + self.d + ".csv")]
+				
 
 		#os.chdir("..")
 		#os.chdir("data")
-
-		name_lvl = "../data/lvl_reply_" + self.d + ".csv"				#set name lvl_reply_date
-		f = open(name_lvl ,"a")						#open data with name, if not existing create
-		f.write(self.lvl)						#print string in data
-		f.close()
-
-		name_amp = "../data/amp_hist_" + self.d + ".csv"  				#set name amp_hist_date
-		f = open(name_amp ,"a")						#open data with name, if not existing creat
-		f.write(self.amp)						#print string in data
-		f.close()
-		if (len(self.amp) != 0 and len(self.lvl) != 0):
-			orderedList = [os.path.abspath(name_lvl), os.path.abspath(name_amp)]
-			print(orderedList)
-			if(livePlotStart == True):						#if first line in data written start liveplot
-				visualization.visualization(orderedList, True)
+		if (len(self.lvl) != 0):
+			name_lvl = "../data/lvl_reply_" + self.d + ".csv"				#set name lvl_reply_date
+			f = open(name_lvl ,"a")						#open data with name, if not existing create
+			f.write(self.lvl)						#print string in data
+			f.close()
+			
+		if (len(self.lvl) != 0):
+			name_amp = "../data/amp_hist_" + self.d + ".csv"  				#set name amp_hist_date
+			f = open(name_amp ,"a")						#open data with name, if not existing creat
+			f.write(self.amp)						#print string in data
+			f.close()
+			
+		if (self.numFiles >= 2 and plotNow):					#if first line in data written start liveplot
+			visualization.visualization(self.oldOrderedList, True)
+			self.oldOrderedList = [os.path.abspath("../data/lvl_reply_" + self.d + ".csv"), os.path.abspath("../data/lvl_reply_" + self.d + ".csv")]
 
 		
 	def run(self, in_pipe, exit):
