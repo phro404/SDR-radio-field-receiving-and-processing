@@ -60,11 +60,6 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 					dataFull = dataFull.decode('iso-8859-1')
 					for data in dataFull.split("\n\n\n"):
 					
-						testData = data[1:]	#Check if single 0x1A in packet
-						testData.replace(chr(0x1A)*2, "")
-						if (chr(0x1A) in testData):
-							print("Das bearbeitete Paket scheint aus mehreren Paketen zu bestehen: " + str(data))
-							continue
 						
 						data.replace(chr(0x1A)*2, chr(0x1A))	#0x1A1A to 0x1A
 						data = data.encode('iso-8859-1')
