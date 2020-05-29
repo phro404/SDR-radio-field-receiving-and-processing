@@ -43,6 +43,8 @@ class TelegramProcessing:
 					chOccCnt += 0.0000203
 					if(d_element[2] != None and d_element[2] > -46):
 						AClist['-46'] += 1
+					elif(d_element[2] != None and d_element[2] < -90):
+						AClist['-90'] += 1
 					elif (d_element[2] != None):
 						AClist[str(round(d_element[2],0))[0:3]] += 1
 			
@@ -50,6 +52,8 @@ class TelegramProcessing:
 					chOccCnt += 0.000064
 					if(d_element[2] > -46):
 						Slist['-46'] += 1
+					elif(d_element[2] < -90):
+						Slist['-90'] += 1
 					else:
 						Slist[str(round(d_element[2],0))[0:3]] += 1
 						
@@ -57,6 +61,8 @@ class TelegramProcessing:
 					chOccCnt += 0.000120
 					if(d_element[2] > -46):
 						Llist['-46'] += 1
+					elif(d_element[2] < -90):
+						Llist['-90'] += 1
 					else:
 						llist[str(round(d_element[2],0))[0:3]] += 1
 						
