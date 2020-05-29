@@ -49,8 +49,8 @@ class Handler1:
 		
 		for process in self.processes.values():
 			process.start()
-		print("All started")
-		sleep(2)
+		print("All Processes of Handler1 started")
+		sleep(1)
 		while not exit.is_set():
 			#outputQueue.put("Handler1 Loop start")
 			allAlive = True

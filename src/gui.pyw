@@ -46,6 +46,7 @@ class Userinterface:
 		print(self.__file_path)
 			
 	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
+		self.first_button.config(state=tk.DISABLED, bg = "black")
 		main1 = handler.Handler1()
 		self.handlerProcess = multiprocessing.Process(target=main1.run, args=(self.exit, self.outputQueue))
 		self.handlerProcess.start()
