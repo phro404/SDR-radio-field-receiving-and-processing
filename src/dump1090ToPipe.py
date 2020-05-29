@@ -31,10 +31,11 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 		stdout = subprocess.check_output(['pgrep', 'dump1090'])
 		if len(stdout) == 0:
 			exception_queue.put("dump1090toPipe: dump1090 läuft nicht. Bitte manuell testen ob das Programm läuft.")
+			print("Checked Dump1090 Process. Not running anymore ¯\_(ツ)_/¯")
 			exit.set()
 			return False
 		else:
-			print("Checked Process. Running with PID: " +str(stdout[:-1]))
+			print("Checked Dump1090 Process. Running with PID: " +str(stdout[:-1]))
 			return True
 					
 	def run(self, pipe_out, exception_queue, exit):
@@ -45,7 +46,7 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 			for i in range(Dump1090ToPipe.retries):
 				try:
 					s.connect((self.host, self.port))
-					print("Connected")
+					print("Connected to Dump1090 Socket")
 					break
 				except Exception as e:
 					#print("Dump1090 Socket error, retry...")
@@ -77,11 +78,10 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 						if (len(data) == 0):	#string.split also returns empty strings
 							continue
 						if (len(data) <= 10): 	#Fehlerhaftes Paket Empfangen
-							print("Fehlerhaftes Paket von dump1090 empfangen: " + str(data.decode('iso-8859-1')))
+							print("Got broken package from dump1090 (after tcp-packet->multiple-packages): " + str(data))
 							continue
-						
 						if (data[0] != 0x1A):
-							print("Fehler: Paket hat nicht als erstes Byte 0x1A")
+							print("Error! First Byte of dump1090 packet not 0x1A")
 							continue	
 						
 						
