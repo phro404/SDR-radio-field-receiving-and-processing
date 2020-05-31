@@ -49,7 +49,6 @@ def visualization(orderedList, livePlot):
 
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:  # Read Path List
-	   
 		if (row_counter_data_paths % 2) == 0:
 		 
 		# Read lvl_reply CSV file
@@ -260,19 +259,20 @@ def visualization(orderedList, livePlot):
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
 		
-
 	if livePlot == True:
 		time_for_liveplotname = f'{str_time_begin[0:10]}_{orderedList[0][-6:-4]}'   # Edit the start time string with hour
 		time_for_liveplotname = time_for_liveplotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_{time_for_liveplotname}.pdf')    # Create the liveplot name (apropos of the file names)  
+		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+		plt.show(block=False)   # Show diagram   
+		plt.pause(0.03)
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}' # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
 		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'       # Edit the end time string
 		end_time_for_plotname = end_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}.pdf')   # Create the plot name
-
-	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-
-	plt.show()   # Show diagram   
+		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+		plt.show()
+		
 	#============================================= Plotting ====================================================
