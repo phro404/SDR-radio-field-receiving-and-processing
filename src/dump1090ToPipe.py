@@ -78,10 +78,11 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 						if (len(data) == 0):	#string.split also returns empty strings
 							continue
 						if (len(data) <= 10): 	#Fehlerhaftes Paket Empfangen
-							print("Got broken package from dump1090 (after tcp-packet->multiple-packages): " + str(data))
+							if (data != b'\n' and data != b'\n\n'):
+								print("Got broken package from dump1090 (after tcp-packet->multiple-packages): " + str(repr(data.decode('iso-8859-1'))))
 							continue
 						if (data[0] != 0x1A):
-							print("Error! First Byte of dump1090 packet not 0x1A")
+							print("Error! First Byte of dump1090 packet not 0x1A. Packet: " + str(repr(dataFull)))
 							continue	
 						
 						
@@ -95,9 +96,9 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 							
 						msg = data[10:].hex()
 						
-						if (icao == "000000" and msgType == 49 and signalPower == -21474.83648):
-							icao = None
-							signalPower = None
+						if (msgType != 49):				#Calibration of ModeS
+							signalPower = signalPower - 50
+							
 						pipe_out.send([msgType, timeStamp, signalPower, icao, msg])
 				except Exception as e:
 					print("Fehler: " + str(e))
