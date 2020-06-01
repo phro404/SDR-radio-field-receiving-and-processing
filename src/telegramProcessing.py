@@ -1,163 +1,313 @@
 import multiprocessing
 import time
 from datetime import datetime
+import configparser
 
 class TelegramProcessing:
 	def __init__(self):
 		self.dump1090_buffer = []
 		self.socket_buffer = []
 		self.out_buffer = []
-		
+
+		#reading out configuration parameter
+		config = configparser.ConfigParser()
+		config.read('import_init_data.conf')
+		if ('PROCESSING_INTERVAL' in config):
+			print("Processing interval section was found.")
+			self.pro_val = config['PROCESSING_INTERVALL']['LINE_DURATION']
+		else:
+			print("Processing interval section is not available! Default value is set.")
+			self.pro_val = 15
+
 	def processing(self):
-		t0 = time.time()
+		t_start = time.time()
+
 		#defining dictionaries
-		Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
-		  'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
-		Slist = {'time': 0, 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
-		  '-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
-		  '-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		Llist = {'time': 0, 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
-		  '-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
-		  '-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		AClist = {'time': 0, 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
-		  '-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
-		  '-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		
-		counter = 0; chOccCnt = 0; sCnt = 0; lCnt = 0; acCnt = 0; lvl_sum = 0
+
 		current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-		Dlist['time'] = str(current_datetime)	#giving timestamp
-		Slist['time'] = str(current_datetime)
-		Llist['time'] = str(current_datetime)
-		AClist['time'] = str(current_datetime)
-		Dlist['test_tx_cnt'] = len(self.socket_buffer)
-		
-		#filling dictionaries
-		if (len(self.dump1090_buffer) > 0):
-			ICAO_list = []
-			for d_element in self.dump1090_buffer:
-				counter +=1; 
-				if (d_element[2] != None):	#we still habe to check because lvl is not available for modeA/C
-					lvl_sum += d_element[2]
+		Dlist = {'time': str(current_datetime), 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
+			'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
+		Slist = {'time': str(current_datetime), 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+		Llist = {'time': str(current_datetime), 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+		AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+		ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; socket_sync_flag = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0
+		t_now = time.time(); 
 
-				if (d_element[0] == 49):	#modeA/C detected
-					chOccCnt += 0.0000203
-					if(d_element[2] != None and d_element[2] > -46):
-						AClist['-46'] += 1
-					elif(d_element[2] != None and d_element[2] < -90):
-						AClist['-90'] += 1
-					elif (d_element[2] != None):
-						AClist[str(round(d_element[2],0))[0:3]] += 1
-			
-				elif (d_element[0] == 50):	#modeS short detected
-					chOccCnt += 0.000064
-					if(d_element[2] > -46):
-						Slist['-46'] += 1
-					elif(d_element[2] < -90):
-						Slist['-90'] += 1
-					else:
-						Slist[str(round(d_element[2],0))[0:3]] += 1
-						
-				elif (d_element[0] == 51):	#modeS long detected
-					chOccCnt += 0.000120
-					if(d_element[2] > -46):
-						Llist['-46'] += 1
-					elif(d_element[2] < -90):
-						Llist['-90'] += 1
-					else:
-						Llist[str(round(d_element[2],0))[0:3]] += 1
-						
-				else:
-					print("Unknown telegram-type detected")
-						
-				foundflag = 0
-				for address in ICAO_list:
-					if (d_element[3] == address):
-						foundflag = 1
-						break
-				if (foundflag == 0):
-					ICAO_list.append(d_element[3])
+		while (t_now < t_start + self.pro_val):
+			while (dump1090_pipe.poll()):
+				data = dump1090_pipe.recv()
+				self.dump1090_buffer.append(data)
+			while (socket_pipe.poll()):
+				data = socket_pipe.recv()
+				self.socket_buffer.append(data)
 
+			if (len(self.socket_buffer) > 0):
+				socket_sync_flag = 1
+				break
+			else:
+				#adding only dump1090 data
+				if (len(self.dump1090_buffer) > 0):
+					for d_element in self.dump1090_buffer:
+						counter +=1;
 
-				'''if (len(self.socket_buffer) > 0):
-					for s_element in self.socket_buffer:
-						if (s_element[1] != d_element[4]):	#dump1090 output does not match with a send test-telegram TODO: check when socket ready !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-							Dlist['rx_cnt'] +=1
-						elif (s_element[1] == d_element[4] and d_element[0] == 49):	#modeA/C test-telegram matched
-							Dlist['test_rx_succ_cnt_ac'] += 1
-							Dlist['test_avg_lvl_ac'] += d_element[2]
-							acCnt += 1 
-						elif (s_element[1] == d_element[4] and d_element[0] == 50):	#modeS short test-telegram matched
-							Dlist['test_rx_succ_cnt_s'] += 1
-							Dlist['test_avg_lvl_s'] += d_element[2]
-							sCnt += 1 
-						elif (s_element[1] == d_element[4] and d_element[0] == 51):	#modeS long test-telegram matched
-							Dlist['test_rx_succ_cnt_l'] += 1
-							Dlist['test_avg_lvl_l'] += d_element[2]
-							lCnt += 1 
+						#getting level information out of current element
+						if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+							AClist['-46'] += 1
+							lvl_sum += d_element[2]
+						elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+							AClist['-90'] += 1
+							lvl_sum += d_element[2]
+						elif (d_element[2] != None):	#checking in case level is not available
+							AClist[str(round(d_element[2],0))[0:3]] += 1	
+							lvl_sum += d_element[2]
+
+						if (d_element[0] == 49):	#modeA/C detected
+							ch_occ_cnt += 0.0000203
+							ac_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								AClist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								AClist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								AClist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+
+						elif (d_element[0] == 50):	#modeS short detected
+							ch_occ_cnt += 0.000064
+							ss_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								Slist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								Slist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								Slist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+
+						elif (d_element[0] == 51):	#modeS long detected
+							ch_occ_cnt += 0.000120
+							sl_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								Llist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								Llist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								Llist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+
 						else:
-							print("Exception while matching socket data occured.")'''
-							
-		#checking for amount of telegrams that should be received
-		s_test_cnt = 0; l_test_cnt = 0; ac_test_cnt =0
-		'''if (len(self.socket_buffer) > 0):
-			for test_element in self.socket_buffer:
-				if (test_element[0] == "s"):
-					s_test_cnt += 1
-				elif (test_element[0] == "l"):
-					l_test_cnt += 1
-				elif (test_element[0] == "ac"):
-					ac_test_cnt += 1
-				else:
-					print("Unknown telegram-type received by socket")'''
-	
-		if (s_test_cnt > 0):
-			Dlist['test_succ_lvl_s'] = (sCnt/s_test_cnt) * 100
-		if (ac_test_cnt > 0):
-			Dlist['test_succ_lvl_ac'] = (acCnt/ac_test_cnt) * 100
-		if (l_test_cnt > 0):
-			Dlist['test_succ_lvl_l'] = (lCnt/l_test_cnt) * 100	
-			
-		if (lCnt > 0):
-			Dlist['test_avg_lvl_l'] /= lCnt
-		if (sCnt > 0):
-			Dlist['test_avg_lvl_s'] /= sCnt
-		if (acCnt > 0):
-			Dlist['test_avg_lvl_ac'] /= acCnt
+							print("Unknown telegram-type was detected.")
+						
+						#updating list of current planes
+						if (d_element[3] != None):
+							foundflag = 0
+							for address in ICAO_list:
+								if (d_element[3] == address):
+									foundflag = 1
+									break
+							if (foundflag == 0):
+								ICAO_list.append(d_element[3])
+
+
+
+					#emptying self.dump1090_buffer
+					self.dump1090_buffer = []
+
+				t_now = time.time()
+		
+		#calculating values per seconds and write into self.out_buffer
+		t_end = time.time()
+		t_measurement = round((t_end - t_start), 6)
+
+		Dlist['rx_cnt'] = (counter / t_measurement)
 		if (counter > 0):
 			Dlist['rx_avg_lvl'] = (lvl_sum / counter)
-		
-		if (len(self.dump1090_buffer) > 0):
-			time_difference = self.dump1090_buffer[len(self.dump1090_buffer)-1][1] - self.dump1090_buffer[0][1]
-		else:
-			time_difference = 0
-		if (time_difference > 0):	#more than one telegram received
-			Dlist['curr_ch_occ'] = (chOccCnt / time_difference)		#calculating channel occupation TODO: test!!!!!!!!!!!!!!!!!!!!!!!
-		if (len(self.dump1090_buffer) == 1):
-			if (self.dump1090_buffer[0][0] == 49):	#modeA/C detected
-				Dlist['curr_ch_occ'] = (0.0000203 / 1)			
-			elif (self.dump1090_buffer[0][0] == 50):	#modeS short detected
-				Dlist['curr_ch_occ'] = (0.000064 / 1)					
-			elif (self.dump1090_buffer[0][0] == 51):	#modeS long detected
-				Dlist['curr_ch_occ'] = (0.000120 / 1)						
-			else:
-				print("Unknown telegram-type detected")
-				
-			Dlist['curr_planes'] = len(ICAO_list)
-		
-		if (Dlist['rx_cnt'] == 0):
-			Dlist['rx_cnt'] = len(self.dump1090_buffer)
+		Dlist['curr_ch_occ'] = (ch_occ_cnt / t_measurement)
+		Dlist['curr_planes'] = len(ICAO_list)
+		AClist['total'] = ac_el_cnt
+		Slist['total'] = ss_el_cnt
+		Llist['total'] = sl_el_cnt
 
+		#write into self.out_buffer, only works in this order
 		self.out_buffer.append(Dlist)
 		self.out_buffer.append(Slist)
 		self.out_buffer.append(Llist)
 		self.out_buffer.append(AClist)
-		
-		t1 = time.time()
-		totaltime = t1 - t0
-		#time.sleep(0.99 - totaltime)
-		
+
+		if (socket_sync_flag == 1):
+			t_start = time.time()
+			t_now = time.time()
+
+			#reseting dictionaries etc.
+			current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+			Dlist = {'time': str(current_datetime), 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
+				'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
+			Slist = {'time': str(current_datetime), 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+			Llist = {'time': str(current_datetime), 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+			AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
+				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
+			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0
+			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0;
+
+			while (t_now < t_start + self.pro_val):
+				while (dump1090_pipe.poll()):
+					data = dump1090_pipe.recv()
+					self.dump1090_buffer.append(data)
+
+				#now adding data with respect to socket data
+				if (len(self.dump1090_buffer) > 0):
+					for d_element in self.dump1090_buffer:
+						counter +=1
+
+						#getting level information out of current element
+						if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+							AClist['-46'] += 1
+							lvl_sum += d_element[2]
+						elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+							AClist['-90'] += 1
+							lvl_sum += d_element[2]
+						elif (d_element[2] != None):	#checking in case level is not available
+							AClist[str(round(d_element[2],0))[0:3]] += 1	
+							lvl_sum += d_element[2]
+
+						if (d_element[0] == 49):	#modeA/C detected
+							ch_occ_cnt += 0.0000203
+							ac_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								AClist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								AClist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								AClist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+
+						elif (d_element[0] == 50):	#modeS short detected
+							ch_occ_cnt += 0.000064
+							ss_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								Slist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								Slist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								Slist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+
+						elif (d_element[0] == 51):	#modeS long detected
+							ch_occ_cnt += 0.000120
+							sl_el_cnt += 1
+							#getting level information out of current element
+							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+								Llist['-46'] += 1
+								lvl_sum += d_element[2]
+							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								Llist['-90'] += 1
+								lvl_sum += d_element[2]
+							elif (d_element[2] != None):	#checking in case level is not available
+								Llist[str(round(d_element[2],0))[0:3]] += 1	
+								lvl_sum += d_element[2]
+						else:
+							print("Unknown telegram-type was detected.")
+						
+						#updating list of current planes
+						if (d_element[3] != None):
+							foundflag = 0
+							for address in ICAO_list:
+								if (d_element[3] == address):
+									foundflag = 1
+									break
+							if (foundflag == 0):
+								ICAO_list.append(d_element[3])
+
+						if (len(self.socket_buffer) == 0):
+							print("An error occured while trying to read an empty socket buffer.")
+						else:
+							if (len(self.socket_buffer) > 1):
+								print("There are too many arguments in socket buffer. Only the first one will be analyzed")
+
+							for k in self.socket_buffer[0]['telegrams']:
+								str_index = d_element[4].find(self.socket_buffer[0]['telegrams'][k]['payload'])
+								if (str_index != -1):	#if find() returns -1 it means the string could not be found
+									if (k['type'] == "mode_ac" and d_element[0] == 49):
+										ac_succ_cnt += 1
+										ac_lvl_sum += d_elememt[2]
+									if (k['type'] == "mode_s_short" and d_element[0] == 50):
+										ss_succ_cnt += 1
+										ss_lvl_sum += d_elememt[2]
+									if (k['type'] == "mode_s_long" and d_element[0] == 51):
+										sl_succ_cnt += 1
+										sl_lvl_sum += d_elememt[2]
+
+				#emptying self.dump1090_buffer
+				self.dump1090_buffer = []
+				t_now = time.time()
+
+
+			#calculating values for seconds and write into self.out_buffer
+			t_end = time.time()
+			t_measurement = round((t_end - t_start), 6)
+
+			Dlist['rx_cnt'] = ((counter - ss_succ_cnt - sl_succ_cnt - ac_succ_cnt) / t_measurement)
+			if (counter > 0):
+				Dlist['rx_avg_lvl'] = (lvl_sum / counter)
+			Dlist['curr_ch_occ'] = (ch_occ_cnt / t_measurement)
+			Dlist['curr_planes'] = len(ICAO_list)
+			Dlist['test_tx_cnt'] = self.socket_buffer[0]['amount']
+			Dlist['test_rx_succ_cnt_s'] = ss_succ_cnt
+			Dlist['test_rx_succ_cnt_l'] = sl_succ_cnt
+			Dlist['test_rx_succ_cnt_ac'] = ac_succ_cnt
+
+			##################################################################################################################################TODO###################
+			Dlist['test_succ_lvl_s'] = ((ss_succ_cnt / self.socket_buffer[0]['amount']) * 100)
+			Dlist['test_succ_lvl_l'] = ((sl_succ_cnt / self.socket_buffer[0]['amount']) * 100)
+			Dlist['test_succ_lvl_ac'] = ((ac_succ_cnt / self.socket_buffer[0]['amount']) * 100)
+			##################################################################################################################################TODO###################
+
+			if (ss_succ_cnt > 0):
+				Dlist['test_avg_lvl_s'] = (ss_lvl_sum / ss_succ_cnt)
+			if (sl_succ_cnt > 0):
+				Dlist['test_avg_lvl_l'] = (sl_lvl_sum / sl_succ_cnt) 
+			if (ac_succ_cnt > 0):
+				Dlist['test_avg_lvl_ac'] = (ac_lvl_sum / ac_succ_cnt) 
+			
+			AClist['total'] = ac_el_cnt
+			Slist['total'] = ss_el_cnt
+			Llist['total'] = sl_el_cnt
+			
+
+			#write into self.out_buffer, only works in this order
+			self.out_buffer.append(Dlist)
+			self.out_buffer.append(Slist)
+			self.out_buffer.append(Llist)
+			self.out_buffer.append(AClist)
+
+
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
-		#Um z.B. im Falle eines schwerwiegenden Errors das KOMPLETTE Programm zu beenden kann der Befehl "exit.set()" benutzt werden
+		#in case of a fatale error the whole program will be terminated using exit.set()
 		while (not exit.is_set()):
 			while (socket_pipe.poll()):
 				data = socket_pipe.recv()
@@ -168,10 +318,8 @@ class TelegramProcessing:
 				self.dump1090_buffer.append(data)
 				
 			self.processing()	
-			time.sleep(1)
 			
 			for data in self.out_buffer:
-				#print('Telegram Processing: ' + str(data))
 				out_pipe.send(data)
 				
 			self.dump1090_buffer = []
