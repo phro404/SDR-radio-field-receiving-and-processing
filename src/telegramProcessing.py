@@ -14,7 +14,7 @@ class TelegramProcessing:
 		config.read('import_init_data.conf')
 		if ('PROCESSING_INTERVAL' in config):
 			print("Processing interval section was found.")
-			self.pro_val = config['PROCESSING_INTERVALL']['LINE_DURATION']
+			self.pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
 		else:
 			print("Processing interval section is not available! Default value is set.")
 			self.pro_val = 15
