@@ -39,7 +39,7 @@ class TelegramProcessing:
 		ICAO_list = []; counter = 0; lvl_sum = 0; ch_occ_cnt = 0; socket_sync_flag = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0
 		t_now = time.time(); 
 
-		while (t_now < t_start + self.pro_val):
+		while (t_now < t_start + float(self.pro_val)):
 			while (dump1090_pipe.poll()):
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
