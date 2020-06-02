@@ -56,17 +56,6 @@ class TelegramProcessing:
 					for d_element in self.dump1090_buffer:
 						counter +=1;
 
-						#getting level information out of current element
-						if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
-							AClist['-46'] += 1
-							lvl_sum += d_element[2]
-						elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
-							AClist['-90'] += 1
-							lvl_sum += d_element[2]
-						elif (d_element[2] != None):	#checking in case level is not available
-							AClist[str(round(d_element[2],0))[0:3]] += 1	
-							lvl_sum += d_element[2]
-
 						if (d_element[0] == 49):	#modeA/C detected
 							ch_occ_cnt += 0.0000203
 							ac_el_cnt += 1
@@ -177,17 +166,6 @@ class TelegramProcessing:
 				if (len(self.dump1090_buffer) > 0):
 					for d_element in self.dump1090_buffer:
 						counter +=1
-
-						#getting level information out of current element
-						if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
-							AClist['-46'] += 1
-							lvl_sum += d_element[2]
-						elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
-							AClist['-90'] += 1
-							lvl_sum += d_element[2]
-						elif (d_element[2] != None):	#checking in case level is not available
-							AClist[str(round(d_element[2],0))[0:3]] += 1	
-							lvl_sum += d_element[2]
 
 						if (d_element[0] == 49):	#modeA/C detected
 							ch_occ_cnt += 0.0000203
