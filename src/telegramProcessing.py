@@ -19,7 +19,7 @@ class TelegramProcessing:
 			print("Processing interval section is not available! Default value is set.")
 			self.pro_val = 15
 
-	def processing(self):
+	def processing(self, socket_pipe, dump1090_pipe):
 		t_start = time.time()
 
 		#defining dictionaries
@@ -168,7 +168,7 @@ class TelegramProcessing:
 			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0
 			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0;
 
-			while (t_now < t_start + self.pro_val):
+			while (t_now < t_start + float(self.pro_val)):
 				while (dump1090_pipe.poll()):
 					data = dump1090_pipe.recv()
 					self.dump1090_buffer.append(data)
@@ -317,7 +317,7 @@ class TelegramProcessing:
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
 				
-			self.processing()	
+			self.processing(socket_pipe, dump1090_pipe)	
 			
 			for data in self.out_buffer:
 				out_pipe.send(data)
