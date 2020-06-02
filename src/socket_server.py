@@ -49,14 +49,14 @@ while True:
 	#sending test data
 	try:
 		while True: 
-			time.sleep(3)
+			time.sleep(32)
 			randomint = random.randint(1,30) 	#random value between 1 and 30 for the rate
 			
 			#dictionary for the testtelegrams
 			testtelegrams = {
 				'level': -50,
 				'rate': randomint,
-				'amount': 30,
+				'amount': 15,
 				'samplerate': 20000000,
 				'telegrams': [telegram_mode_ac,telegram_mode_s_short,telegram_mode_s_long]	}
 				
