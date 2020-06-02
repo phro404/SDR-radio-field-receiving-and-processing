@@ -250,7 +250,7 @@ class TelegramProcessing:
 								print("There are too many arguments in socket buffer. Only the first one will be analyzed")
 
 							for k in self.socket_buffer[0]['telegrams']:
-								str_index = d_element[4].find(self.socket_buffer[0]['telegrams'][k]['payload'])
+								str_index = d_element[4].find(k['payload'])
 								if (str_index != -1):	#if find() returns -1 it means the string could not be found
 									if (k['type'] == "mode_ac" and d_element[0] == 49):
 										ac_succ_cnt += 1
