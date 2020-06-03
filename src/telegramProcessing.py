@@ -23,7 +23,6 @@ class TelegramProcessing:
 		t_start = time.time()
 
 		#defining dictionaries
-
 		current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		Dlist = {'time': str(current_datetime), 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 			'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
