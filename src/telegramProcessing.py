@@ -135,6 +135,10 @@ class TelegramProcessing:
 		self.out_buffer.append(Slist)
 		self.out_buffer.append(Llist)
 		self.out_buffer.append(AClist)
+		
+		for values in self.out_buffer:
+			out_pipe.send
+		self.out_buffer = []
 
 		if (socket_sync_flag == 1):
 			t_start = time.time()
