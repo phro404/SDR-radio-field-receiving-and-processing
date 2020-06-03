@@ -228,7 +228,7 @@ class TelegramProcessing:
 								print("There are too many arguments in socket buffer. Only the first one will be analyzed")
 
 							for k in self.socket_buffer[0]['telegrams']:
-								if (k['payload'] != None and k['payload'] != null):
+								if (k['payload'] != None and k['payload'] != "null"):
 									str_index = d_element[4].find(k['payload'])
 									if (str_index != -1):	#if find() returns -1 it means the string could not be found
 										if (k['type'] == "mode_ac" and d_element[0] == 49):
