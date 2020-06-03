@@ -303,5 +303,5 @@ class TelegramProcessing:
 				out_pipe.send(data)
 				
 			self.dump1090_buffer = []
-			self.socket__buffer = []
+			self.socket_buffer = []
 			self.out_buffer = []
