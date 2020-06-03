@@ -228,17 +228,18 @@ class TelegramProcessing:
 								print("There are too many arguments in socket buffer. Only the first one will be analyzed")
 
 							for k in self.socket_buffer[0]['telegrams']:
-								str_index = d_element[4].find(k['payload'])
-								if (str_index != -1):	#if find() returns -1 it means the string could not be found
-									if (k['type'] == "mode_ac" and d_element[0] == 49):
-										ac_succ_cnt += 1
-										ac_lvl_sum += d_elememt[2]
-									if (k['type'] == "mode_s_short" and d_element[0] == 50):
-										ss_succ_cnt += 1
-										ss_lvl_sum += d_elememt[2]
-									if (k['type'] == "mode_s_long" and d_element[0] == 51):
-										sl_succ_cnt += 1
-										sl_lvl_sum += d_elememt[2]
+								if (k['payload'] != None and k['payload'] != null):
+									str_index = d_element[4].find(k['payload'])
+									if (str_index != -1):	#if find() returns -1 it means the string could not be found
+										if (k['type'] == "mode_ac" and d_element[0] == 49):
+											ac_succ_cnt += 1
+											ac_lvl_sum += d_elememt[2]
+										if (k['type'] == "mode_s_short" and d_element[0] == 50):
+											ss_succ_cnt += 1
+											ss_lvl_sum += d_elememt[2]
+										if (k['type'] == "mode_s_long" and d_element[0] == 51):
+											sl_succ_cnt += 1
+											sl_lvl_sum += d_elememt[2]
 
 				#emptying self.dump1090_buffer
 				self.dump1090_buffer = []
@@ -259,11 +260,9 @@ class TelegramProcessing:
 			Dlist['test_rx_succ_cnt_l'] = sl_succ_cnt
 			Dlist['test_rx_succ_cnt_ac'] = ac_succ_cnt
 
-			##################################################################################################################################TODO###################
-			Dlist['test_succ_lvl_s'] = ((ss_succ_cnt / self.socket_buffer[0]['amount']) * 100)
-			Dlist['test_succ_lvl_l'] = ((sl_succ_cnt / self.socket_buffer[0]['amount']) * 100)
-			Dlist['test_succ_lvl_ac'] = ((ac_succ_cnt / self.socket_buffer[0]['amount']) * 100)
-			##################################################################################################################################TODO###################
+			Dlist['test_succ_lvl_s'] = ((ss_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
+			Dlist['test_succ_lvl_l'] = ((sl_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
+			Dlist['test_succ_lvl_ac'] = ((ac_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
 
 			if (ss_succ_cnt > 0):
 				Dlist['test_avg_lvl_s'] = (ss_lvl_sum / ss_succ_cnt)
