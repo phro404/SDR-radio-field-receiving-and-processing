@@ -107,4 +107,3 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 			os.killpg(os.getpgid(self.dump1090process.pid), signal.SIGTERM)	#self.dump1090process.terminate() and kill() not working ¯\_(ツ)_/¯
 			s.close()
 			return
-			    
