@@ -1,0 +1,4 @@
+time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac
+2020-06-03 03:56:50;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+2020-06-03 03:56:51;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+2020-06-03 03:56:52;35;-74.62387600000001;0.004143223950167049;0;0;0;0;0;0;0;0;0.0;0.0;0.0
