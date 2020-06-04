@@ -6,93 +6,93 @@ from time import sleep
 class FileWriter(object):							
 
 	def __init__(self): 
-		self.lvl = ""							#defines string for lvl_reply_date prints
-		self.amp = ""							#defines string for amp_hist_date prints
-		self.d = ""							#defines string for first usage of self.print
-		self.name_lvl = ""
-		self.name_amp = ""
+		self.lvl = ""											#defines string for lvl_reply_date prints
+		self.amp = ""											#defines string for amp_hist_date prints
+		self.d = ""											#defines string for first usage of self.print
+		self.name_lvl = ""										#defines string for name of lvl
+		self.name_amp = ""										#defines string for name of amp
 		self.orderedList = []
 		
-		self.i = 0
+		self.i = 0											#variable for liveprinting 
 		
-		self.lvlFirstLine = "time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac\n"
-
-		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"
+		self.lvlFirstLine = "time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac\n"		#sets the first line for every lvl-file
+		
+		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 		#self.numFiles = 0
 		
 	def write(self):	
 		now = datetime.now()
 
-		if (self.d !=  now.strftime("%Y.%m.%d_%H")):				#check for new hour
-			self.d = now.strftime("%Y.%m.%d_%H")				#set d as timedefinition #EDIT 05.26.2020 auf nachfrage von roman reihenfolge angepasst
-			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"				#set name lvl_reply_date
-			f = open(self.name_lvl ,"w+")						#open data with name, if not existing create
-			f.write(self.lvlFirstLine)						#print string in data
+		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
+			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
+			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
+			f = open(self.name_lvl ,"w+")								#open data with name, if not existing create
+			f.write(self.lvlFirstLine)								#print first line in file
 			f.close()
 			
-			self.name_amp = "../data/amp_hist_" + self.d + ".csv"				#set name lvl_reply_date
-			f = open(self.name_amp ,"w+")						#open data with name, if not existing create
-			f.write(self.ampFirstLine)						#print string in data
-			f.close()					#EDIT05.26.2020  for starting a live plot when first line is printed
+			self.name_amp = "../data/amp_hist_" + self.d + ".csv"					#set name amp_hist_date
+			f = open(self.name_amp ,"w+")								#open data with name, if not existing create
+			f.write(self.ampFirstLine)								#print first line in file
+			f.close()
 			
 			self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
-				
-
+		
+		
 		if (len(self.lvl) != 0):
-			#name_lvl = "../data/lvl_reply_" + self.d + ".csv"			#set name lvl_reply_date
-			f = open(self.name_lvl ,"a")						#open data with name, if not existing create
-			f.write(self.lvl)							#print string in data
+			#name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
+			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
+			f.write(self.lvl)									#print string in data
 			f.close()
 			
 		if (len(self.lvl) != 0):
-			#name_amp = "../data/amp_hist_" + self.d + ".csv"  			#set name amp_hist_date
-			f = open(self.name_amp ,"a")						#open data with name, if not existing creat
-			f.write(self.amp)							#print string in data
+			#name_amp = "../data/amp_hist_" + self.d + ".csv"  					#set name amp_hist_date
+			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
+			f.write(self.amp)									#print string in data
 			f.close()
-		self.i = self.i + 1	
-		if (self.i % 10 == 0):
+		self.i = self.i + 1										#count up, for liveplots
+		if (self.i % 10 == 0):										#every ten times counted start liveplot
 			visualization.visualization(self.orderedList, True)
 			self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
 	
 	
 	def sort(self, raw_pipe_out):
-		local_buffer = []
-		Slist = {}
-		Llist = {}
-		AClist = {}
-		Dlist = {}
+		local_buffer = []										#declines the local buffer as an empty array
+		Slist = {}											#declines Slist as an empty list
+		Llist = {}											#declines Llist as an empty list
+		AClist = {}											#declines AClist as an empty list
+		Dlist = {}											#declines Dlist as an empty list
 		
-		while(not raw_pipe_out.poll()):
-			sleep(0.05)
+		while(not raw_pipe_out.poll()):									#pollingprocess
+			sleep(0.05)										#waittime for polling
 		
-		while(raw_pipe_out.poll()):						#polling
-			data = raw_pipe_out.recv()				#receive piped data
+		while(raw_pipe_out.poll()):									#polling
+			data = raw_pipe_out.recv()								#receive piped data
 			#print("fileWriter polling: " + str(data))
-			local_buffer.append(data)				#get piped date in local buffer
-			sleep(0.05)
-
+			local_buffer.append(data)								#get piped date in local buffer
+			sleep(0.05)										#waittime for polling
+		
 		for dataPackage in local_buffer:
 			for key, value in dataPackage.items():
 				if (not isinstance(value, str)):
 					dataPackage[key] = str(value)
 			#print('fileWriter' + str(dataPackage))
-			if not isinstance(dataPackage, dict):
-				print("Pipe-Packet ist kein Wörterbuch sondern: " + str(type(dataPackage)))
+			if not isinstance(dataPackage, dict):							#for when piped data wrong / not a dict
+				print("Pipe-Packet ist kein WÃ¶rterbuch sondern: " + str(type(dataPackage)))
 				break
 			if ('rx_cnt' in dataPackage.keys()):
-				Dlist = {**Dlist, **dataPackage}
+				Dlist = {**Dlist, **dataPackage}						#set Dlist
 			elif (dataPackage['type'] == 'S Short Reply'):
-				Slist = {**Slist, **dataPackage}
+				Slist = {**Slist, **dataPackage}						#set Slist
 			elif (dataPackage['type'] == 'S Long Reply'):
-				Llist = {**Llist, **dataPackage}
+				Llist = {**Llist, **dataPackage}						#set Llist
 			elif (dataPackage['type'] == 'A/C Reply'):
-				AClist = {**AClist, **dataPackage}
-
+				AClist = {**AClist, **dataPackage}						#set AClist
 		
-		if not (len(Dlist) < 15):
+		
+		if not (len(Dlist) < 15):									#set lvl with Dlist-data
 			self.lvl = Dlist["time"] + ";" + Dlist["rx_cnt"] + ";" + Dlist["rx_avg_lvl"] + ";" + Dlist["curr_ch_occ"] + ";" + Dlist["curr_planes"] + ";" + Dlist["test_tx_cnt"] + ";" + Dlist["test_rx_succ_cnt_s"] + ";" + Dlist["test_rx_succ_cnt_l"] + ";" + Dlist["test_rx_succ_cnt_ac"] + ";" + Dlist["test_succ_lvl_s"] + ";" + Dlist["test_succ_lvl_l"] + ";" +Dlist["test_succ_lvl_ac"] + ";" +Dlist["test_avg_lvl_s"] + ";" + Dlist["test_avg_lvl_l"] + ";" + Dlist["test_avg_lvl_ac"] + "\n"
 		
-		if not (len(Slist) < 48):
+		if not (len(Slist) < 48):									#set amp = Slist-data, then add Llist-data and AClist-data
 			#print({k:v for k, v in Slist.items() if v != '0'})
 			self.amp = Slist["time"] + "," + Slist["type"] + "," + Slist["total"] + "," + Slist["-90"] + "," + Slist["-89"] + "," + Slist["-88"] + "," + Slist["-87"] + "," + Slist["-86"] + "," + Slist["-85"] + "," + Slist["-84"] + "," + Slist["-83"] + "," + Slist["-82"] + "," + Slist["-81"] + "," + Slist["-80"] + "," + Slist["-79"] + "," + Slist["-78"] + "," + Slist["-77"] + "," + Slist["-76"] + "," + Slist["-75"] + "," + Slist["-74"] + "," + Slist["-73"] + "," + Slist["-72"] + "," + Slist["-71"] + "," + Slist["-70"] + "," + Slist["-69"] + "," + Slist["-68"] + "," + Slist["-67"] + "," + Slist["-66"] + "," + Slist["-65"] + "," + Slist["-64"] + "," + Slist["-63"] + "," + Slist["-62"] + "," + Slist["-61"] + "," + Slist["-60"] + "," + Slist["-59"] + "," + Slist["-58"] + "," + Slist["-57"] + "," + Slist["-56"] + "," + Slist["-55"] + "," + Slist["-54"] + "," + Slist["-53"] + "," + Slist["-52"] + "," + Slist["-51"] + "," + Slist["-50"] + "," + Slist["-49"] + "," + Slist["-48"] + "," + Slist["-47"] + "," + Slist["-46"] + "\n"
 		if not (len(Llist) < 48):
@@ -108,6 +108,3 @@ class FileWriter(object):
 			self.sort(in_pipe)
 			print(2)
 			self.write()
-		
-		
-		
