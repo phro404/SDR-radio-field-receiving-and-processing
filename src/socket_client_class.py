@@ -3,10 +3,6 @@ import json
 import configparser
 from time import sleep
 
-##################
-#work in progress#
-##################
-
 class Client_socket:
 	retries = 10	#Maximum Connecting Retries
 	
