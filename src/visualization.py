@@ -176,13 +176,13 @@ def visualization(orderedList, livePlot):
 		
 	# Get the average number of replies for every type
 	for column in range(45):
-		list_level_AC[column] = int(list_level_AC[column]/time_space)
+		list_level_AC[column] = float(list_level_AC[column]/time_space)
 
 	for column in range(45):
-		list_level_S_long[column] = int(list_level_S_long[column]/time_space)
+		list_level_S_long[column] = float(list_level_S_long[column]/time_space)
 
 	for column in range(45):
-		list_level_S_short[column] = int(list_level_S_short[column]/time_space)
+		list_level_S_short[column] = float(list_level_S_short[column]/time_space)
 	#================================ Collecting the data from the CSV files ===================================
 
 
