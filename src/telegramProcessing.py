@@ -137,7 +137,7 @@ class TelegramProcessing:
 		self.out_buffer.append(AClist)
 		
 		for values in self.out_buffer:
-			out_pipe.send
+			out_pipe.send(data)
 		self.out_buffer = []
 
 		if (socket_sync_flag == 1):
