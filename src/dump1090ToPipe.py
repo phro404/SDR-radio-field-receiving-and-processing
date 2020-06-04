@@ -30,8 +30,8 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 	def checkDump1090Running(self, exception_queue, exit):		
 		stdout = subprocess.check_output(['pgrep', 'dump1090'])
 		if len(stdout) == 0:
-			exception_queue.put("dump1090toPipe: dump1090 läuft nicht. Bitte manuell testen ob das Programm läuft.")
-			print("Checked Dump1090 Process. Not running anymore ¯\_(ツ)_/¯")
+			exception_queue.put("dump1090toPipe: dump1090 lÃ¤uft nicht. Bitte manuell testen ob das Programm lÃ¤uft.")
+			print("Checked Dump1090 Process. Not running anymore Â¯\_(ãƒ„)_/Â¯")
 			exit.set()
 			return False
 		else:
@@ -104,7 +104,7 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 					print("Fehler: " + str(e))
 					exception_queue.put(["Probleme beim Empfangen der TCP Beast Messages: ", e])
 					exit.set()
-			os.killpg(os.getpgid(self.dump1090process.pid), signal.SIGTERM)	#self.dump1090process.terminate() and kill() not working ¯\_(ツ)_/¯
+			os.killpg(os.getpgid(self.dump1090process.pid), signal.SIGTERM)	#self.dump1090process.terminate() and kill() not working Â¯\_(ãƒ„)_/Â¯
 			s.close()
 			return
 			    
