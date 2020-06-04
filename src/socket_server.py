@@ -17,9 +17,7 @@ while True:
 	c, addr = s.accept()	  
 	print ('Got connection from', addr) 
 
-
 	#create test data with json
-
 	#dictionary for Mode AC
 	telegram_mode_ac = {
 		'type': 'mode_ac',
