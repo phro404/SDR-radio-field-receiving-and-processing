@@ -19,7 +19,7 @@ class TelegramProcessing:
 			print("Processing interval section is not available! Default value is set.")
 			self.pro_val = 15
 
-	def processing(self, socket_pipe, dump1090_pipe):
+	def processing(self, socket_pipe, dump1090_pipe, out_pipe):
 		t_start = time.time()
 
 		#defining dictionaries
@@ -297,7 +297,7 @@ class TelegramProcessing:
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
 				
-			self.processing(socket_pipe, dump1090_pipe)	
+			self.processing(socket_pipe, dump1090_pipe, out_pipe)	
 			
 			for data in self.out_buffer:
 				out_pipe.send(data)
