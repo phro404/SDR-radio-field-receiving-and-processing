@@ -137,7 +137,7 @@ class TelegramProcessing:
 		self.out_buffer.append(AClist)
 		
 		for values in self.out_buffer:
-			out_pipe.send(data)
+			out_pipe.send(values)
 		self.out_buffer = []
 
 		if (socket_sync_flag == 1):
@@ -236,13 +236,13 @@ class TelegramProcessing:
 									if (str_index != -1):	#if find() returns -1 it means the string could not be found
 										if (k['type'] == "mode_ac" and d_element[0] == 49):
 											ac_succ_cnt += 1
-											ac_lvl_sum += d_elememt[2]
+											ac_lvl_sum += d_element[2]
 										if (k['type'] == "mode_s_short" and d_element[0] == 50):
 											ss_succ_cnt += 1
-											ss_lvl_sum += d_elememt[2]
+											ss_lvl_sum += d_element[2]
 										if (k['type'] == "mode_s_long" and d_element[0] == 51):
 											sl_succ_cnt += 1
-											sl_lvl_sum += d_elememt[2]
+											sl_lvl_sum += d_element[2]
 
 				#emptying self.dump1090_buffer
 				self.dump1090_buffer = []
