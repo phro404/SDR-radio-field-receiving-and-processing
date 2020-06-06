@@ -102,8 +102,8 @@ class FileWriter(object):
 	def run(self, in_pipe, exit):
 		print("FileWriter: Entered RUN()")
 		while (not exit.is_set()):
-			print(1)
+			#print(1)
 			self.sort(in_pipe)
-			print(2)
+			#print(2)
 			self.write()
 			
