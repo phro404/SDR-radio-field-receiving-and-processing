@@ -11,36 +11,30 @@ class FileWriter(object):
 		self.d = ""											#defines string for first usage of self.print
 		self.name_lvl = ""										#defines string for name of lvl
 		self.name_amp = ""										#defines string for name of amp
-		self.orderedList = []
-		
-		self.i = 0											#variable for liveprinting 
+		self.orderedList = []										#variable for liveprinting 
 		
 		self.lvlFirstLine = "time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac\n"		#sets the first line for every lvl-file
 		
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
-		#self.numFiles = 0
-		self.timeLastPlot = time()
-		self.timeInTwo = time()
 		
 	def write(self):	
 		now = datetime.now()
-		self.timeInTwo = time()
 		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
 			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
-			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
-			self.name_amp = "../data/amp_hist_" + self.d + ".csv"					#set name amp_hist_date
+			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"				#set name lvl_reply_date
+			self.name_amp = "../data/amp_hist_" + self.d + ".csv"				#set name amp_hist_date
 			
 			f = open(self.name_lvl ,"a")								#generating for empty-test lvl, attend to save possible content
 			f.close()
 			f = open(self.name_amp ,"a")								#generating for empty-test amp, attend to save possible content
 			f.close()
 			
-			if os.stat(self.name_lvl).st_size == 0:							#if lvl is empty write firstline
+			if os.stat(self.name_lvl).st_size == 0:						#if lvl is empty write firstline
 				f = open(self.name_lvl ,"w+")							#open data with name, if not existing create
 				f.write(self.lvlFirstLine)							#print first line in file
 				f.close()
 			
-			if os.stat(self.name_amp).st_size == 0:							#if amp is empty write firstline
+			if os.stat(self.name_amp).st_size == 0:						#if amp is empty write firstline
 				f = open(self.name_amp ,"w+")							#open data with name, if not existing create
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
@@ -49,22 +43,17 @@ class FileWriter(object):
 		
 		
 		if (len(self.lvl) != 0):
-			#name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
 			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
 			f.write(self.lvl)									#print string in data
 			f.close()
 			
 		if (len(self.lvl) != 0):
-			#name_amp = "../data/amp_hist_" + self.d + ".csv"  					#set name amp_hist_date
 			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
 			f.write(self.amp)									#print string in data
 			f.close()
-		self.i = self.i + 1										#count up, for liveplots
-		print("Time in 2: " + str(self.timeInTwo - time()))
+			
 		visualization.visualization(self.orderedList, True)
 		self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
-		print(time()-self.timeLastPlot)
-		self.timeLastPlot = time()
 	
 	def sort(self, raw_pipe_out):
 		local_buffer = []										#declines the local buffer as an empty array
@@ -73,23 +62,19 @@ class FileWriter(object):
 		AClist = {}											#declines AClist as an empty list
 		Dlist = {}											#declines Dlist as an empty list
 		
-		while(not raw_pipe_out.poll()):									#pollingprocess
-			#print("No data for fileWriter")
+		while(not raw_pipe_out.poll()):								#pollingprocess
 			sleep(0.2)										#waittime for polling
 		
 		while(raw_pipe_out.poll()):									#polling
 			data = raw_pipe_out.recv()								#receive piped data
-			#print("fileWriter polling: " + str(data))
 			local_buffer.append(data)								#get piped date in local buffer
 			if (not raw_pipe_out.poll()):
-				sleep(0.4)
-			#sleep(0.1)										#waittime for polling
-		
+				sleep(1)									#waittime for polling
+				
 		for dataPackage in local_buffer:
 			for key, value in dataPackage.items():
 				if (not isinstance(value, str)):
 					dataPackage[key] = str(value)
-			#print('fileWriter' + str(dataPackage))
 			if not isinstance(dataPackage, dict):							#for when piped data wrong / not a dict
 				print("Pipe-Packet ist kein Wörterbuch sondern: " + str(type(dataPackage)))
 				break
