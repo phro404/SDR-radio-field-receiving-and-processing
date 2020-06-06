@@ -42,7 +42,8 @@ class Userinterface:
 	def visualizeFiles(self):   #method for second button, opens the file-explorer
 		unorderedList = filedialog.askopenfilenames()
 		file_path = self.orderPathList(unorderedList)
-		visualization(file_path, False)
+		if (file_path != 0):
+			visualization(file_path, False)
 			
 	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
 		self.first_button.config(state=tk.DISABLED, bg = "black")
