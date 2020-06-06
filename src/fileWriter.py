@@ -33,7 +33,7 @@ class FileWriter(object):
 			f = open(self.name_lvl ,"a")								#generating for empty-test lvl, attend to save possible content
 			f.close()
 			f = open(self.name_amp ,"a")								#generating for empty-test amp, attend to save possible content
-			f.close
+			f.close()
 			
 			if os.stat(self.name_lvl).st_size == 0:							#if lvl is empty write firstline
 				f = open(self.name_lvl ,"w+")							#open data with name, if not existing create
