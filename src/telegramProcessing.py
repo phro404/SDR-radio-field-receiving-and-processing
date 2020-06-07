@@ -35,8 +35,8 @@ class TelegramProcessing:
 		AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		ICAO_list = []; counter = 0; lvl_sum = 0; ch_occ_cnt = 0; socket_sync_flag = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0
-		t_now = time.time(); 
+		ICAO_list = []; counter = 0; lvl_sum = 0; ch_occ_cnt = 0; socket_sync_flag = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; overflow90_cnt = 0; overflow46_cnt = 0;
+		t_now = time.time()
 
 		while (t_now < t_start + float(self.pro_val)):
 			while (dump1090_pipe.poll()):
@@ -59,12 +59,14 @@ class TelegramProcessing:
 							ch_occ_cnt += 0.0000203
 							ac_el_cnt += 1
 							#getting level information out of current element
-							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
+							if (d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								AClist['-46'] += 1
 								lvl_sum += d_element[2]
-							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								overflow46_cnt += 1
+							elif (d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								AClist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								AClist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -76,9 +78,11 @@ class TelegramProcessing:
 							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								Slist['-46'] += 1
 								lvl_sum += d_element[2]
+								overflow46_cnt += 1
 							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								Slist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								Slist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -90,9 +94,11 @@ class TelegramProcessing:
 							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								Llist['-46'] += 1
 								lvl_sum += d_element[2]
-							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
+								overflow46_cnt += 1
+							elif (d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								Llist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								Llist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -139,6 +145,12 @@ class TelegramProcessing:
 		for values in self.out_buffer:
 			out_pipe.send(values)
 		self.out_buffer = []
+		
+		if (overflow90_cnt > 0):
+			print(overflow90_cnt, "telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
+			
+		if (overflow46_cnt > 0):
+			print(overflow46_cnt, "telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
 
 		if (socket_sync_flag == 1):
 			t_start = time.time()
@@ -157,8 +169,8 @@ class TelegramProcessing:
 			AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0
-			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0;
+			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0; overflow90_cnt = 0; overflow46_cnt = 0;
+			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0
 
 			while (t_now < t_start + float(self.pro_val)):
 				while (dump1090_pipe.poll()):
@@ -177,9 +189,11 @@ class TelegramProcessing:
 							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								AClist['-46'] += 1
 								lvl_sum += d_element[2]
+								overflow46_cnt += 1
 							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								AClist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								AClist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -191,9 +205,11 @@ class TelegramProcessing:
 							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								Slist['-46'] += 1
 								lvl_sum += d_element[2]
+								overflow46_cnt += 1
 							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								Slist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								Slist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -205,9 +221,11 @@ class TelegramProcessing:
 							if(d_element[2] != None and d_element[2] > -46):	#preventing exceeding the scale
 								Llist['-46'] += 1
 								lvl_sum += d_element[2]
+								overflow46_cnt += 1
 							elif(d_element[2] != None and d_element[2] < -90):	#preventing exceeding the scale
 								Llist['-90'] += 1
 								lvl_sum += d_element[2]
+								overflow90_cnt += 1
 							elif (d_element[2] != None):	#checking in case level is not available
 								Llist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
@@ -284,6 +302,12 @@ class TelegramProcessing:
 			self.out_buffer.append(Slist)
 			self.out_buffer.append(Llist)
 			self.out_buffer.append(AClist)
+			
+			if (overflow90_cnt > 0):
+				print(overflow90_cnt, "telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
+			
+			if (overflow46_cnt > 0):
+				print(overflow46_cnt, "telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
 
 
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
