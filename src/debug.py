@@ -141,12 +141,6 @@ def plnw(number, blk=True):
     open(str(trc) + "temp.mp3", "wb").write(byt)
     plsnd(str(trc) + "temp.mp3", blk)
     
-plnw(0)
-#plnw(1)
-#plnw(2)
-#plnw(3)
-    
-    
     
     
     
