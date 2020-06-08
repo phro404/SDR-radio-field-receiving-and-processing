@@ -52,7 +52,7 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 					#print("Dump1090 Socket error, retry...")
 					if (i == Dump1090ToPipe.retries-1):
 						exception_queue.put(["Probleme beim Verbinden mit dump1090-Socket: ", e])
-						print("Probleme beim Verbinden mit dump1090-Socket")
+						print("Probleme beim Verbinden mit dump1090-Socket. Ist der SDR angeschlossen?")
 						exit.set()
 						break
 					else:
@@ -78,11 +78,11 @@ class Dump1090ToPipe: #Leitet Beast-TCP Output auf Pipe um
 						if (len(data) == 0):	#string.split also returns empty strings
 							continue
 						if (len(data) <= 10): 	#Fehlerhaftes Paket Empfangen
-							if (data != b'\n' and data != b'\n\n'):
-								print("Got broken package from dump1090 (after tcp-packet->multiple-packages): " + str(repr(data.decode('iso-8859-1'))))
+							#if (data != b'\n' and data != b'\n\n'):
+							#	print("Got broken package from dump1090 (after tcp-packet->multiple-packages): " + str(repr(data.decode('iso-8859-1'))))
 							continue
 						if (data[0] != 0x1A):
-							print("Error! First Byte of dump1090 packet not 0x1A. Packet: " + str(repr(dataFull)))
+							#print("Error! First Byte of dump1090 packet not 0x1A. Packet: " + str(repr(dataFull)))
 							continue	
 						
 						
