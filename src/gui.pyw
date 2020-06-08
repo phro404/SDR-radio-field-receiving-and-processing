@@ -11,9 +11,6 @@ from visualization import visualization
 class Userinterface:
 	
 	def __init__(self):
-		#initialize attributes
-		self.__file_path="None"
-
 		#initalize gui-window
 		self.window = tk.Tk()
 		self.window.title("radio-field-measurement")
@@ -29,7 +26,7 @@ class Userinterface:
 
 		self.second_button = tk.Button(self.window, text = "Plot from data", relief = tk.RAISED, width = 25, 
 									height = 5, bg = "blue", fg = "black", font = ("15"),
-									command = self.__openexplorer_button_action__)
+									command = self.visualizeFiles)
 
 		self.third_button = tk.Button(self.window, text = "Exit", relief = tk.RAISED, width = 25, height = 5, bg = "red", 
 									fg = "black", font = ("15"), command = self.closeAll)
@@ -42,20 +39,19 @@ class Userinterface:
 		#self.window.mainloop()  #forces the gui to stay opened, but lets the __init__-method never end
 
 
-	def __openexplorer_button_action__(self):   #method for second button, opens the file-explorer
+	def visualizeFiles(self):   #method for second button, opens the file-explorer
 		unorderedList = filedialog.askopenfilenames()
-		self.__file_path = self.orderPathList(unorderedList)
-		print(self.__file_path)
+		file_path = self.orderPathList(unorderedList)
+		if (file_path != 0):
+			visualization(file_path, False)
 			
 	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
 		self.first_button.config(state=tk.DISABLED, bg = "black")
+		self.second_button.config(state=tk.DISABLED, bg = "black")
 		main1 = handler.Handler1()
 		self.handlerProcess = multiprocessing.Process(target=main1.run, args=(self.exit, self.outputQueue))
 		self.handlerProcess.start()
 		#self.outputQueue.put("Button 1 Pressed")
-	  
-	def get_file_path(self):	#get-method for file path
-		return self.__file_path
 	
 	def closeAll(self):
 		self.first_button.config(state=tk.DISABLED, bg = "black")
@@ -81,7 +77,6 @@ class Userinterface:
 			self.closeAll()
 			
 	def orderPathList(self, unorderedList):
-
 		if ((len(unorderedList) < 2) or len(unorderedList) % 2 == 1):   #to few or an odd number of files had been selected
 			 tk.messagebox.showinfo("Error", "Wrong data selection, please pick again.")
 			 return 0
@@ -115,8 +110,7 @@ class Userinterface:
 							return 0
 						else:
 							foundflag = 0
-		print(orderedList)
-		visualization(orderedList, False)
+		return orderedList
 		
 gui = Userinterface()
 gui.window.after(100, gui.loop)
