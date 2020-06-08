@@ -7,7 +7,6 @@ import handler
 import multiprocessing
 from time import sleep
 from visualization import visualization
-from debug import plnw
 
 class Userinterface:
 	
@@ -36,8 +35,6 @@ class Userinterface:
 		self.first_button.place(relx = 0.1, rely = 0.14, relwidth = 0.370, relheight = 0.3)
 		self.second_button.place(relx = 0.53, rely = 0.14, relwidth = 0.370, relheight = 0.3)
 		self.third_button.place(relx = 0.1, rely = 0.54, relwidth = 0.8, relheight = 0.3)
-			
-		plnw(0)
 
 
 	def visualizeFiles(self):   #method for second button, opens the file-explorer
@@ -49,7 +46,6 @@ class Userinterface:
 	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
-		plnw(2)
 		main1 = handler.Handler1()
 		self.handlerProcess = multiprocessing.Process(target=main1.run, args=(self.exit, self.outputQueue))
 		self.handlerProcess.start()
@@ -59,7 +55,6 @@ class Userinterface:
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
 		self.third_button.config(state=tk.DISABLED, bg = "black")
-		plnw(3)
 		sleep(0.2)
 		self.exit.set()
 		self.getOutput()
@@ -116,8 +111,6 @@ class Userinterface:
 		return orderedList
 		
 gui = Userinterface()
-sleep(1)
-plnw(1)
 gui.window.after(100, gui.loop)
 gui.window.mainloop()
 
