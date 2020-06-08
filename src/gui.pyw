@@ -41,7 +41,7 @@ class Userinterface:
 
 
 	def visualizeFiles(self):   #method for second button, opens the file-explorer
-		unorderedList = filedialog.askopenfilenames()
+		unorderedList = filedialog.askopenfilenames(initialdir = "../data", title = "Select files", filetypes = (("csv files", "*.csv"), ("pdf files", "*.pdf"), ("all files", "*.*")))
 		file_path = self.orderPathList(unorderedList)
 		if (file_path != 0):
 			visualization(file_path, False)
