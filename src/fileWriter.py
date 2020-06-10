@@ -5,7 +5,7 @@ from time import sleep, time
 
 class FileWriter(object):
 
-	def __init__(self): 
+	def __init__(self):
 		self.lvl = ""											#defines string for lvl_reply_date prints
 		self.amp = ""											#defines string for amp_hist_date prints
 		self.d = ""											#defines string for first usage of self.print
@@ -17,13 +17,13 @@ class FileWriter(object):
 		
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 	
-	def write(self):	
+	def write(self):
 		############################################---.csv-write-start---###############################################
 		now = datetime.now()
 		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
 			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
-			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
-			self.name_amp = "../data/amp_hist_" + self.d + ".csv"					#set name amp_hist_date
+			self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"					#set name date_lvl_reply.csv
+			self.name_amp = "../data/" + self.d + "_amp_hist.csv"					#set name date_amp_hist.csv
 			
 			f = open(self.name_lvl ,"a")								#generating for empty-test lvl, attend to save possible content
 			f.close()
@@ -40,8 +40,8 @@ class FileWriter(object):
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
 			
-		self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"						#for when same hour, write in the right file!
-		self.name_amp = "../data/amp_hist_" + self.d + ".csv"
+		self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"						#for when same hour, write in the right file!
+		self.name_amp = "../data/" + self.d + "_amp_hist.csv"
 		
 		if (len(self.lvl) != 0):
 			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
