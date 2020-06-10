@@ -55,7 +55,7 @@ def visualization(orderedList, livePlot):
 	 
 			# Read lvl_reply CSV file
 			with open(orderedList[row_counter_data_paths]) as csv_data_lvl_reply:
-				lvl_reply_data = csv.reader(csv_data_lvl_reply, delimiter=';')
+				lvl_reply_data = csv.reader(csv_data_lvl_reply, delimiter=',')
 			
 				row_counter_lvl_reply = 0   # Reset the row counter for the level_reply CSV
 
