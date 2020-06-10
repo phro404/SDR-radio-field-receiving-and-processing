@@ -12,3 +12,4 @@ echo "############## COMPLETE ##################"
 cowsay "Yeee Haa! Installation complete!"
 echo "now run: ./dump1090/dump1090 --net --fix --fix --modeac --gain 49.6"
 echo "See also: --no-crc-check  with ./dump1090/dump1090 --help"
+cp dump1090 ../../src
