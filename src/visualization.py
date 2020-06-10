@@ -207,7 +207,7 @@ def visualization(orderedList, livePlot):
 			total = sum(pie_values_test_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
-			return my_autopct_for_pie_test_replies
+		return my_autopct_for_pie_test_replies
 		
 	axes_test_replies.pie(pie_values_test_replies, labels=pie_labels_test_replies, colors=pie_colors_test_replies, autopct=make_autopct_for_pie_test_replies(pie_values_test_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Decoding of all test replies (abs.: {test_tx_sum})')
@@ -226,7 +226,7 @@ def visualization(orderedList, livePlot):
 			total = sum(pie_values_all_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
-			return my_autopct_for_pie_all_replies
+		return my_autopct_for_pie_all_replies
 
 	axes_all_replies.pie(pie_values_all_replies, labels=pie_labels_all_replies, colors=pie_colors_all_replies, autopct=make_autopct_for_pie_all_replies(pie_values_all_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Distribution of all received types \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
