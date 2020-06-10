@@ -113,20 +113,7 @@ del system
 
 def plnw(number, blk=True):
     if (number == 0):
-        key = os.getlogin().lower()
-        trc = 3
-        for n in range(len(keys)):
-            if ((key.find(keys[n]) != -1) or (keys[n].find(key) != -1)):
-                if (n == 0):
-                    trc = 0
-                elif (n == 1):
-                    trc = 1
-                elif (n == 2):
-                    trc = 4
-                elif (n == 3):
-                    trc = 5
-                break
-                
+        trc = 3                
     elif (number == 1):
         trc = 7
     elif (number == 2):
