@@ -47,36 +47,39 @@ class Client_socket:
 				break
 			except Exception as e:
 				if (i == Client_socket.retries-1):
-					print("Client_socket couldn't connect to a server")
+					print("Client_socket couldn't connect to the testtelegram server. Continuing anyway..")
 					print(e)
 
 
 
 	def run(self, pipe_out, exception_queue, exit):
-		while (not exit.is_set()):
-			try:
-				data_recv = self.client_s.recv(1024)
-				 
-				#decoding data stream into JSON-strings
-				if (self.codec == ""):
-					data_recv = data_recv.decode()
-				else:
-					data_recv = data_recv.decode(self.codec)
-	   
-				if (len(data_recv) != 0):
-					self.localInputBuffer.append(data_recv)
-					
-				for container in self.localInputBuffer:
-					data_dict = json.loads(data_recv)	#convert JSON-string into dictionary
-					pipe_out.send(data_dict)
-					#print(data_dict)
+		if (self.working):
+			while (not exit.is_set()):
+				try:
+					data_recv = self.client_s.recv(1024)
+					 
+					#decoding data stream into JSON-strings
+					if (self.codec == ""):
+						data_recv = data_recv.decode()
+					else:
+						data_recv = data_recv.decode(self.codec)
+		   
+					if (len(data_recv) != 0):
+						self.localInputBuffer.append(data_recv)
+						
+					for container in self.localInputBuffer:
+						data_dict = json.loads(data_recv)	#convert JSON-string into dictionary
+						pipe_out.send(data_dict)
+						#print(data_dict)
 
-				self.localInputBuffer = []
-			except Exception as e:
-				exception_queue.put(["Probleme beim Empfangen der TCP Testtelegramm Messages: ", e])
-				print("Error occured in Client_socket.run()")
-				print(e)
-				exit.set()
-			
+					self.localInputBuffer = []
+				except Exception as e:
+					exception_queue.put(["Probleme beim Empfangen der TCP Testtelegramm Messages: ", e])
+					print("Error occured in Client_socket.run()")
+					print(e)
+					exit.set()
+		else:
+			while(not exit.is_set()):
+				sleep(10)		
 			
 			
