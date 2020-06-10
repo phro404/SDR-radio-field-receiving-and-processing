@@ -5,7 +5,7 @@ from time import sleep, time
 
 class FileWriter(object):
 
-	def __init__(self): 
+	def __init__(self):
 		self.lvl = ""											#defines string for lvl_reply_date prints
 		self.amp = ""											#defines string for amp_hist_date prints
 		self.d = ""											#defines string for first usage of self.print
@@ -13,17 +13,17 @@ class FileWriter(object):
 		self.name_amp = ""										#defines string for name of amp
 		self.orderedList = []										#variable for liveprinting 
 		
-		self.lvlFirstLine = "time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac\n"		#sets the first line for every lvl-file
+		self.lvlFirstLine = "time,rx_cnt,rx_avg_lvl,curr_ch_occ,curr_planes,test_tx_cnt,test_rx_succ_cnt_s,test_rx_succ_cnt_l,test_rx_succ_cnt_ac,test_succ_lvl_s,test_succ_lvl_l,test_succ_lvl_ac,test_avg_lvl_s,test_avg_lvl_l,test_avg_lvl_ac\n"		#sets the first line for every lvl-file
 		
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 	
-	def write(self):	
+	def write(self):
 		############################################---.csv-write-start---###############################################
 		now = datetime.now()
 		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
 			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
-			self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"					#set name lvl_reply_date
-			self.name_amp = "../data/amp_hist_" + self.d + ".csv"					#set name amp_hist_date
+			self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"					#set name date_lvl_reply.csv
+			self.name_amp = "../data/" + self.d + "_amp_hist.csv"					#set name date_amp_hist.csv
 			
 			f = open(self.name_lvl ,"a")								#generating for empty-test lvl, attend to save possible content
 			f.close()
@@ -40,8 +40,8 @@ class FileWriter(object):
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
 			
-		self.name_lvl = "../data/lvl_reply_" + self.d + ".csv"						#for when same hour, write in the right file!
-		self.name_amp = "../data/amp_hist_" + self.d + ".csv"
+		self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"						#for when same hour, write in the right file!
+		self.name_amp = "../data/" + self.d + "_amp_hist.csv"
 		
 		if (len(self.lvl) != 0):
 			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
@@ -125,7 +125,7 @@ class FileWriter(object):
 		
 		
 		if not (len(Dlist) < 15):									#set lvl with Dlist-data
-			self.lvl = Dlist["time"] + ";" + Dlist["rx_cnt"] + ";" + Dlist["rx_avg_lvl"] + ";" + Dlist["curr_ch_occ"] + ";" + Dlist["curr_planes"] + ";" + Dlist["test_tx_cnt"] + ";" + Dlist["test_rx_succ_cnt_s"] + ";" + Dlist["test_rx_succ_cnt_l"] + ";" + Dlist["test_rx_succ_cnt_ac"] + ";" + Dlist["test_succ_lvl_s"] + ";" + Dlist["test_succ_lvl_l"] + ";" +Dlist["test_succ_lvl_ac"] + ";" +Dlist["test_avg_lvl_s"] + ";" + Dlist["test_avg_lvl_l"] + ";" + Dlist["test_avg_lvl_ac"] + "\n"
+			self.lvl = Dlist["time"] + "," + Dlist["rx_cnt"] + "," + Dlist["rx_avg_lvl"] + "," + Dlist["curr_ch_occ"] + "," + Dlist["curr_planes"] + "," + Dlist["test_tx_cnt"] + "," + Dlist["test_rx_succ_cnt_s"] + "," + Dlist["test_rx_succ_cnt_l"] + "," + Dlist["test_rx_succ_cnt_ac"] + "," + Dlist["test_succ_lvl_s"] + "," + Dlist["test_succ_lvl_l"] + "," +Dlist["test_succ_lvl_ac"] + "," +Dlist["test_avg_lvl_s"] + "," + Dlist["test_avg_lvl_l"] + "," + Dlist["test_avg_lvl_ac"] + "\n"
 		
 		if not (len(Slist) < 48):									#set amp = Slist-data, then add Llist-data and AClist-data
 			self.amp = Slist["time"] + "," + Slist["type"] + "," + Slist["total"] + "," + Slist["-90"] + "," + Slist["-89"] + "," + Slist["-88"] + "," + Slist["-87"] + "," + Slist["-86"] + "," + Slist["-85"] + "," + Slist["-84"] + "," + Slist["-83"] + "," + Slist["-82"] + "," + Slist["-81"] + "," + Slist["-80"] + "," + Slist["-79"] + "," + Slist["-78"] + "," + Slist["-77"] + "," + Slist["-76"] + "," + Slist["-75"] + "," + Slist["-74"] + "," + Slist["-73"] + "," + Slist["-72"] + "," + Slist["-71"] + "," + Slist["-70"] + "," + Slist["-69"] + "," + Slist["-68"] + "," + Slist["-67"] + "," + Slist["-66"] + "," + Slist["-65"] + "," + Slist["-64"] + "," + Slist["-63"] + "," + Slist["-62"] + "," + Slist["-61"] + "," + Slist["-60"] + "," + Slist["-59"] + "," + Slist["-58"] + "," + Slist["-57"] + "," + Slist["-56"] + "," + Slist["-55"] + "," + Slist["-54"] + "," + Slist["-53"] + "," + Slist["-52"] + "," + Slist["-51"] + "," + Slist["-50"] + "," + Slist["-49"] + "," + Slist["-48"] + "," + Slist["-47"] + "," + Slist["-46"] + "\n"
