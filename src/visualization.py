@@ -150,6 +150,8 @@ def visualization(orderedList, livePlot):
 		row_counter_data_paths += 1  # Increment the data_paths row counter
 
 
+	if data_row_counter_lvl_reply == 0:
+		data_row_counter_lvl_reply = 1		# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
 	curr_planes = int(curr_planes / data_row_counter_lvl_reply) # Estimate the average number of detected planes
 
 	# Get the successrate for the test replies at each level
