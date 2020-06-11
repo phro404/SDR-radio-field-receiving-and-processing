@@ -87,8 +87,8 @@ class Userinterface:
 		foundflag = 0
 		for  i in range(0, 24):
 			for j in unorderedList:
-				if (-1 != j.rfind("lvl_reply_")):   #rfind returns '-1' if element is not found
-					tempindex = j.rfind("lvl_reply_")   #rfind returns position in string if sub-string is found 
+				if (-1 != j.rfind("_lvl_reply")):   #rfind returns '-1' if element is not found
+					tempindex = j.rfind("_lvl_reply")   #rfind returns position in string if sub-string is found 
 
 					#generating string for hour-search
 					if(i < 10):
@@ -96,14 +96,14 @@ class Userinterface:
 					else:
 						tempstr = str(i)
 
-					if(-1 != j.rfind(tempstr, (tempindex + 21))):   #checking hour
+					if(-1 != j.rfind(tempstr, (tempindex - 2))):   #checking hour
 						orderedList.append(j)
 
 						#searching for matching amp_hist file element by element
 						for k in unorderedList:
-							if (-1 != k.rfind("amp_hist_")):
-								tempindex = k.rfind("amp_hist_")
-								if(-1 != k.rfind(tempstr, (tempindex + 20))):
+							if (-1 != k.rfind("_amp_hist")):
+								tempindex = k.rfind("_amp_hist")
+								if(-1 != k.rfind(tempstr, (tempindex - 2))):
 									orderedList.append(k)
 									foundflag = 1
 									break
