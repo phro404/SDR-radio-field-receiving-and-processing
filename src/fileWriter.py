@@ -12,6 +12,10 @@ class FileWriter(object):
 		self.name_amp = ""										#defines string for name of amp
 		self.orderedList = []										#variable for liveprinting 
 		
+		self.live_lvl_name = "../data/liveplot_lvl.csv"							#defines the name for the lvl-liveplot file
+		self.live_amp_name = "../data/liveplot_amp_hist.csv"						#defines the name for the amp-liveplot file
+		
+		
 		self.lvlFirstLine = "time;rx_cnt;rx_avg_lvl;curr_ch_occ;curr_planes;test_tx_cnt;test_rx_succ_cnt_s;test_rx_succ_cnt_l;test_rx_succ_cnt_ac;test_succ_lvl_s;test_succ_lvl_l;test_succ_lvl_ac;test_avg_lvl_s;test_avg_lvl_l;test_avg_lvl_ac\n"		#sets the first line for every lvl-file
 		
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
@@ -39,11 +43,6 @@ class FileWriter(object):
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
 			
-		self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"						#for when same hour, write in the right file!
-		self.name_amp = "../data/" + self.d + "_amp_hist.csv"
-		
-		live_lvl = self.lvl										#bugfix test
-		live_amp = self.amp										#bugfix test
 		
 		if (len(self.lvl) != 0):
 			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
@@ -58,38 +57,36 @@ class FileWriter(object):
 		############################################---.csv-write-end---#####################################################
 		
 		############################################---Liveplot-write-start---###############################################
-		
-		self.name_lvl = "../data/liveplot_lvl.csv"							#new name for printing into the level-liveplot file
-		self.name_amp = "../data/liveplot_amp_hist.csv"							#new name for printing into the amp-hist_liveplot file
-		
-		
-		f = open(self.name_lvl ,"a")									#generating for empty-test lvl, attend to save possible content
+				
+		f = open(self.live_lvl_name ,"a")								#generating for empty-test lvl, attend to save possible content
 		f.close()
-		f = open(self.name_amp ,"a")									#generating for empty-test amp, attend to save possible content
+		f = open(self.live_amp_name ,"a")								#generating for empty-test amp, attend to save possible content
 		f.close()
 		
-		if os.stat(self.name_lvl).st_size == 0:								#if lvl is empty write firstline
-			f = open(self.name_lvl ,"w+")								#open data with name, if not existing create
+		self.orderedList = [os.path.abspath(self.live_lvl_name), os.path.abspath(self.live_amp_name)]
+		
+		if os.stat(self.live_lvl_name).st_size == 0:							#if lvl is empty write firstline
+			f = open(self.live_lvl_name ,"w+")							#open data with name, if not existing create
 			f.write(self.lvlFirstLine)								#print first line in file
 			f.close()
 			
-		if os.stat(self.name_amp).st_size == 0:								#if amp is empty write firstline
-			f = open(self.name_amp ,"w+")								#open data with name, if not existing create
+		if os.stat(self.live_amp_name).st_size == 0:							#if amp is empty write firstline
+			f = open(self.live_amp_name ,"w+")							#open data with name, if not existing create
 			f.write(self.ampFirstLine)								#print first line in file
 			f.close()	
 		
-		if (len(live_lvl) != 0):
-			f = open(self.name_lvl ,"a")								#open data with name, if not existing create, attand to written text
-			f.write(live_lvl)									#print string in data
+		if (len(self.lvl) != 0):
+			f = open(self.live_lvl_name ,"a")							#open data with name, if not existing create, attand to written text
+			f.write(self.lvl)									#print string in data
 			f.close()
 		
-		if (len(live_amp) != 0):
-			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
-			f.write(live_amp)									#print string in data
+		if (len(self.amp) != 0):
+			f = open(self.live_amp_name ,"a")							#open data with name, if not existing create, attand to written text
+			f.write(self.amp)									#print string in data
 			f.close()
 		
-		self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]	
 		visualization.visualization(self.orderedList, True)
+		self.orderedList = [os.path.abspath(self.live_lvl_name), os.path.abspath(self.live_amp_name)]
 		
 		############################################---Liveplot-write-end---###############################################
 	
@@ -140,9 +137,7 @@ class FileWriter(object):
 	def run(self, in_pipe, exit):
 		print("FileWriter: Entered RUN()")
 		while (not exit.is_set()):
-			#print(1)
 			self.sort(in_pipe)
-			#print(2)
 			self.write()
 		os.remove("../data/liveplot_lvl.csv")
 		os.remove("../data/liveplot_amp_hist.csv")
