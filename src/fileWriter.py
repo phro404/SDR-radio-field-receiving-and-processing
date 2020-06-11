@@ -4,7 +4,6 @@ from datetime import datetime
 from time import sleep, time
 
 class FileWriter(object):
-
 	def __init__(self):
 		self.lvl = ""											#defines string for lvl_reply_date prints
 		self.amp = ""											#defines string for amp_hist_date prints
