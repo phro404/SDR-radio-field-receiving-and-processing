@@ -49,7 +49,7 @@ class FileWriter(object):
 			f.write(self.lvl)									#print string in data
 			f.close()
 			
-		if (len(self.lvl) != 0):
+		if (len(self.amp) != 0):
 			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
 			f.write(self.amp)									#print string in data
 			f.close()
