@@ -190,7 +190,7 @@ def visualization(orderedList, livePlot):
 		list_level_S_short[column] = float(list_level_S_short[column]/time_space)
 	#================================ Collecting the data from the CSV files ===================================
 	
-	print(list_level_S_short)
+	#print(list_level_S_short)
 	'''	
 	#============================================= Plotting ====================================================
 	if livePlot == True:
