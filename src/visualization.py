@@ -49,7 +49,7 @@ def visualization(orderedList, livePlot):
 
 	print('visualization gestartet')
 	
-	
+	'''
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:  # Read Path List
    
@@ -285,4 +285,4 @@ def visualization(orderedList, livePlot):
 
 	plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
-	
+	'''
