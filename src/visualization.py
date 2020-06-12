@@ -203,7 +203,7 @@ def visualization(orderedList, livePlot):
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
 	'''
 	f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
-		
+	'''	
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
@@ -253,7 +253,7 @@ def visualization(orderedList, livePlot):
 	plt.grid(True)																			  # Grid
 	plt.title(f'Successrate of all test replies')
 
-	
+	'''
 	# Print the plot for the average number of replies for every type at each level
 	plt.subplot(2, 2, 2)
 	plt.plot(level_for_distribution_chart, list_level_AC, 'o', color='lightskyblue')	# Print the data row for A/C
@@ -264,7 +264,7 @@ def visualization(orderedList, livePlot):
 	plt.legend(['A/C Replies', 'Mode S Long replies', 'Mode S Short replies'])		  # Legend
 	plt.grid(True)																	  # Grid
 	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
-		
+	'''	
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
@@ -284,10 +284,10 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = f'{str_time_current[0:10]}_{str_time_current[11:19]}'   # Edit the current time string
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
-	'''
-	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 	
-	plt.show()   # Show diagram   
+	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 	'''
+	plt.show()   # Show diagram   
+	
 	#============================================= Plotting ====================================================
 	
