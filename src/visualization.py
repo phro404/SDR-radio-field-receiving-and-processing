@@ -190,14 +190,16 @@ def visualization(orderedList, livePlot):
 		list_level_S_short[column] = float(list_level_S_short[column]/time_space)
 	#================================ Collecting the data from the CSV files ===================================
 	
-	
+	'''
 	#============================================= Plotting ====================================================
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
 		plt.clf()								   # When "livePlot == True" then overwrite the old plot
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
-		
+	'''
+	plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
+	plt.clf()	
 	'''
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
