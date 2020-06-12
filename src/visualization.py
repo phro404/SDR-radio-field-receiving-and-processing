@@ -198,7 +198,7 @@ def visualization(orderedList, livePlot):
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
 		
-
+	'''
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
@@ -217,7 +217,7 @@ def visualization(orderedList, livePlot):
 	axes_test_replies.pie(pie_values_test_replies, labels=pie_labels_test_replies, colors=pie_colors_test_replies, autopct=make_autopct_for_pie_test_replies(pie_values_test_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Decoding of all test replies (abs.: {test_tx_sum})')
   
-
+	
 	# Print the pie chart for the number of all replies
 	pie_labels_all_replies = 'Mode S Short', 'Mode S Long', 'A/C'					   # Name of slices
 	pie_values_all_replies = [s_short_replies_sum, s_long_replies_sum, ac_replies_sum]  # Value of slices
@@ -263,7 +263,7 @@ def visualization(orderedList, livePlot):
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
-		
+	
 
 	str_time_current = datetime.datetime.now().isoformat()  # Get the current time as a string
 		
@@ -281,7 +281,7 @@ def visualization(orderedList, livePlot):
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
 
 	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-
-	#plt.show()   # Show diagram   
+	'''
+	plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
 	
