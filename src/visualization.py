@@ -283,8 +283,8 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
 
-	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+	#plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 	
-	plt.show()   # Show diagram   
+	#plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
 	
