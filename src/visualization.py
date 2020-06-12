@@ -47,8 +47,7 @@ def visualization(orderedList, livePlot):
 	level_for_distribution_chart = np.arange(-90, -45, 1)   # List of levels for flight replies
 	#=================================== Implementation of all Variables =======================================
 
-	print('visualization gestartet')
-	
+	print('visualization started')
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:  # Read Path List
    
@@ -150,10 +149,7 @@ def visualization(orderedList, livePlot):
 	
 		row_counter_data_paths += 1  # Increment the data_paths row counter
 
-	print(row_counter_amp_hist)
-	print(row_counter_lvl_reply)
-	print(row_counter_data_paths)
-	
+		
 	if data_row_counter_lvl_reply == 0:
 		data_row_counter_lvl_reply = 1		# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
 	curr_planes = int(curr_planes / data_row_counter_lvl_reply) # Estimate the average number of detected planes
@@ -200,7 +196,8 @@ def visualization(orderedList, livePlot):
 		plt.clf()								   # When "livePlot == True" then overwrite the old plot
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
-	'''	
+	
+	
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
@@ -250,7 +247,7 @@ def visualization(orderedList, livePlot):
 	plt.grid(True)																			  # Grid
 	plt.title(f'Successrate of all test replies')
 
-	'''
+	
 	# Print the plot for the average number of replies for every type at each level
 	plt.subplot(2, 2, 2)
 	plt.plot(level_for_distribution_chart, list_level_AC, 'o', color='lightskyblue')	# Print the data row for A/C
@@ -261,7 +258,7 @@ def visualization(orderedList, livePlot):
 	plt.legend(['A/C Replies', 'Mode S Long replies', 'Mode S Short replies'])		  # Legend
 	plt.grid(True)																	  # Grid
 	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
-	'''	
+		
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
@@ -282,9 +279,6 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
 	
-	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-	'''
+	plt.savefig(plotname, bbox_inches='tight')  # Save the plot	
 	plt.show()   # Show diagram   
-	
 	#============================================= Plotting ====================================================
-	
