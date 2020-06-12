@@ -40,7 +40,7 @@ class FileWriter(object):
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
 			
-			self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
+			self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
 		
 		
 		if (len(self.lvl) != 0):
@@ -54,7 +54,7 @@ class FileWriter(object):
 			f.close()
 		
 		#visualization.visualization(self.orderedList, True)
-		self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
+		self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
 		print(self.orderedList)
 	
 	
