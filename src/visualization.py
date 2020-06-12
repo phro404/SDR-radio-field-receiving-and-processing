@@ -195,6 +195,21 @@ def visualization(orderedList, livePlot):
 	
 	
 	#============================================= Plotting ====================================================
+	# Label für die y-Achse vergeben:
+	plt.ylabel('Quadratzahlen')
+
+	# Einen x-y-Plot erstellen:
+	plt.plot([1,2,3,4], [1,4,9,16], 'bo')
+
+	# Achsen-Bereiche manuell festlegen
+	# Syntax: plt.axis([xmin, xmax, ymin, ymax])
+	plt.axis([0, 5, 0, 20])
+
+	# Ein gepunktetes Diagramm-Gitter einblenden:
+	plt.grid(True)
+
+	
+	'''
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
 		plt.clf()								   # When "livePlot == True" then overwrite the old plot
@@ -266,8 +281,8 @@ def visualization(orderedList, livePlot):
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
+	'''
 	
-
 	str_time_current = datetime.datetime.now().isoformat()  # Get the current time as a string
 		
 	if livePlot == True:
@@ -283,7 +298,7 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
 
-	#plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 	
 	#plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
