@@ -48,7 +48,7 @@ def visualization(orderedList, livePlot):
 	#=================================== Implementation of all Variables =======================================
 
 	print('visualization gestartet')
-		
+	'''	
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:  # Read Path List
    
@@ -153,7 +153,7 @@ def visualization(orderedList, livePlot):
 	print(row_counter_amp_hist)
 	print(row_counter_lvl_reply)
 	print(row_counter_data_paths)
-	'''
+	
 	if data_row_counter_lvl_reply == 0:
 		data_row_counter_lvl_reply = 1		# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
 	curr_planes = int(curr_planes / data_row_counter_lvl_reply) # Estimate the average number of detected planes
