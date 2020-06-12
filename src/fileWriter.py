@@ -55,7 +55,7 @@ class FileWriter(object):
 		
 		#visualization.visualization(self.orderedList, True)
 		self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
-		print(orderedList)
+		print(self.orderedList)
 	
 	
 	def sort(self, raw_pipe_out):
