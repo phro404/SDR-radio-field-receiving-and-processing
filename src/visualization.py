@@ -198,9 +198,10 @@ def visualization(orderedList, livePlot):
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
 	'''
-	plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
-	plt.clf()	
-	'''
+	
+	f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
+	
+	
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
@@ -282,8 +283,8 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
 
-	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-	'''
+	#plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+	
 	plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
 	
