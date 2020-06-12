@@ -281,7 +281,7 @@ def visualization(orderedList, livePlot):
 	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel_sum, 3)}s \nFlights on average: {curr_planes}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
-	'''
+	
 	
 	str_time_current = datetime.datetime.now().isoformat()  # Get the current time as a string
 		
@@ -300,6 +300,7 @@ def visualization(orderedList, livePlot):
 
 	plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 	
-	#plt.show()   # Show diagram   
+	plt.show()   # Show diagram   
+	'''
 	#============================================= Plotting ====================================================
 	
