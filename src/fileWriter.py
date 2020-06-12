@@ -23,14 +23,22 @@ class FileWriter(object):
 		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
 			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
 			self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"					#set name lvl_reply_date
-			f = open(self.name_lvl ,"w+")								#open data with name, if not existing create
-			f.write(self.lvlFirstLine)								#print first line in file
+			self.name_amp = "../data/" + self.d + "_amp_hist.csv"					#set name date_amp_hist.csv
+			
+			f = open(self.name_lvl ,"a")								#generating for empty-test lvl, attend to save possible content
+			f.close()
+			f = open(self.name_amp ,"a")								#generating for empty-test amp, attend to save possible content
 			f.close()
 			
-			self.name_amp = "../data/" + self.d + "amp_hist.csv"					#set name amp_hist_date
-			f = open(self.name_amp ,"w+")								#open data with name, if not existing create
-			f.write(self.ampFirstLine)								#print first line in file
-			f.close()
+			if os.stat(self.name_lvl).st_size == 0:							#if lvl is empty write firstline
+				f = open(self.name_lvl ,"w+")							#open data with name, if not existing create
+				f.write(self.lvlFirstLine)							#print first line in file
+				f.close()
+			
+			if os.stat(self.name_amp).st_size == 0:							#if amp is empty write firstline
+				f = open(self.name_amp ,"w+")							#open data with name, if not existing create
+				f.write(self.ampFirstLine)							#print first line in file
+				f.close()
 			
 			self.orderedList = [os.path.abspath(self.name_lvl), os.path.abspath(self.name_amp)]
 		
