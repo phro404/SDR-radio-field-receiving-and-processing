@@ -56,9 +56,9 @@ class FileWriter(object):
 		#visualization.visualization(self.orderedList, True)
 		self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
 		print(self.orderedList)
-		print(self.name_lvl)
-		print(self.name_amp)
-	
+		print(os.path.abspath(self.name_lvl))
+		print(os.path.abspath(self.name_amp))
+		
 	
 	def sort(self, raw_pipe_out):
 		local_buffer = []										#declines the local buffer as an empty array
