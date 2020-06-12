@@ -47,7 +47,9 @@ def visualization(orderedList, livePlot):
 	level_for_distribution_chart = np.arange(-90, -45, 1)   # List of levels for flight replies
 	#=================================== Implementation of all Variables =======================================
 
-
+	print('visualization gestartet')
+	
+	'''
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:  # Read Path List
    
@@ -283,3 +285,4 @@ def visualization(orderedList, livePlot):
 
 	plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
+	'''
