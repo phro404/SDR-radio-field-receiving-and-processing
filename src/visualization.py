@@ -150,7 +150,10 @@ def visualization(orderedList, livePlot):
 	
 		row_counter_data_paths += 1  # Increment the data_paths row counter
 
-	
+	print(row_counter_amp_hist)
+	print(row_counter_lvl_reply)
+	print(row_counter_data_paths)
+	'''
 	if data_row_counter_lvl_reply == 0:
 		data_row_counter_lvl_reply = 1		# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
 	curr_planes = int(curr_planes / data_row_counter_lvl_reply) # Estimate the average number of detected planes
@@ -190,7 +193,7 @@ def visualization(orderedList, livePlot):
 		list_level_S_short[column] = float(list_level_S_short[column]/time_space)
 	#================================ Collecting the data from the CSV files ===================================
 	
-	'''
+	
 	#============================================= Plotting ====================================================
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
