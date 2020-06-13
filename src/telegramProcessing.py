@@ -24,15 +24,15 @@ class TelegramProcessing:
 
 		#defining dictionaries
 		current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-		Dlist = {'time': str(current_datetime), 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
+		Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 			'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
-		Slist = {'time': str(current_datetime), 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+		Slist = {'time': 0, 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		Llist = {'time': str(current_datetime), 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+		Llist = {'time': 0, 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-		AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+		AClist = {'time': 0, 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 			'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 			'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
 		ICAO_list = []; counter = 0; lvl_sum = 0; ch_occ_cnt = 0; socket_sync_flag = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; overflow90_cnt = 0; overflow46_cnt = 0;
@@ -126,6 +126,7 @@ class TelegramProcessing:
 		#calculating values per seconds and write into self.out_buffer
 		t_end = time.time()
 		t_measurement = round((t_end - t_start), 6)
+		t_end = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 		Dlist['rx_cnt'] = (counter / t_measurement)
 		if (counter > 0):
@@ -135,6 +136,10 @@ class TelegramProcessing:
 		AClist['total'] = ac_el_cnt
 		Slist['total'] = ss_el_cnt
 		Llist['total'] = sl_el_cnt
+		Dlist['time'] = str(t_end)
+		AClist['time'] = str(t_end)
+		Slist['time'] = str(t_end)
+		Llist['time'] = str(t_end)
 
 		#write into self.out_buffer, only works in this order
 		self.out_buffer.append(Dlist)
@@ -158,15 +163,15 @@ class TelegramProcessing:
 
 			#reseting dictionaries etc.
 			current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-			Dlist = {'time': str(current_datetime), 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
+			Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 				'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
-			Slist = {'time': str(current_datetime), 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			Slist = {'time': 0, 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-			Llist = {'time': str(current_datetime), 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			Llist = {'time': 0, 'type': 'S Long Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
-			AClist = {'time': str(current_datetime), 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
+			AClist = {'time': 0, 'type': 'A/C Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
 				'-79': 0, '-78': 0, '-77': 0, '-76': 0, '-75': 0, '-74': 0, '-73': 0, '-72': 0, '-71': 0, '-70': 0, '-69': 0, '-68': 0, '-67': 0, '-66': 0, '-65': 0, '-64': 0, '-63': 0,
 				'-62': 0, '-61': 0, '-60': 0, '-59': 0, '-58': 0, '-57': 0, '-56': 0, '-55': 0, '-54': 0, '-53': 0, '-52': 0, '-51': 0, '-50': 0, '-49': 0, '-48': 0, '-47': 0, '-46': 0}
 			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0; overflow90_cnt = 0; overflow46_cnt = 0;
@@ -270,6 +275,7 @@ class TelegramProcessing:
 			#calculating values for seconds and write into self.out_buffer
 			t_end = time.time()
 			t_measurement = round((t_end - t_start), 6)
+			t_end = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 			Dlist['rx_cnt'] = ((counter - ss_succ_cnt - sl_succ_cnt - ac_succ_cnt) / t_measurement)
 			if (counter > 0):
@@ -295,6 +301,10 @@ class TelegramProcessing:
 			AClist['total'] = ac_el_cnt
 			Slist['total'] = ss_el_cnt
 			Llist['total'] = sl_el_cnt
+			Dlist['time'] = str(t_end)
+			AClist['time'] = str(t_end)
+			Slist['time'] = str(t_end)
+			Llist['time'] = str(t_end)
 			
 
 			#write into self.out_buffer, only works in this order
