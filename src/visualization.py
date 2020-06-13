@@ -285,8 +285,12 @@ def visualization(orderedList, livePlot):
 		#plt.show(block=False)   # Show diagram  
 		#plt.pause(0.03)
 		#os.startfile(plotname)
-		opener ="open" if sys.platform == "darwin" else "xdg-open"
-		subprocess.call([opener, plotname])
+		
+		fileobj=open(filename,"wb+")
+		if fileobj.closed:
+    			opener ="open" if sys.platform == "darwin" else "xdg-open"
+			subprocess.call([opener, plotname])
+			
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
