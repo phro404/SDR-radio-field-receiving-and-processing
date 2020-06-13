@@ -152,4 +152,6 @@ class FileWriter(object):
 			print(2)
 			self.write()
 			
+		print('fertisch')
+			
 		
