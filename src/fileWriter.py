@@ -141,6 +141,7 @@ class FileWriter(object):
 		first_run = False	
 		while (not exit.is_set()):
 			if first_run == False:
+				print('first run')
 				if os.path.exists(self.name_lvl_live):
 					print('LOESCHEN')
 					os.remove(self.name_lvl_live)
