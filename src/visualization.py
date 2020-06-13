@@ -5,7 +5,9 @@ import matplotlib as mlp
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
+
 import os
+import subprocess, sys
 #=================================== Import of the relevant libraries ======================================
 
 def visualization(orderedList, livePlot):
@@ -282,7 +284,9 @@ def visualization(orderedList, livePlot):
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 		#plt.show(block=False)   # Show diagram  
 		#plt.pause(0.03)
-		os.startfile(plotname)
+		#os.startfile(plotname)
+		opener ="open" if sys.platform == "darwin" else "xdg-open"
+		subprocess.call([opener, plotname])
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
