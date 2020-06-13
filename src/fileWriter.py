@@ -138,20 +138,22 @@ class FileWriter(object):
 
 		
 	def run(self, in_pipe, exit):
-		first_run = False	
+		first_run = False
+		delete = False
 		while (not exit.is_set()):
 			if first_run == False:
 				print('first run')
-				if os.path.exists(self.name_lvl_live):
-					print('LOESCHEN')
-					os.remove(self.name_lvl_live)
-					os.remove(self.name_amp_live)
-			first_run = True	
+				delete = True
+			first_run = True
+			
 			print(1)
 			self.sort(in_pipe)
 			print(2)
 			self.write()
 			
-		print('fertisch')
-			
-		
+			if delete == True:
+				if os.path.exists(self.name_lvl_live):
+					print('LOESCHEN')
+					os.remove(self.name_lvl_live)
+					os.remove(self.name_amp_live)
+			delete = False
