@@ -286,7 +286,7 @@ def visualization(orderedList, livePlot):
 		#plt.pause(0.03)
 		#os.startfile(plotname)
 		
-		fileobj = open(filename,"wb+")
+		fileobj = open(plotname,"wb+")
 		if fileobj.closed:
 			opener ="open" if sys.platform == "darwin" else "xdg-open"
 			subprocess.call([opener, plotname])
