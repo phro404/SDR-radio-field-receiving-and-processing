@@ -282,10 +282,6 @@ def visualization(orderedList, livePlot):
 		start_time_for_liveplotname = start_time_for_liveplotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_begin_{start_time_for_liveplotname}.pdf')	# Create the liveplot name (apropos of the file names) 
 		
-		
-		#fileobj = open(plotname)
-		#if fileobj.closed:
-		
 		if os.path.exists(plotname):
 			print('Plot exstiert')
 			plt.savefig(plotname, bbox_inches='tight')  # Save the plot			
@@ -294,11 +290,7 @@ def visualization(orderedList, livePlot):
 			plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 			opener ="open" if sys.platform == "darwin" else "xdg-open"
 			subprocess.call([opener, plotname])
-		
-		#plt.show(block=False)   # Show diagram  
-		#plt.pause(0.03)
-		#os.startfile(plotname)
-					
+			
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
@@ -311,6 +303,4 @@ def visualization(orderedList, livePlot):
 		plt.show()
 		
 	print(f'figure saved as: {plotname}')
-	#plt.savefig(plotname, bbox_inches='tight')  # Save the plot	
-	#plt.show()   # Show diagram   
 	#============================================= Plotting ====================================================
