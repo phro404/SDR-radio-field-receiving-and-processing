@@ -19,7 +19,7 @@ class FileWriter(object):
 		
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 		
-	def write(self):	
+	def write(self, delete_liveplot_csv):	
 		############################################---CSV-write-start---###############################################
 		now = datetime.now()
 
@@ -62,7 +62,14 @@ class FileWriter(object):
 		############################################---Liveplot-write-start---###############################################
 		self.name_lvl_live = "../data/" + "lvl_reply_live.csv"					#set name lvl_reply_date
 		self.name_amp_live = "../data/" + "amp_hist_live.csv"					#set name date_amp_hist.csv
-			
+				
+		if delete_liveplot_csv == True:
+			if os.path.exists(self.name_lvl_live):
+				print('LOESCHEN')
+				os.remove(self.name_lvl_live)
+				os.remove(self.name_amp_live)
+		
+		
 		f = open(self.name_lvl_live ,"a")							#generating for empty-test lvl, attend to save possible content
 		f.close()
 		f = open(self.name_amp_live ,"a")							#generating for empty-test amp, attend to save possible content
@@ -138,22 +145,17 @@ class FileWriter(object):
 
 		
 	def run(self, in_pipe, exit):
-		first_run = False
-		delete = False
+		first_run = True
+		delete_live = False
+		
 		while (not exit.is_set()):
-			if first_run == False:
+			if first_run == True:
 				print('first run')
-				delete = True
-			first_run = True
+				delete_live = True
+			first_run = False
 			
 			print(1)
 			self.sort(in_pipe)
 			print(2)
-			self.write()
-			
-			if delete == True:
-				if os.path.exists(self.name_lvl_live):
-					print('LOESCHEN')
-					os.remove(self.name_lvl_live)
-					os.remove(self.name_amp_live)
-			delete = False
+			self.write(delete_live)			
+			delete_live = False
