@@ -65,10 +65,10 @@ class FileWriter(object):
 				
 		if delete_liveplot_csv == True:
 			if os.path.exists(self.name_lvl_live):
-				print('LOESCHEN')
+				print('LIVE LOESCHEN')
 				os.remove(self.name_lvl_live)
 				os.remove(self.name_amp_live)
-		
+		print('LIVE WIRD GESCHRIEBEN')
 		
 		f = open(self.name_lvl_live ,"a")							#generating for empty-test lvl, attend to save possible content
 		f.close()
