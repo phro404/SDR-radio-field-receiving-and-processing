@@ -4,7 +4,6 @@ import time
 import matplotlib as mlp
 mlp.use('TkAgg') 
 import matplotlib.pyplot as plt
-import PyQt5
 import numpy as np
 import datetime
 #=================================== Import of the relevant libraries ======================================
@@ -193,13 +192,15 @@ def visualization(orderedList, livePlot):
 	
 	
 	#============================================= Plotting ====================================================
-	
+	'''
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
 		#plt.clf()	# FATAL!!!!!!							   # When "livePlot == True" then overwrite the old plot
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
-			
+	'''
+	f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
+		
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
 	pie_values_test_replies = [(test_tx_sum - ac_test_rx_succ_sum - s_long_test_rx_succ_sum - s_short_test_rx_succ_sum), s_short_test_rx_succ_sum, s_long_test_rx_succ_sum, ac_test_rx_succ_sum]	# Value of slices
