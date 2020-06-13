@@ -281,7 +281,7 @@ def visualization(orderedList, livePlot):
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 		#plt.show(block=False)   # Show diagram  
 		#plt.pause(0.03)
-		open(plotname)
+		subprocess.Popen([plotname],Shell=True)
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
