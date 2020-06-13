@@ -9,7 +9,7 @@ import datetime
 #=================================== Import of the relevant libraries ======================================
 
 def visualization(orderedList, livePlot):
-	mlp.use('TkAgg') 
+	mlp.use('Agg') 
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0	  # Counter for the index number of orderedList
