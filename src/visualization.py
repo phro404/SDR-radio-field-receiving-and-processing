@@ -272,7 +272,8 @@ def visualization(orderedList, livePlot):
 		start_time_for_liveplotname = start_time_for_liveplotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_begin_{start_time_for_liveplotname}.pdf')	# Create the liveplot name (apropos of the file names) 
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-		plt.show(block=False)   # Show diagram   
+		#plt.show(block=False)   # Show diagram  
+		plt.show()   # Show diagram  
 		plt.pause(0.03)
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
