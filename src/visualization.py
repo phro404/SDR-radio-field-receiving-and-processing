@@ -287,8 +287,10 @@ def visualization(orderedList, livePlot):
 		#os.startfile(plotname)
 		
 		fileobj = open(plotname,"wb+")
-		if fileobj.closed:
-			print('Plot noch geschlossen')
+		if not fileobj.closed:
+			print('Plot offen')
+		else:
+			print('Plot geschlossen')
 			#opener ="open" if sys.platform == "darwin" else "xdg-open"
 			#subprocess.call([opener, plotname])
 			
