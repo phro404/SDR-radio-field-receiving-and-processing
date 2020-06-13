@@ -53,11 +53,7 @@ class FileWriter(object):
 			f.write(self.amp)									#print string in data
 			f.close()
 		############################################---CSV-write-end---#####################################################
-		'''
-		self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
-		print(self.orderedList)
-		visualization.visualization(self.orderedList, True)
-		'''		
+				
 		############################################---Liveplot-write-start---###############################################
 		self.name_lvl_live = "../data/" + "lvl_reply_live.csv"					#set name lvl_reply_date
 		self.name_amp_live = "../data/" + "amp_hist_live.csv"					#set name date_amp_hist.csv
