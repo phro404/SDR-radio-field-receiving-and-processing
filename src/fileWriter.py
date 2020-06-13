@@ -143,4 +143,7 @@ class FileWriter(object):
 			self.sort(in_pipe)
 			print(2)
 			self.write()
-		
+			
+		if os.path.exists(self.name_lvl_live):
+			os.remove(self.name_lvl_live)
+			os.remove(self.name_amp_live)
