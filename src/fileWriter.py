@@ -10,7 +10,9 @@ class FileWriter(object):
 		self.amp = ""											#defines string for amp_hist_date prints
 		self.d = ""											#defines string for first usage of self.print
 		self.name_lvl = ""										#defines string for name of lvl
-		self.name_amp = ""										#defines string for name of amp
+		self.name_amp = ""										#defines string for name of amp for liveplots
+		self.name_lvl_live = ""										#defines string for name of lvl for liveplots
+		self.name_amp_live = ""
 		self.orderedList = [] 
 		
 		self.lvlFirstLine = "time,rx_cnt,rx_avg_lvl,curr_ch_occ,curr_planes,test_tx_cnt,test_rx_succ_cnt_s,test_rx_succ_cnt_l,test_rx_succ_cnt_ac,test_succ_lvl_s,test_succ_lvl_l,test_succ_lvl_ac,test_avg_lvl_s,test_avg_lvl_l,test_avg_lvl_ac\n"		#sets the first line for every lvl-file
@@ -18,6 +20,7 @@ class FileWriter(object):
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 		
 	def write(self):	
+		############################################---CSV-write-start---###############################################
 		now = datetime.now()
 
 		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
@@ -40,7 +43,7 @@ class FileWriter(object):
 				f.write(self.ampFirstLine)							#print first line in file
 				f.close()
 			
-			self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
+			#self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
 		
 		
 		if (len(self.lvl) != 0):
@@ -52,13 +55,45 @@ class FileWriter(object):
 			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
 			f.write(self.amp)									#print string in data
 			f.close()
+		############################################---CSV-write-end---#####################################################
 		
-		#visualization.visualization(self.orderedList, True)
 		self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
 		print(self.orderedList)
-		# new_list = [f'{os.path.abspath(self.name_lvl)}',f'{os.path.abspath(self.name_lvl)}']
-		# print(new_list)
 		visualization.visualization(self.orderedList, True)
+		
+		
+		############################################---Liveplot-write-start---###############################################
+		self.name_lvl_live = "../data/" + "lvl_reply_live.csv"					#set name lvl_reply_date
+		self.name_amp_live = "../data/" + "amp_hist_live.csv"					#set name date_amp_hist.csv
+			
+		f = open(self.name_lvl_live ,"a")							#generating for empty-test lvl, attend to save possible content
+		f.close()
+		f = open(self.name_amp_live ,"a")							#generating for empty-test amp, attend to save possible content
+		f.close()
+
+		if os.stat(self.name_lvl_live).st_size == 0:						#if lvl is empty write firstline
+			f = open(self.name_lvl_live ,"w+")						#open data with name, if not existing create
+			f.write(self.lvlFirstLine)							#print first line in file
+			f.close()
+
+		if os.stat(self.name_amp_live).st_size == 0:						#if amp is empty write firstline
+			f = open(self.name_amp_live ,"w+")						#open data with name, if not existing create
+			f.write(self.ampFirstLine)							#print first line in file
+			f.close()
+
+		#self.orderedList = [os.path.abspath(self.name_lvl),os.path.abspath(self.name_amp)]
+
+		
+		if (len(self.lvl) != 0):
+			f = open(self.name_lvl_live ,"a")						#open data with name, if not existing create, attand to written text
+			f.write(self.lvl)								#print string in data
+			f.close()
+			
+		if (len(self.lvl) != 0):
+			f = open(self.name_amp_live ,"a")						#open data with name, if not existing create, attand to written text
+			f.write(self.amp)								#print string in data
+			f.close()
+		############################################---Liveplot-write-end---#####################################################
 		
 	
 	def sort(self, raw_pipe_out):
