@@ -2,7 +2,7 @@
 import csv
 import time
 import matplotlib as mlp
-mlp.use('Agg') 
+mlp.use('TkAgg') 
 import matplotlib.pyplot as plt
 import numpy as np
 import datetime
