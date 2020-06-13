@@ -193,11 +193,14 @@ def visualization(orderedList, livePlot):
 	
 	
 	#============================================= Plotting ====================================================
+	'''
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
 		plt.clf()								   # When "livePlot == True" then overwrite the old plot
 	else:
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
+	'''
+	f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
 	
 	
 	# Print the pie chart for the number of all test replies, which have been received successfully
