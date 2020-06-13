@@ -201,7 +201,7 @@ def visualization(orderedList, livePlot):
 		f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
 	'''
 	f, axs = plt.subplots(2,2,figsize=(12, 7))  # When "livePlot == False" then create a new plot; Also includes the size of the plot frame
-	
+	plt.clf()
 	
 	# Print the pie chart for the number of all test replies, which have been received successfully
 	pie_labels_test_replies = 'failed', 'Mode S Short', 'Mode S Long', 'A/C'	# Name of slices
