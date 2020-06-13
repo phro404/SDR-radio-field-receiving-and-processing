@@ -4,6 +4,7 @@ import time
 import matplotlib as mlp
 mlp.use('Agg') 
 import matplotlib.pyplot as plt
+import PyQt5
 import numpy as np
 import datetime
 #=================================== Import of the relevant libraries ======================================
