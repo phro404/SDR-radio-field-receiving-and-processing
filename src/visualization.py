@@ -304,7 +304,7 @@ def visualization(orderedList, livePlot):
 	if livePlot == True:
 		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'					# Edit the start time string
 		start_time_for_liveplotname = start_time_for_liveplotname.replace(':', '-')
-		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_begin_{start_time_for_liveplotname}.pdf')	# Create the liveplot name (apropos of the file names) 
+		plotname = orderedList[0].replace(orderedList[0][-18:], f'liveplot_begin_{start_time_for_liveplotname}.pdf')	# Create the liveplot name (apropos of the file names) 
 		
 		if os.path.exists(plotname):
 			print('Plot exstiert')
