@@ -126,7 +126,7 @@ class TelegramProcessing:
 		#calculating values per seconds and write into self.out_buffer
 		t_end = time.time()
 		t_measurement = round((t_end - t_start), 6)
-		t_end = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+		t_end = datetime.now()
 
 		Dlist['rx_cnt'] = (counter / t_measurement)
 		if (counter > 0):
@@ -275,7 +275,7 @@ class TelegramProcessing:
 			#calculating values for seconds and write into self.out_buffer
 			t_end = time.time()
 			t_measurement = round((t_end - t_start), 6)
-			t_end = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+			t_end = datetime.now()
 
 			Dlist['rx_cnt'] = ((counter - ss_succ_cnt - sl_succ_cnt - ac_succ_cnt) / t_measurement)
 			if (counter > 0):
