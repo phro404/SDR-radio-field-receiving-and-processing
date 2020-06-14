@@ -8,8 +8,6 @@ import datetime
 import os
 import subprocess, sys
 import configparser
-
-#from datetime import datetime
 import calendar
 #=================================== Import of the relevant libraries ======================================
 
@@ -185,13 +183,14 @@ def visualization(orderedList, livePlot):
 	
 	
 	########################################################################################################
+	# Get the processing interval section:
 	class TelegramProcessing:
 		def __init__(self):
 			self.dump1090_buffer = []
 			self.socket_buffer = []
 			self.out_buffer = []
 
-	#reading out configuration parameter
+	# Read out the configuration parameter:
 	config = configparser.ConfigParser()
 	config.read('import_init_data.conf')
 	if ('PROCESSING_INTERVAL' in config):
@@ -203,17 +202,15 @@ def visualization(orderedList, livePlot):
 		pro_val = 15
 	########################################################################################################
 	
-	# Get the star time and the stop time as a timestamp:
-	# time_begin = time.mktime((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
+	# Get the start time as a timestamp (UTC) and correct the start time with the processing interval section:
 	time_begin = calendar.timegm((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
-	
-	
+		
 	print(str_time_begin)
-	#str_time_begin = datetime.fromtimestamp(time_begin).strftime('%Y-%m-%d %H:%M:%S')
-	#print(str_time_begin)
+	# Correct the start time string with the processing interval section:
 	str_time_begin = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_begin))
 	print(str_time_begin)
 	
+	# Get the end time as a timestamp (UTC):
 	time_end = calendar.timegm((int(str_time_end[0:4]), int(str_time_begin[5:7]), int(str_time_end[8:10]), int(str_time_end[11:13]), int(str_time_end[14:16]), int(str_time_end[17:19]), 0, 0, 0))
 	
 	# Get the time space:
