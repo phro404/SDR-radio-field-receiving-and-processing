@@ -302,7 +302,7 @@ def visualization(orderedList, livePlot):
 	
 	
 	# Save and show the plots:
-	str_time_current = datetime.datetime.now().isoformat()	# Get the current time as a string
+	str_time_current = datetime.now().isoformat()	# Get the current time as a string
 		
 	if livePlot == True:
 		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'					# Edit the start time string
