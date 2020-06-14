@@ -10,6 +10,7 @@ import subprocess, sys
 
 import configparser
 from datetime import datetime
+import calendar
 #=================================== Import of the relevant libraries ======================================
 
 def visualization(orderedList, livePlot):
