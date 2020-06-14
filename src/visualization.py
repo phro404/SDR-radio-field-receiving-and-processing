@@ -214,7 +214,7 @@ def visualization(orderedList, livePlot):
 	str_time_begin = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_begin))
 	print(str_time_begin)
 	
-	time_end = time.mktime((int(str_time_end[0:4]), int(str_time_begin[5:7]), int(str_time_end[8:10]), int(str_time_end[11:13]), int(str_time_end[14:16]), int(str_time_end[17:19]), 0, 0, 0))
+	time_end = calendar.timegm((int(str_time_end[0:4]), int(str_time_begin[5:7]), int(str_time_end[8:10]), int(str_time_end[11:13]), int(str_time_end[14:16]), int(str_time_end[17:19]), 0, 0, 0))
 	
 	# Get the time space:
 	time_space = int(time_end - time_begin)
