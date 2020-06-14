@@ -248,7 +248,7 @@ def visualization(orderedList, livePlot):
 		return my_autopct_for_pie_test_replies
 	
 	axes_test_replies.pie(pie_values_test_replies, labels=pie_labels_test_replies, colors=pie_colors_test_replies, autopct=make_autopct_for_pie_test_replies(pie_values_test_replies), startangle=90, textprops={'fontsize': 8})
-	plt.title(f'Decoding of all test replies (abs.: {test_tx_sum})')
+	plt.title(f'Decoding of all send test replies \n(abs.: {test_tx_sum}; avg.: {round((test_tx_sum / time_space), 2)} per s)')
   
 	
 	# Print the pie chart for the number of all replies:
