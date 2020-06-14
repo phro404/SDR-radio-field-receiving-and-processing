@@ -205,7 +205,7 @@ def visualization(orderedList, livePlot):
 	
 	# Get the star time and the stop time as a timestamp:
 	# time_begin = time.mktime((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
-	time_begin = time.calendar.timegm((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
+	time_begin = calendar.timegm((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
 	
 	
 	print(str_time_begin)
