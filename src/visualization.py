@@ -251,12 +251,12 @@ def visualization(orderedList, livePlot):
 	plt.title(f'Decoding of all test replies (abs.: {test_tx_sum})')
   
 	
-	# Print the pie chart for the number of all replies
-	pie_labels_all_replies = 'Mode S Short', 'Mode S Long', 'A/C'					   # Name of slices
-	pie_values_all_replies = [s_short_replies_sum, s_long_replies_sum, ac_replies_sum]  # Value of slices
-	pie_colors_all_replies = ['orange', 'red', 'lightskyblue']						  # Colors of the pie chart
+	# Print the pie chart for the number of all replies:
+	pie_labels_all_replies = 'Mode S Short', 'Mode S Long', 'A/C'				# Name of slices
+	pie_values_all_replies = [s_short_replies_sum, s_long_replies_sum, ac_replies_sum]	# Values of slices
+	pie_colors_all_replies = ['orange', 'red', 'lightskyblue']				# Colors of the pie chart
 	
-	# Create the pie chart
+	# Create the pie chart:
 	axes_all_replies = plt.subplot2grid((2,2),(1,1))
 
 	def make_autopct_for_pie_all_replies(pie_values_all_replies):
@@ -267,38 +267,39 @@ def visualization(orderedList, livePlot):
 		return my_autopct_for_pie_all_replies
 
 	axes_all_replies.pie(pie_values_all_replies, labels=pie_labels_all_replies, colors=pie_colors_all_replies, autopct=make_autopct_for_pie_all_replies(pie_values_all_replies), startangle=90, textprops={'fontsize': 8})
-	plt.title(f'Distribution of all received types \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
+	plt.title(f'Distribution of all received types \n(abs.: {all_replies_sum}; avg.: {round((all_replies_sum / time_space), 2)} per s)')
 	
 
-	# Print the successrate of the received test replies for each level
+	# Print the successrate of the received test replies for each level:
 	plt.subplot(2, 2, 1)
-	plt.plot(level_for_successrate_chart, ac_test_reply_succ, '-x', color='lightskyblue')	   # Create the plot
-	plt.plot(level_for_successrate_chart, s_long_test_reply_succ, '-x', color='red')			# Create the plot
+	plt.plot(level_for_successrate_chart, ac_test_reply_succ, '-x', color='lightskyblue')		# Create the plot
+	plt.plot(level_for_successrate_chart, s_long_test_reply_succ, '-x', color='red')		# Create the plot
 	plt.plot(level_for_successrate_chart, s_short_test_reply_succ, '-x', color='orange')		# Create the plot
-	plt.ylabel('probability of receiving in %')												 # x-label
-	plt.xlabel('level [dBm]')																   # y-label
-	plt.legend(['A/C test replies', 'Mode S Long test replies', 'Mode S Short test replies'])   # Legend
-	plt.grid(True)																			  # Grid
+	plt.ylabel('probability of receiving in %')							# x-label
+	plt.xlabel('level [dBm]')									# y-label
+	plt.legend(['A/C test replies', 'Mode S Long test replies', 'Mode S Short test replies'])	# Legend
+	plt.grid(True)											# Grid
 	plt.title(f'Successrate of all test replies')
 
 	
-	# Print the plot for the average number of replies for every type at each level
+	# Print the plot for the average number of replies for every type at each level:
 	plt.subplot(2, 2, 2)
 	plt.plot(level_for_distribution_chart, list_level_AC, 'o', color='lightskyblue')	# Print the data row for A/C
-	plt.plot(level_for_distribution_chart, list_level_S_long,'s', color='red')		  # Print the data row for Mode S Long
-	plt.plot(level_for_distribution_chart, list_level_S_short,'^', color='orange')	  # Print the data row for Mode S Short
-	plt.ylabel('number of replies per s')											   # y-label
-	plt.xlabel('level [dBm]')														   # x-label
-	plt.legend(['A/C Replies', 'Mode S Long replies', 'Mode S Short replies'])		  # Legend
-	plt.grid(True)																	  # Grid
-	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {int(all_replies_sum / time_space)} per s)')
+	plt.plot(level_for_distribution_chart, list_level_S_long,'s', color='red')		# Print the data row for Mode S Long
+	plt.plot(level_for_distribution_chart, list_level_S_short,'^', color='orange')	  	# Print the data row for Mode S Short
+	plt.ylabel('number of replies per s')							# y-label
+	plt.xlabel('level [dBm]')								# x-label
+	plt.legend(['A/C Replies', 'Mode S Long replies', 'Mode S Short replies'])		# Legend
+	plt.grid(True)										# Grid
+	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {round((all_replies_sum / time_space), 2)} per s)')
 		
-	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nOccupancy of the channel: {round(occupancy_channel, 2)}s \nFlights on average: {curr_planes}', fontsize=14)
+	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nTime space: {round(time_space_for_plot, 2)}s \nOccupancy of the channel: {round(occupancy_channel, 2)}s \nFlights on average: {round(curr_planes, 2)}', fontsize=14)
 						
-	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.8, wspace = 0.25, hspace = 0.55)  # Distances of the sobplots
+	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.75, wspace = 0.25, hspace = 0.55)	# Distances of the sobplots
 	
 	
-	str_time_current = datetime.datetime.now().isoformat()  # Get the current time as a string
+	# Save and show the plots:
+	str_time_current = datetime.datetime.now().isoformat()	# Get the current time as a string
 		
 	if livePlot == True:
 		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
