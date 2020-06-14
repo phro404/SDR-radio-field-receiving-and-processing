@@ -181,8 +181,8 @@ def visualization(orderedList, livePlot):
 
 	
 	########################################################################################################
-        '''
-        import configparser
+	'''
+	import configparser
 	
         class TelegramProcessing:
         	def __init__(self):
@@ -199,8 +199,8 @@ def visualization(orderedList, livePlot):
 		else:
 			print("Processing interval section is not available! Default value is set.")
 			self.pro_val = 15
-        '''
-        ########################################################################################################
+	'''
+	########################################################################################################
 
 	# Get the star time and the stop time as a timestamp:
 	time_begin = time.mktime((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0))
