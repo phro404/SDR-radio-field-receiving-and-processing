@@ -302,27 +302,27 @@ def visualization(orderedList, livePlot):
 	str_time_current = datetime.datetime.now().isoformat()	# Get the current time as a string
 		
 	if livePlot == True:
-		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
+		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'					# Edit the start time string
 		start_time_for_liveplotname = start_time_for_liveplotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'liveplot_begin_{start_time_for_liveplotname}.pdf')	# Create the liveplot name (apropos of the file names) 
 		
 		if os.path.exists(plotname):
 			print('Plot exstiert')
-			plt.savefig(plotname, bbox_inches='tight')  # Save the plot			
+			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot			
 		else:
 			print('Plot existiert nicht')
-			plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-			opener ="open" if sys.platform == "darwin" else "xdg-open"
+			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot
+			opener = "open" if sys.platform == "darwin" else "xdg-open"
 			subprocess.call([opener, plotname])
 			
 	else:
-		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		 # Edit the start time string
+		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		# Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
-		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'			   # Edit the end time string
+		end_time_for_plotname = f'{str_time_end[0:10]}_{str_time_end[11:19]}'			# Edit the end time string
 		end_time_for_plotname = end_time_for_plotname.replace(':', '-')
-		current_time_for_plotname = f'{str_time_current[0:10]}_{str_time_current[11:19]}'   # Edit the current time string
+		current_time_for_plotname = f'{str_time_current[0:10]}_{str_time_current[11:19]}'   	# Edit the current time string
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
-		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')   # Create the plot name
+		plotname = orderedList[0].replace(orderedList[0][-27:], f'plot_{start_time_for_plotname}_to_{end_time_for_plotname}_printed_{current_time_for_plotname}.pdf')	# Create the plot name
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 		plt.show()
 		
