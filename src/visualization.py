@@ -189,16 +189,16 @@ def visualization(orderedList, livePlot):
 			self.socket_buffer = []
 			self.out_buffer = []
 
-		#reading out configuration parameter
-		config = configparser.ConfigParser()
-		config.read('import_init_data.conf')
-		if ('PROCESSING_INTERVAL' in config):
-			print("Processing interval section was found.")
-			pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-			print(f'TIME = {pro_val}')
-		else:
-			print("Processing interval section is not available! Default value is set.")
-			pro_val = 15
+	#reading out configuration parameter
+	config = configparser.ConfigParser()
+	config.read('import_init_data.conf')
+	if ('PROCESSING_INTERVAL' in config):
+		print("Processing interval section was found.")
+		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
+		print(f'TIME = {pro_val}')
+	else:
+		print("Processing interval section is not available! Default value is set.")
+		pro_val = 15
 	########################################################################################################
 	
 	# Get the star time and the stop time as a timestamp:
