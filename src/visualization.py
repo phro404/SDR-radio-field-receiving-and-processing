@@ -57,6 +57,7 @@ def visualization(orderedList, livePlot):
 	level_for_distribution_chart = np.arange(-90, -45, 1)	# List of levels for flight replies
 	#=================================== Implementation of all Variables =======================================
 
+	
 	#================================ Collecting the data from the CSV files ===================================
 	for line in orderedList:	# Read Path List
    
@@ -160,34 +161,58 @@ def visualization(orderedList, livePlot):
 
 		
 	if data_row_counter_lvl_reply == 0:
-		data_row_counter_lvl_reply = 1		# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
-	curr_planes = int(curr_planes / data_row_counter_lvl_reply) # Estimate the average number of detected planes
-
-	# Get the successrate for the test replies at each level
+		data_row_counter_lvl_reply = 1						# If the file is empty, the counter has to be set to 1 to aviod a devision through 0
+	curr_planes = float(curr_planes / data_row_counter_lvl_reply)			# Estimate the average number of detected planes
+	occupancy_channel = float(occupancy_channel / data_row_counter_lvl_reply)	# Estimate the average occupancy of the channel
+	
+	# Get the successrate for the test replies at each level:
 	for i in range(int(45/step_level)):
 		if counter_ac_test_replies_per_level[i] == 0:
-			counter_ac_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		ac_test_reply_succ[i] = ac_test_reply_succ[i] / counter_ac_test_replies_per_level[i]	 # Estimate the A/C successrate
+			counter_ac_test_replies_per_level[i] = 1						# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
+		ac_test_reply_succ[i] = float(ac_test_reply_succ[i] / counter_ac_test_replies_per_level[i])	# Estimate the A/C successrate
 
 		if counter_s_long_test_replies_per_level[i] == 0:
-			counter_s_long_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		s_long_test_reply_succ[i] = s_long_test_reply_succ[i] / counter_s_long_test_replies_per_level[i]	 # Estimate the Mode S Long successrate
+			counter_s_long_test_replies_per_level[i] = 1							# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
+		s_long_test_reply_succ[i] = float(s_long_test_reply_succ[i] / counter_s_long_test_replies_per_level[i])	# Estimate the Mode S Long successrate
 
 		if counter_s_short_test_replies_per_level[i] == 0:
-			counter_s_short_test_replies_per_level[i] = 1	# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
-		s_short_test_reply_succ[i] = s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i]	 # Estimate the Mode S Short successrate
+			counter_s_short_test_replies_per_level[i] = 1								# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
+		s_short_test_reply_succ[i] = float(s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i])	# Estimate the Mode S Short successrate
 
+	
+	########################################################################################################
+        '''
+        import configparser
+	
+        class TelegramProcessing:
+        	def __init__(self):
+			self.dump1090_buffer = []
+			self.socket_buffer = []
+			self.out_buffer = []
 
-	# Get the star time and the stop time as a timestamp
+		#reading out configuration parameter
+		config = configparser.ConfigParser()
+		config.read('import_init_data.conf')
+		if ('PROCESSING_INTERVAL' in config):
+			print("Processing interval section was found.")
+			self.pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
+		else:
+			print("Processing interval section is not available! Default value is set.")
+			self.pro_val = 15
+        '''
+        ########################################################################################################
+
+	# Get the star time and the stop time as a timestamp:
 	time_begin = time.mktime((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0))
 	time_end = time.mktime((int(str_time_end[0:4]), int(str_time_begin[5:7]), int(str_time_end[8:10]), int(str_time_end[11:13]), int(str_time_end[14:16]), int(str_time_end[17:19]), 0, 0, 0))
 	
-	# Get the time space
+	# Get the time space:
 	time_space = int(time_end - time_begin)
+	time_space_for_plot = time_space
 	if time_space == 0:
-		time_space = 1  # If there is only one data row we have to divide through 1 to avoid a devision through 0
+		time_space = 1	# If there is only one data row we have to divide through 1 to avoid a devision through 0
 	
-	# Get the average number of replies for every type
+	# Get the average number of replies for every type:
 	for column in range(45):
 		list_level_AC[column] = float(list_level_AC[column]/time_space)
 
@@ -200,7 +225,6 @@ def visualization(orderedList, livePlot):
 	
 	
 	#============================================= Plotting ====================================================
-	
 	if livePlot == True:
 		plt.rcParams["figure.figsize"] = (12, 7)	# Size of the plot frame
 		plt.clf()				   # When "livePlot == True" then overwrite the old plot
