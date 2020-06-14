@@ -11,25 +11,6 @@ import subprocess, sys
 import configparser
 #=================================== Import of the relevant libraries ======================================
 
-########################################################################################################
-class TelegramProcessing:
-	def __init__(self):
-		self.dump1090_buffer = []
-		self.socket_buffer = []
-		self.out_buffer = []
-
-	#reading out configuration parameter
-	config = configparser.ConfigParser()
-	config.read('import_init_data.conf')
-	if ('PROCESSING_INTERVAL' in config):
-		print("Processing interval section was found.")
-		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-		print(f'TIME = {pro_val}')
-	else:
-		print("Processing interval section is not available! Default value is set.")
-		pro_val = 15
-########################################################################################################
-
 def visualization(orderedList, livePlot):
 	
 	print('visualization started')
@@ -200,6 +181,25 @@ def visualization(orderedList, livePlot):
 			counter_s_short_test_replies_per_level[i] = 1								# If there or no replies at this level, the counter has to be set to 1 to aviod a devision through 0
 		s_short_test_reply_succ[i] = float(s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i])	# Estimate the Mode S Short successrate
 	
+	
+	########################################################################################################
+	class TelegramProcessing:
+		def __init__(self):
+			self.dump1090_buffer = []
+			self.socket_buffer = []
+			self.out_buffer = []
+
+		#reading out configuration parameter
+		config = configparser.ConfigParser()
+		config.read('import_init_data.conf')
+		if ('PROCESSING_INTERVAL' in config):
+			print("Processing interval section was found.")
+			pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
+			print(f'TIME = {pro_val}')
+		else:
+			print("Processing interval section is not available! Default value is set.")
+			pro_val = 15
+	########################################################################################################
 	
 	# Get the star time and the stop time as a timestamp:
 	time_begin = time.mktime((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - pro_val
