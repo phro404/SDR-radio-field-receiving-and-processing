@@ -23,8 +23,8 @@ class FileWriter(object):
 		############################################---CSV-write-start---###############################################
 		now = datetime.now()
 
-		if (self.d !=  now.strftime("%Y.%m.%d_%H")):							#check for new hour
-			self.d = now.strftime("%Y.%m.%d_%H")							#set d as timedefinition
+		if (self.d !=  now.strftime("%Y-%m-%d_%H")):							#check for new hour
+			self.d = now.strftime("%Y-%m-%d_%H")							#set d as timedefinition
 			self.name_lvl = "../data/" + self.d + "_lvl_reply.csv"					#set name lvl_reply_date
 			self.name_amp = "../data/" + self.d + "_amp_hist.csv"					#set name date_amp_hist.csv
 			
