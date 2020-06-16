@@ -18,7 +18,8 @@ def visualization(orderedList, livePlot):
 		print('Creating Live-Plot')
 	else:
 		mlp.use('TkAgg')
-		print('Creating Data-Plot')		
+		print('Creating Data-Plot')
+		print(orderedList)
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
@@ -194,9 +195,9 @@ def visualization(orderedList, livePlot):
 	config = configparser.ConfigParser()
 	config.read('import_init_data.conf')
 	if ('PROCESSING_INTERVAL' in config):
-		print("Processing interval section was found.")
+		# print("Processing interval section was found.")
 		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-		print(f'Processing interval section = {pro_val}s')
+		# print(f'Processing interval section = {pro_val}s')
 	else:
 		print("Processing interval section is not available! Default value is set.")
 		pro_val = 15
@@ -312,14 +313,13 @@ def visualization(orderedList, livePlot):
 		plotname = orderedList[0].replace(orderedList[0][-18:], f'{start_time_for_liveplotname}_liveplot.pdf')	# Create the liveplot name (apropos of the file names) 
 		
 		if os.path.exists(plotname):
-			print('Plot exstiert')
 			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot			
 		else:
-			print('Plot existiert nicht')
 			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot
 			opener = "open" if sys.platform == "darwin" else "xdg-open"
 			subprocess.call([opener, plotname])
-			
+		
+		print(f'Live-Plot saved as: {plotname}')			
 	else:
 		start_time_for_plotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'		# Edit the start time string
 		start_time_for_plotname = start_time_for_plotname.replace(':', '-')
@@ -330,6 +330,5 @@ def visualization(orderedList, livePlot):
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'{start_time_for_plotname}_to_{end_time_for_plotname}_plot_printed_{current_time_for_plotname}.pdf')	# Create the plot name
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
 		plt.show()
-		
-	print(f'figure saved as: {plotname}')
+		print(f'Data-Plot saved as: {plotname}')	
 	#============================================= Plotting ====================================================
