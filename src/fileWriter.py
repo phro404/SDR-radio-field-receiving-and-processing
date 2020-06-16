@@ -60,7 +60,7 @@ class FileWriter(object):
 				
 		if delete_liveplot_csv == True:
 			if os.path.exists(self.name_lvl_live):
-				print('New live CSV created')
+				print('New Live-CSV created')
 				os.remove(self.name_lvl_live)
 				os.remove(self.name_amp_live)
 				
