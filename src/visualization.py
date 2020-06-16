@@ -22,9 +22,9 @@ def visualization(orderedList, livePlot):
 		print(orderedList)
 		for index_orderedList in range(len(orderedList)):
 			if (index_orderedList % 2) == 0:
-				print({f'\t{orderedList[index_orderedList][-27:]}')
+				print(f'\t{orderedList[index_orderedList][-27:]}')
 			else
-				print({f'\t{orderedList[index_orderedList][-26:]}')
+				print(f'\t{orderedList[index_orderedList][-26:]}')
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
