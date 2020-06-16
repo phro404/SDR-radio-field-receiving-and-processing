@@ -13,12 +13,12 @@ import calendar
 
 def visualization(orderedList, livePlot):
 	
-	print('visualization started')
-	
 	if livePlot == True:
-		mlp.use('Agg') 
+		mlp.use('Agg')
+		print('Creating Live-Plot')
 	else:
 		mlp.use('TkAgg')
+		print('Creating Data-Plot')		
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
@@ -196,7 +196,7 @@ def visualization(orderedList, livePlot):
 	if ('PROCESSING_INTERVAL' in config):
 		print("Processing interval section was found.")
 		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-		print(f'TIME = {pro_val}')
+		print(f'Processing interval section = {pro_val}s')
 	else:
 		print("Processing interval section is not available! Default value is set.")
 		pro_val = 15
@@ -205,11 +205,9 @@ def visualization(orderedList, livePlot):
 	# Get the start time as a timestamp (UTC) and correct the start time with the processing interval section:
 	time_begin = calendar.timegm((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
 		
-	print(str_time_begin)
 	# Correct the start time string with the processing interval section:
 	str_time_begin = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(time_begin))
-	print(str_time_begin)
-	
+		
 	# Get the end time as a timestamp (UTC):
 	time_end = calendar.timegm((int(str_time_end[0:4]), int(str_time_begin[5:7]), int(str_time_end[8:10]), int(str_time_end[11:13]), int(str_time_end[14:16]), int(str_time_end[17:19]), 0, 0, 0))
 	
