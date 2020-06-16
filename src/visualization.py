@@ -20,6 +20,8 @@ def visualization(orderedList, livePlot):
 		mlp.use('TkAgg')
 		print('Creating Data-Plot')
 		print(orderedList)
+		for index_orderedList in range(len(orderedList)):
+			print(orderedList[index_orderedList])
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
