@@ -11,6 +11,15 @@ import configparser
 import calendar
 #=================================== Import of the relevant libraries ======================================
 
+def make_autopct_for_pie_test_replies(pie_values_test_replies):
+	def my_autopct_for_pie_test_replies(pct):
+		total = sum(pie_values_test_replies)
+		val = int(round(pct*total/100.0))
+		return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
+	return my_autopct_for_pie_test_replies
+
+
+
 def visualization(orderedList, livePlot):
 	
 	if livePlot == True:
@@ -249,14 +258,14 @@ def visualization(orderedList, livePlot):
 	
 	# Create the pie chart:
 	axes_test_replies = plt.subplot2grid((2,2),(1,0))
-
+	'''
 	def make_autopct_for_pie_test_replies(pie_values_test_replies):
 		def my_autopct_for_pie_test_replies(pct):
 			total = sum(pie_values_test_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
 		return my_autopct_for_pie_test_replies
-	
+	'''
 	axes_test_replies.pie(pie_values_test_replies, labels=pie_labels_test_replies, colors=pie_colors_test_replies, autopct=make_autopct_for_pie_test_replies(pie_values_test_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Decoding of all send test replies \n(abs.: {test_tx_sum}; avg.: {round((test_tx_sum / time_space), 2)} per s)')
   
@@ -268,14 +277,14 @@ def visualization(orderedList, livePlot):
 	
 	# Create the pie chart:
 	axes_all_replies = plt.subplot2grid((2,2),(1,1))
-
+	
 	def make_autopct_for_pie_all_replies(pie_values_all_replies):
 		def my_autopct_for_pie_all_replies(pct):
 			total = sum(pie_values_all_replies)
 			val = int(round(pct*total/100.0))
 			return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
 		return my_autopct_for_pie_all_replies
-
+	
 	axes_all_replies.pie(pie_values_all_replies, labels=pie_labels_all_replies, colors=pie_colors_all_replies, autopct=make_autopct_for_pie_all_replies(pie_values_all_replies), startangle=90, textprops={'fontsize': 8})
 	plt.title(f'Distribution of all received types \n(abs.: {all_replies_sum}; avg.: {round((all_replies_sum / time_space), 2)} per s)')
 	
