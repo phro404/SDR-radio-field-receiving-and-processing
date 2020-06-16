@@ -12,13 +12,13 @@ import calendar
 #=================================== Import of the relevant libraries ======================================
 
 
-def make_autopct_for_pie_all_replies(pie_values_all_replies):
-	def my_autopct_for_pie_all_replies(pct):
-		total = sum(pie_values_all_replies)
-		val = int(round(pct*total/100.0))
-		print(f'pct = {pct}')
-		return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
-	return my_autopct_for_pie_all_replies
+def make_autopct_for_pie_all_replies(pie_values_all_replies, pct):
+	#def my_autopct_for_pie_all_replies(pct):
+	total = sum(pie_values_all_replies)
+	val = int(round(pct*total/100.0))
+	print(f'pct = {pct}')
+	return '{v:d} \n ({p:.2f}%)'.format(p=pct, v=val)
+	#return my_autopct_for_pie_all_replies
 
 def visualization(orderedList, livePlot):
 	
