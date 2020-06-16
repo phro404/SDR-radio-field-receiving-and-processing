@@ -21,7 +21,7 @@ def visualization(orderedList, livePlot):
 		print('Creating Data-Plot from:')
 		print(orderedList)
 		for index_orderedList in range(len(orderedList)):
-			print(f'\t{orderedList[index_orderedList][-27:0]}')
+			print(orderedList[index_orderedList][-27:0])
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
