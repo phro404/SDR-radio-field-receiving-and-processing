@@ -151,8 +151,7 @@ class FileWriter(object):
 				delete_live = True
 			first_run = False
 			
-			print(1)
 			self.sort(in_pipe)
-			print(2)
+			print()
 			self.write(delete_live)			
 			delete_live = False
