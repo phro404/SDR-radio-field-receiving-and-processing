@@ -19,7 +19,6 @@ def visualization(orderedList, livePlot):
 	else:
 		mlp.use('TkAgg')
 		print('Creating Data-Plot from:')
-		print(orderedList)
 		for index_orderedList in range(len(orderedList)):
 			if (index_orderedList % 2) == 0:
 				print(f'\t{orderedList[index_orderedList][-27:]}')
@@ -334,6 +333,6 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'{start_time_for_plotname}_to_{end_time_for_plotname}_plot_printed_{current_time_for_plotname}.pdf')	# Create the plot name
 		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
-		plt.show()
-		print(f'Data-Plot saved as: {plotname}')	
+		print(f'Data-Plot saved as: {plotname}')
+		plt.show()			
 	#============================================= Plotting ====================================================
