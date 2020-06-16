@@ -320,7 +320,7 @@ def visualization(orderedList, livePlot):
 			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot			
 		else:
 			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot
-			opener = "open" #if sys.platform == "darwin" else "xdg-open"
+			opener = "open" if sys.platform == "darwin" else "xdg-open"
 			subprocess.call([opener, plotname])
 		
 		print(f'Live-Plot saved as: {plotname}')			
