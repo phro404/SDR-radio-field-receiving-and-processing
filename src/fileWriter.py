@@ -60,11 +60,10 @@ class FileWriter(object):
 				
 		if delete_liveplot_csv == True:
 			if os.path.exists(self.name_lvl_live):
-				print('LIVE LOESCHEN')
+				print('New live CSV created')
 				os.remove(self.name_lvl_live)
 				os.remove(self.name_amp_live)
-		print('LIVE WIRD GESCHRIEBEN')
-		
+				
 		f = open(self.name_lvl_live ,"a")							#generating for empty-test lvl, attend to save possible content
 		f.close()
 		f = open(self.name_amp_live ,"a")							#generating for empty-test amp, attend to save possible content
@@ -92,7 +91,6 @@ class FileWriter(object):
 		############################################---Liveplot-write-end---#####################################################
 		
 		self.orderedList = [os.path.abspath(self.name_lvl_live), os.path.abspath(self.name_amp_live)]
-		print(self.orderedList)
 		visualization.visualization(self.orderedList, True)
 	
 	
@@ -149,7 +147,7 @@ class FileWriter(object):
 		
 		while (not exit.is_set()):
 			if first_run == True:
-				print('first run')
+				print('Measurement started')
 				delete_live = True
 			first_run = False
 			
