@@ -19,11 +19,11 @@ def visualization(orderedList, livePlot):
 	else:
 		mlp.use('TkAgg')
 		print('Creating Data-Plot from:')
-		for index_orderedList in range(len(orderedList)):
+		for index_orderedList in range(len(orderedList)):			# Print the names of the CSV files, which have been used for creating the Data-Plot
 			if (index_orderedList % 2) == 0:
-				print(f'\t{orderedList[index_orderedList][-27:]}')
+				print(f'\t{orderedList[index_orderedList][-27:]}')	# Name of the CSV files without the path
 			else:
-				print(f'\t{orderedList[index_orderedList][-26:]}')
+				print(f'\t{orderedList[index_orderedList][-26:]}')	# Name of the CSV files without the path
 	
 	#=================================== Implementation of all Variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
@@ -312,16 +312,16 @@ def visualization(orderedList, livePlot):
 	str_time_current = datetime.datetime.now().isoformat()	# Get the current time as a string
 		
 	if livePlot == True:
-		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'					# Edit the start time string
+		start_time_for_liveplotname = f'{str_time_begin[0:10]}_{str_time_begin[11:19]}'				# Edit the start time string
 		start_time_for_liveplotname = start_time_for_liveplotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-18:], f'{start_time_for_liveplotname}_liveplot.pdf')	# Create the liveplot name (apropos of the file names) 
 		
 		if os.path.exists(plotname):
-			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot			
+			plt.savefig(plotname, bbox_inches = 'tight')			# Save the plot			
 		else:
-			plt.savefig(plotname, bbox_inches = 'tight')	# Save the plot
+			plt.savefig(plotname, bbox_inches = 'tight')			# Save the plot
 			opener = "open" if sys.platform == "darwin" else "xdg-open"
-			subprocess.call([opener, plotname])
+			subprocess.call([opener, plotname])				# Open the Live-Plot as a PDF file
 		
 		print(f'Live-Plot saved as: {plotname}')			
 	else:
@@ -332,7 +332,7 @@ def visualization(orderedList, livePlot):
 		current_time_for_plotname = f'{str_time_current[0:10]}_{str_time_current[11:19]}'   	# Edit the current time string
 		current_time_for_plotname = current_time_for_plotname.replace(':', '-')
 		plotname = orderedList[0].replace(orderedList[0][-27:], f'{start_time_for_plotname}_to_{end_time_for_plotname}_plot_printed_{current_time_for_plotname}.pdf')	# Create the plot name
-		plt.savefig(plotname, bbox_inches='tight')  # Save the plot
+		plt.savefig(plotname, bbox_inches='tight')	# Save the plot
 		print(f'Data-Plot saved as: {plotname}')
-		plt.show()			
+		plt.show()					# Show the plot			
 	#============================================= Plotting ====================================================
