@@ -39,6 +39,7 @@ class TelegramProcessing:
 		t_now = time.time()
 
 		while (t_now < t_start + float(self.pro_val)):
+			time.sleep(0.2)
 			while (dump1090_pipe.poll()):
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
@@ -178,6 +179,7 @@ class TelegramProcessing:
 			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0
 
 			while (t_now < t_start + float(self.pro_val)):
+				time.sleep(0.2)
 				while (dump1090_pipe.poll()):
 					data = dump1090_pipe.recv()
 					self.dump1090_buffer.append(data)
