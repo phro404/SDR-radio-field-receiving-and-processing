@@ -23,7 +23,7 @@ def visualization(orderedList, livePlot):
 		for index_orderedList in range(len(orderedList)):
 			if (index_orderedList % 2) == 0:
 				print(f'\t{orderedList[index_orderedList][-27:]}')
-			else
+			else:
 				print(f'\t{orderedList[index_orderedList][-26:]}')
 	
 	#=================================== Implementation of all Variables =======================================
