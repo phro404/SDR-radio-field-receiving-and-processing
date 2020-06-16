@@ -206,20 +206,21 @@ def visualization(orderedList, livePlot):
 	
 	
 	########################################################################################################
+	'''
 	# Get the processing interval section:
 	class TelegramProcessing:
 		def __init__(self):
 			self.dump1090_buffer = []
 			self.socket_buffer = []
 			self.out_buffer = []
-
+	'''
 	# Read out the configuration parameter:
 	config = configparser.ConfigParser()
 	config.read('import_init_data.conf')
 	if ('PROCESSING_INTERVAL' in config):
-		# print("Processing interval section was found.")
+		print("Processing interval section was found.")
 		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-		# print(f'Processing interval section = {pro_val}s')
+		print(f'Processing interval section = {pro_val}s')
 	else:
 		print("Processing interval section is not available! Default value is set.")
 		pro_val = 15
