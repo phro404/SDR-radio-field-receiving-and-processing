@@ -48,45 +48,45 @@ class FileWriter(object):
 			f.write(self.lvl)									#print string in data
 			f.close()
 			
-		if (len(self.lvl) != 0):
+		if (len(self.amp) != 0):
 			f = open(self.name_amp ,"a")								#open data with name, if not existing create, attand to written text
 			f.write(self.amp)									#print string in data
 			f.close()
 		############################################---CSV-write-end---#####################################################
 				
 		############################################---Liveplot-write-start---###############################################
-		self.name_lvl_live = "../data/" + "lvl_reply_live.csv"					#set name lvl_reply_date
-		self.name_amp_live = "../data/" + "amp_hist_live.csv"					#set name date_amp_hist.csv
+		self.name_lvl_live = "../data/" + "lvl_reply_live.csv"						#set name lvl_reply_date
+		self.name_amp_live = "../data/" + "amp_hist_live.csv"						#set name date_amp_hist.csv
 				
-		if delete_liveplot_csv == True:
-			if os.path.exists(self.name_lvl_live):
-				print('New Live-CSV created')
+		if delete_liveplot_csv == True:									#if delete is set, remove old live.csv
+			if os.path.exists(self.name_lvl_live):							#if liveplots exist delete them
 				os.remove(self.name_lvl_live)
 				os.remove(self.name_amp_live)
+				print('New Live-CSV created')							#print for console and debugging
 				
-		f = open(self.name_lvl_live ,"a")							#generating for empty-test lvl, attend to save possible content
+		f = open(self.name_lvl_live ,"a")								#generating for empty-test lvl, attend to save possible content
 		f.close()
-		f = open(self.name_amp_live ,"a")							#generating for empty-test amp, attend to save possible content
+		f = open(self.name_amp_live ,"a")								#generating for empty-test amp, attend to save possible content
 		f.close()
-
-		if os.stat(self.name_lvl_live).st_size == 0:						#if lvl is empty write firstline
-			f = open(self.name_lvl_live ,"w+")						#open data with name, if not existing create
-			f.write(self.lvlFirstLine)							#print first line in file
+		
+		if os.stat(self.name_lvl_live).st_size == 0:							#if lvl is empty write firstline
+			f = open(self.name_lvl_live ,"w+")							#open data with name, if not existing create
+			f.write(self.lvlFirstLine)								#print first line in file
 			f.close()
-
-		if os.stat(self.name_amp_live).st_size == 0:						#if amp is empty write firstline
-			f = open(self.name_amp_live ,"w+")						#open data with name, if not existing create
-			f.write(self.ampFirstLine)							#print first line in file
+		
+		if os.stat(self.name_amp_live).st_size == 0:							#if amp is empty write firstline
+			f = open(self.name_amp_live ,"w+")							#open data with name, if not existing create
+			f.write(self.ampFirstLine)								#print first line in file
 			f.close()
-
+		
 		if (len(self.lvl) != 0):
-			f = open(self.name_lvl_live ,"a")						#open data with name, if not existing create, attand to written text
-			f.write(self.lvl)								#print string in data
+			f = open(self.name_lvl_live ,"a")							#open data with name, if not existing create, attand to written text
+			f.write(self.lvl)									#print string in data
 			f.close()
 			
-		if (len(self.lvl) != 0):
-			f = open(self.name_amp_live ,"a")						#open data with name, if not existing create, attand to written text
-			f.write(self.amp)								#print string in data
+		if (len(self.amp) != 0):
+			f = open(self.name_amp_live ,"a")							#open data with name, if not existing create, attand to written text
+			f.write(self.amp)									#print string in data
 			f.close()
 		############################################---Liveplot-write-end---#####################################################
 		
@@ -149,7 +149,7 @@ class FileWriter(object):
 			if first_run == True:
 				print('Measurement started')
 				delete_live = True
-			first_run = False
+				first_run = False
 			
 			self.sort(in_pipe)
 			print()
