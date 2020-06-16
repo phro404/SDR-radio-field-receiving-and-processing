@@ -1,4 +1,4 @@
-#=================================== Import of the relevant libraries ======================================
+#============================================== Import of the relevant libraries ================================================
 import csv
 import time
 import matplotlib as mlp
@@ -9,7 +9,8 @@ import os
 import subprocess, sys
 import configparser
 import calendar
-#=================================== Import of the relevant libraries ======================================
+#============================================== Import of the relevant libraries ================================================
+
 
 # Presentation of the percent values in the pie charts:
 def make_autopct_for_pie_test_replies(pie_values_test_replies):
@@ -28,7 +29,7 @@ def make_autopct_for_pie_all_replies(pie_values_all_replies):
 	return my_autopct_for_pie_all_replies
 
 
-# Visualization program:
+#================================================ Visualization program begin ===================================================
 def visualization(orderedList, livePlot):
 	
 	if livePlot == True:
@@ -205,26 +206,16 @@ def visualization(orderedList, livePlot):
 		s_short_test_reply_succ[i] = float(s_short_test_reply_succ[i] / counter_s_short_test_replies_per_level[i])	# Estimate the Mode S Short successrate
 	
 	
-	########################################################################################################
-	'''
-	# Get the processing interval section:
-	class TelegramProcessing:
-		def __init__(self):
-			self.dump1090_buffer = []
-			self.socket_buffer = []
-			self.out_buffer = []
-	'''
-	# Read out the configuration parameter:
+	# Read out the configuration parameter and get the processing interval section:
 	config = configparser.ConfigParser()
 	config.read('import_init_data.conf')
 	if ('PROCESSING_INTERVAL' in config):
-		print("Processing interval section was found.")
+		# print("Processing interval section was found.")
 		pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
-		print(f'Processing interval section = {pro_val}s')
+		# print(f'Processing interval section = {pro_val}s')
 	else:
-		print("Processing interval section is not available! Default value is set.")
+		# print("Processing interval section is not available! Default value is set.")
 		pro_val = 15
-	########################################################################################################
 	
 	# Get the start time as a timestamp (UTC) and correct the start time with the processing interval section:
 	time_begin = calendar.timegm((int(str_time_begin[0:4]), int(str_time_begin[5:7]), int(str_time_begin[8:10]), int(str_time_begin[11:13]), int(str_time_begin[14:16]), int(str_time_begin[17:19]), 0, 0, 0)) - float(pro_val)
@@ -339,3 +330,4 @@ def visualization(orderedList, livePlot):
 		print(f'Data-Plot saved as: {plotname}')
 		plt.show()					# Show the plot			
 	#============================================= Plotting ====================================================
+#================================================= Visualization program end ====================================================
