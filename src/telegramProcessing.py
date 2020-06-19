@@ -39,7 +39,7 @@ class TelegramProcessing:
 		t_now = time.time()
 
 		while (t_now < t_start + float(self.pro_val)):
-			time.sleep(0.2)
+			time.sleep(0.05)
 			while (dump1090_pipe.poll()):
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
@@ -178,8 +178,8 @@ class TelegramProcessing:
 			ICAO_list = []; counter = 0; lvl_sum += 0; ch_occ_cnt = 0; ac_el_cnt = 0; ss_el_cnt = 0; sl_el_cnt = 0; ac_succ_cnt = 0; ss_succ_cnt = 0; overflow90_cnt = 0; overflow46_cnt = 0;
 			sl_succ_cnt = 0; ac_lvl_sum = 0; ss_lvl_sum = 0; sl_lvl_sum = 0
 
-			while (t_now < t_start + float(self.pro_val)):
-				time.sleep(0.2)
+			while (t_now < t_start + float(self.pro_val) + float(1)):
+				time.sleep(0.05)
 				while (dump1090_pipe.poll()):
 					data = dump1090_pipe.recv()
 					self.dump1090_buffer.append(data)
@@ -289,9 +289,9 @@ class TelegramProcessing:
 			Dlist['test_rx_succ_cnt_l'] = sl_succ_cnt
 			Dlist['test_rx_succ_cnt_ac'] = ac_succ_cnt
 
-			Dlist['test_succ_lvl_s'] = ((ss_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
-			Dlist['test_succ_lvl_l'] = ((sl_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
-			Dlist['test_succ_lvl_ac'] = ((ac_succ_cnt / (self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'])) * 100)
+			Dlist['test_succ_lvl_s'] = (ss_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
+			Dlist['test_succ_lvl_l'] = (sl_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
+			Dlist['test_succ_lvl_ac'] = (ac_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
 
 			if (ss_succ_cnt > 0):
 				Dlist['test_avg_lvl_s'] = (ss_lvl_sum / ss_succ_cnt)
