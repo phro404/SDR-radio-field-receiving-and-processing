@@ -23,7 +23,6 @@ class TelegramProcessing:
 		t_start = time.time()
 
 		#defining dictionaries
-		current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 		Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 			'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
 		Slist = {'time': 0, 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
@@ -163,7 +162,6 @@ class TelegramProcessing:
 			t_now = time.time()
 
 			#reseting dictionaries etc.
-			current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 			Dlist = {'time': 0, 'rx_cnt': 0, 'rx_avg_lvl': 0, 'curr_ch_occ': 0, 'curr_planes': 0, 'test_tx_cnt': 0, 'test_rx_succ_cnt_s': 0, 'test_rx_succ_cnt_l': 0, 
 				'test_rx_succ_cnt_ac': 0, 'test_succ_lvl_s': 0, 'test_succ_lvl_l': 0, 'test_succ_lvl_ac': 0, 'test_avg_lvl_s': 0, 'test_avg_lvl_l': 0, 'test_avg_lvl_ac': 0}
 			Slist = {'time': 0, 'type': 'S Short Reply', 'total': 0, '-90': 0, '-89': 0, '-88': 0, '-87': 0, '-86': 0, '-85': 0, '-84': 0, '-83': 0, '-82': 0, '-81': 0, '-80': 0,
