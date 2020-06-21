@@ -17,9 +17,8 @@ class Client_socket:
 		
 		if ('SOCKET' in config):
 			pass
-			#print("Socket configuration section found.")
 		else:
-			print("No socket configuration section available!")
+			print("Client_socket: No socket configuration section available!")
 
 		#saving paramter in local variables
 		adress_family = config['SOCKET']['IP_ADRESS_FAMILY']
@@ -35,7 +34,7 @@ class Client_socket:
 			protocol = 'SOCK_DGRAM'
 		else:
 			protocol = 'unknown protocol'
-			print("unkown protocol choosen in configuration ['SOCKET']['PROTOCOL']")
+			print("Client_socket: unkown protocol choosen in configuration ['SOCKET']['PROTOCOL']")
 		
 		self.codec = codec
 		self.localInputBuffer = []
@@ -44,22 +43,20 @@ class Client_socket:
 		self.working = False
 		for i in range(Client_socket.retries):
 			try:
-				#self.client_s.connect(getattr(socket, ip_adress), getattr(socket, port))
 				self.client_s.connect((ip_adress, int(port_number)))
 				self.working = True
 				break
 			except Exception as e:
 				if (i == Client_socket.retries-1):
-					print("Client_socket couldn't connect to the testtelegram server. Continuing anyway..")
-					print(e)
+					print("Client_socket: " + str(e))
+					print("Client_socket: Client_socket couldn't connect to the testtelegram server. Continuing anyway..")
 
 	def run(self, pipe_out, exit):
 		"""Keep receiving data, decode them, convert them into a JSON-string and write them into a pipe.
 		
-		Arguments:
-		pipe_out (named pipe) -- the pipe in which socket-received and decoded data gets written
-		exception_queue
-		exit
+		Parameters:
+			pipe_out (named pipe): The pipe in which socket-received and decoded data gets written
+			exit: If it is set (by this method or another subprocess), this method will stop looping.
 		"""
 		if (self.working):
 			while (not exit.is_set()):
@@ -78,16 +75,14 @@ class Client_socket:
 					for container in self.localInputBuffer:
 						data_dict = json.loads(data_recv)	#convert JSON-string into dictionary
 						pipe_out.send(data_dict)
-						#print(data_dict)
 
 					self.localInputBuffer = []
 				except Exception as e:
-					exception_queue.put(["Problems with receiving testtelegram messages detected: ", e])
-					print("Error occured in Client_socket.run()")
-					print(e)
+					print("Client_socket: " + str(e))
+					print("Client_socket: Problem regarding reception of testtelegram messages detected")
 					exit.set()
 		else:
 			while(not exit.is_set()):
-				sleep(10)		
+				sleep(10)	#Keeping subprocess alive, so that handler1 thinks everything is working
 			
 			
