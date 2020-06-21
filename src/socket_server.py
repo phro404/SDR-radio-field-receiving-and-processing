@@ -7,7 +7,7 @@ import random
 
  """creating testtelegrams for testing the socket"""
 while True:
-	"""creat a socket object""" 
+	"""create a socket object""" 
 	s = socket.socket()		  
 	print ("Socket successfully created")
 	
