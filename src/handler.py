@@ -29,7 +29,7 @@ class Handler1:
 			exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa"""
 			
 		def stopAllProcesses():
-			"""Closed every subprocess"""
+			"""Closes every subprocess"""
 			self.exit.set() 	#The parameter of every while-loop inside every run-method of every subprocess is now not false. Subprocesses will now begin to stop
 			print("Handler1: Starting to terminate all subprocesses")
 			sleep(0.4)
