@@ -19,7 +19,6 @@ class Userinterface:
 		
 		self.exit = multiprocessing.Event() #used to exit the handler.run() Funktion
 		self.handlerProcess = None #Processin which the handler.run() loop runs
-		self.outputQueue = multiprocessing.Queue()
 
 		#initalize buttons
 		self.first_button = tk.Button(self.window, text = "Start measurement", relief = tk.RAISED, bg = "blue",
@@ -48,9 +47,8 @@ class Userinterface:
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
 		main1 = handler.Handler1()
-		self.handlerProcess = multiprocessing.Process(target=main1.run, args=(self.exit, self.outputQueue))
+		self.handlerProcess = multiprocessing.Process(target=main1.run, args=[self.exit])
 		self.handlerProcess.start()
-		#self.outputQueue.put("Button 1 Pressed")
 	
 	def closeAll(self):
 		self.first_button.config(state=tk.DISABLED, bg = "black")
@@ -58,19 +56,13 @@ class Userinterface:
 		self.third_button.config(state=tk.DISABLED, bg = "black")
 		sleep(0.2)
 		self.exit.set()
-		self.getOutput()
 		if (self.handlerProcess != None):
 			self.handlerProcess.join()
-		self.getOutput()
 		self.window.quit() #closes whole programm
 		
-	def getOutput(self):
-		if not self.outputQueue.empty():
-			print(self.outputQueue.get())
 			
 	def loop(self):
 		self.window.after(100, self.loop)
-		self.getOutput()
 		if (self.exit.is_set()):
 			print("Gui exit")			
 			self.closeAll()

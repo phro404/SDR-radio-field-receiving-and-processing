@@ -23,7 +23,7 @@ class Handler1:
 			self.pipes.append(multiprocessing.Pipe())
 					
 					
-	def run(self, exit, outputQueue):
+	def run(self, exit):
 		"""Initialization of every subprocess. Inside of a loop it is checked, whether every subprocess is running. If not, every subprocess is closed and the programm closes itself.
 		
 		Parameters:
