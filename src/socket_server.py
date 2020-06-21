@@ -3,7 +3,7 @@ import socket
 import json
 import time
 import random
-#============================================== import of the relevant libraries End =============================================
+#============================================== import of the relevant libraries end =============================================
 
  """creating testtelegrams for testing the socket"""
 while True:
@@ -23,7 +23,7 @@ while True:
 	c, addr = s.accept()	  
 	print ('Got connection from', addr) 
 
-	"""creat test data with json"""
+	"""create test data with json"""
 	"""dictionary for Mode AC"""
 	telegram_mode_ac = {
 		'type': 'mode_ac',
@@ -50,7 +50,7 @@ while True:
 		'shift': 0.0,
 		'phase': 0	}
 
-	"""Sending test data"""
+	"""sending test data"""
 	try:
 		while True: 
 			time.sleep(32)					#TODO: you can choose a sleeping time by yourself e.g:32 seconds
@@ -71,4 +71,4 @@ while True:
 		pass
 		
 	finally:
-		c.close() 						# Close the connection with the client
+		c.close() 						#close the connection with the client
