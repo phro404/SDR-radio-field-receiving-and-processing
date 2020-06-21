@@ -1,14 +1,16 @@
+#============================================== Import of the relevant libraries ================================================
 import socket	
 import json
 import time
 import random
+#============================================== Import of the relevant libraries End =============================================
  
 while True:
 	#create a socket object 
 	s = socket.socket()		  
 	print ("Socket successfully created")
 		  
-	s.bind(('localhost', 8012)) #TODO: choose correct arguments here
+	s.bind(('localhost', 8012)) 					#TODO: choose correct arguments here
 	print ("socket binded to 8012") 
 	  
 	s.listen(5)	  
@@ -47,8 +49,8 @@ while True:
 	#sending test data
 	try:
 		while True: 
-			time.sleep(32)
-			randomint = random.randint(1,30) 	#random value between 1 and 30 for the rate
+			time.sleep(32)					#TODO: you can choose a sleeping time by yourself e.g:32 seconds
+			randomint = random.randint(1,30) 		#creating a random value between 1 and 30 for the rate
 			
 			#dictionary for the testtelegrams
 			testtelegrams = {
@@ -58,11 +60,11 @@ while True:
 				'samplerate': 20000000,
 				'telegrams': [telegram_mode_ac,telegram_mode_s_short,telegram_mode_s_long]	}
 				
-			testtelegrams = json.dumps(testtelegrams) #converting dictionary in json-string
+			testtelegrams = json.dumps(testtelegrams) 	#converting dictionary in json-string
 			c.send(testtelegrams.encode('ascii')) 	
 			print("Data sent!")
 	except:
 		pass
 		
 	finally:
-		c.close() # Close the connection with the client
+		c.close() 						# Close the connection with the client
