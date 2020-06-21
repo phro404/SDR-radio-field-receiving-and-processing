@@ -17,8 +17,8 @@ class Userinterface:
 		self.window.title("radio-field-measurement")
 		self.window.geometry("900x500")
 		
-		self.exit = multiprocessing.Event() #used to exit the handler.run() Funktion
-		self.handlerProcess = None #Processin which the handler.run() loop runs
+		self.exit = multiprocessing.Event()	#used to exit the handler.run() function
+		self.handlerProcess = None	#Variable in which a Handler1-process reference is stored
 
 		#initalize buttons
 		self.first_button = tk.Button(self.window, text = "Start measurement", relief = tk.RAISED, bg = "blue",
@@ -43,7 +43,8 @@ class Userinterface:
 		if (file_path != 0):
 			visualization(file_path, False)
 			
-	def startHandler1Daemon(self):	 #method for first button, is supposed to be the link to the first main-process
+	def startHandler1Daemon(self):
+		"""Starts the Handler1.run() subprocess and disables the 2 upper buttons. The exit button remains uneffected.		"""
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
 		main1 = handler.Handler1()
@@ -51,6 +52,7 @@ class Userinterface:
 		self.handlerProcess.start()
 	
 	def closeAll(self):
+		"""Disables all buttons. Sets self.exit, which leads to the handler1 process shutting down. After shutting it down the GUI closes itself"""
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
 		self.third_button.config(state=tk.DISABLED, bg = "black")
@@ -62,6 +64,7 @@ class Userinterface:
 		
 			
 	def loop(self):
+		"""Recursive loop which checks if the Handler1 process is closed. If it is, self.closeall() is called"""
 		self.window.after(100, self.loop)
 		if (self.exit.is_set()):
 			print("Gui exit")			
@@ -112,7 +115,7 @@ class Userinterface:
 		return orderedList
 		
 gui = Userinterface()
-gui.window.after(100, gui.loop)
+gui.window.after(100, gui.loop)	#gui.loop now starts looping
 gui.window.mainloop()
 
 
