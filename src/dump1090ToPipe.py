@@ -12,11 +12,16 @@ import signal
 #[4]: telegramm-payload in hex
 
 class Dump1090ToPipe:
-	"""Takes the TCP-output from the dump1090 binary file and puts all important into a pipe"""
+	"""Takes the TCP-output from the dump1090 binary file and puts all important into a pipe."""
 	retries = 10 #maximum TCP Connecting Retries
 	
 	def __init__(self, port=30005, host='localhost'):
-		"""Initializes a dump1090 process. The port and host argument are used to connect to the TCP-socket of dump1090"""
+		"""Initializes a dump1090 process. The port and host argument are used to connect to the TCP-socket of dump1090.
+	
+		Parameters:
+			port: Port which is used to cannect to dump1090's socket
+			host: IP-address of dump1090's socket			
+		"""
 		self.port = port
 		self.host = host
 		devnull = open(os.devnull, 'wb')
@@ -25,7 +30,10 @@ class Dump1090ToPipe:
 		self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
 		
 	def checkDump1090Running(self, exit):
-		"""Returns True if a dump1090 process is running on the local machine. Otherwise returns False and sets the exit variable, leading to a shutdown of the programm."""		
+		"""Returns True if a dump1090 process is running on the local machine. Otherwise returns False and sets the exit variable, leading to a shutdown of the programm.
+		
+		Parameters:
+			exit: Used to close whole programm if set"""		
 		stdout = subprocess.check_output(['pgrep', 'dump1090'])
 		if len(stdout) == 0:
 			print("dump1090ToPipe: dump1090 not running anymore. Starting to close the programm")
@@ -36,7 +44,11 @@ class Dump1090ToPipe:
 					
 	def run(self, pipe_out, exit):
 		"""The main loop of dump1090ToPipe. First it tries to connect to the dump1090 socket. If this is successfull, as long as "exit" is not set, the programm will receive dump1090 packets,
-		interpret them and forward them via pipe"""
+		interpret them and forward them via pipe
+		
+		Parameters:
+			pipe_out: Pipe used to pipe-out information
+			exit: Used to close whole programm if set"""
 		sleep(1)
 		if not self.checkDump1090Running(exit):
 			print("dump1090ToPipe: dump1090 closed itself immediately")
