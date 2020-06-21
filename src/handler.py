@@ -9,29 +9,35 @@ from socket_client import Client_socket
 from telegramProcessing import TelegramProcessing
 from fileWriter import FileWriter
 
-numPipes = 3
+numPipes = 3	#Amount of pipes required
 
 class Handler1:
 	def __init__(self):
+		"""Init method of Handler1"""
 		self.processes = {} 	#all processes are stored inside here
-		self.pipes = []	#all pipes are stored here like: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out]]
+		self.pipes = []	#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
 		self.exception_queue = multiprocessing.Queue()
-		self.exit = multiprocessing.Event()
+		self.exit = multiprocessing.Event()	#used to enable every subprocess to close whole program in case of an error
 		
 		for i in range(numPipes):
 			self.pipes.append(multiprocessing.Pipe())
 					
 					
 	def run(self, exit, outputQueue):
+		"""Initialization of every subprocess. Inside of a loop it is checked, whether every subprocess is running. If not, every subprocess is closed and the programm closes itself.
+		
+		Parameters:
+			exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa"""
 			
 		def stopAllProcesses():
-			self.exit.set()
-			print("Starting to terminate Processes")
+			"""Closed every subprocess"""
+			self.exit.set() 	#The parameter of every while-loop inside every run-method of every subprocess is now not false. Subprocesses will now begin to stop
+			print("Handler1: Starting to terminate all subprocesses")
 			sleep(0.4)
 			for process in self.processes.values():
 				process.join()
 				
-		print("Handler1 started")
+		print("Handler1: starting every subprocess...")
 		
 		socketClientObj = Client_socket()
 		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exception_queue, self.exit))
@@ -48,32 +54,22 @@ class Handler1:
 		
 		
 		for process in self.processes.values():
-			process.start()
-		print("All Processes of Handler1 started")
+			process.start()	#starts every subprocess
+		print("Handler1: All subprocesses started")
 		sleep(1)
-		while not exit.is_set():
-			#outputQueue.put("Handler1 Loop start")
+		while not exit.is_set():	#Loop until gui.py sets exit or it is set, due to a subprocess failing
 			allAlive = True
-			#while (self.pipes[2][1].poll()):
-			#	print(self.pipes[2][1].recv())
 			for key in self.processes.keys():
 				if(not self.processes[key].is_alive()):
-					outputQueue.put("Stopped Running: " + key)
+					outputQueue.put("Handler1: A subprocess stopped running: " + key)
 					allAlive = False
 					
 			if(not allAlive):
-				outputQueue.put("Handler: Child Process stopped working")
-				exit.set()
-				outputQueue.put("Here's the exception_queue:")
-				while(not self.exception_queue.empty()):
-					outputQueue.put(self.exception_queue.get())
-					outputQueue.put("\n")
+				exit.set() 	#Stopping the while loop
 			sleep(0.1)
-			
-			#outputQueue.put("Loop End")
-			
+						
 		stopAllProcesses()
-		outputQueue.put("Handler1 stopped")	
+		print("Handler1: Stopped")	
 		
 		
 		
