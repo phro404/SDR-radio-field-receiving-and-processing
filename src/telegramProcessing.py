@@ -297,9 +297,9 @@ class TelegramProcessing:
 			Dlist['test_rx_succ_cnt_l'] = sl_succ_cnt
 			Dlist['test_rx_succ_cnt_ac'] = ac_succ_cnt
 
-			Dlist['test_succ_lvl_s'] = (ss_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
-			Dlist['test_succ_lvl_l'] = (sl_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
-			Dlist['test_succ_lvl_ac'] = (ac_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100
+			Dlist['test_succ_lvl_s'] = (ss_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100)
+			Dlist['test_succ_lvl_l'] = (sl_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100)
+			Dlist['test_succ_lvl_ac'] = (ac_succ_cnt / (self.socket_buffer[0]['amount'] ) * 100)
 
 			if (ss_succ_cnt > 0):
 				Dlist['test_avg_lvl_s'] = (ss_lvl_sum / ss_succ_cnt)
