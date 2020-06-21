@@ -4,7 +4,8 @@ import json
 import time
 import random
 #============================================== Import of the relevant libraries End =============================================
- 
+
+ """Creating testtelgrams for testing the socket"""
 while True:
 	#create a socket object 
 	s = socket.socket()		  
@@ -46,7 +47,7 @@ while True:
 		'shift': 0.0,
 		'phase': 0	}
 
-	#sending test data
+	"""Sending test data"""
 	try:
 		while True: 
 			time.sleep(32)					#TODO: you can choose a sleeping time by yourself e.g:32 seconds
