@@ -12,7 +12,7 @@ class Userinterface:
 	"""Build the GUI and link its buttons with functions"""
 	
 	def __init__(self):
-		"""Create the graphical user interface and distribute it to the screen."""
+		"""Create the graphical user interface and distribute it to the screen"""
 		self.window = tk.Tk()
 		self.window.title("radio-field-measurement")
 		self.window.geometry("900x500")
@@ -37,14 +37,14 @@ class Userinterface:
 		self.third_button.place(relx = 0.1, rely = 0.54, relwidth = 0.8, relheight = 0.3)
 
 	def visualizeFiles(self):   
-		"""Open a file-explorer window and pass the choosen filepaths to visualization."""
+		"""Open a file-explorer window and pass the choosen filepaths to visualization"""
 		unorderedList = filedialog.askopenfilenames(initialdir = "../data", title = "Select files", filetypes = (("csv files", "*.csv"), ("pdf files", "*.pdf"), ("all files", "*.*")))
 		file_path = self.orderPathList(unorderedList)
 		if (file_path != 0):
 			visualization(file_path, False)
 			
 	def startHandler1Daemon(self):
-		"""Starts the Handler1.run() subprocess and disables the 2 upper buttons. The exit button remains uneffected.		"""
+		"""Starts the Handler1.run() subprocess and disables the 2 upper buttons. The exit button remains uneffected"""
 		self.first_button.config(state=tk.DISABLED, bg = "black")
 		self.second_button.config(state=tk.DISABLED, bg = "black")
 		main1 = handler.Handler1()
