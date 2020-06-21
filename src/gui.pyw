@@ -118,4 +118,3 @@ gui = Userinterface()
 gui.window.after(100, gui.loop)	#gui.loop now starts looping
 gui.window.mainloop()
 
-
