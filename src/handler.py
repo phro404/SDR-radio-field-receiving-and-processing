@@ -16,7 +16,6 @@ class Handler1:
 		"""Init method of Handler1"""
 		self.processes = {} 	#all processes are stored inside here
 		self.pipes = []	#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
-		self.exception_queue = multiprocessing.Queue()
 		self.exit = multiprocessing.Event()	#used to enable every subprocess to close whole program in case of an error
 		
 		for i in range(numPipes):
@@ -40,7 +39,7 @@ class Handler1:
 		print("Handler1: starting every subprocess...")
 		
 		socketClientObj = Client_socket()
-		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exception_queue, self.exit))
+		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exit))
 		
 		dump1090ToPipeObj = Dump1090ToPipe()
 		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exit))

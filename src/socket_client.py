@@ -53,7 +53,7 @@ class Client_socket:
 					print("Client_socket couldn't connect to the testtelegram server. Continuing anyway..")
 					print(e)
 
-	def run(self, pipe_out, exception_queue, exit):
+	def run(self, pipe_out, exit):
 		"""Keep receiving data, decode them, convert them into a JSON-string and write them into a pipe.
 		
 		Arguments:
