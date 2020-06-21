@@ -5,7 +5,7 @@ import time
 import random
 #============================================== import of the relevant libraries End =============================================
 
- """creating testtelgrams for testing the socket"""
+ """creating testtelegrams for testing the socket"""
 while True:
 	"""creat a socket object""" 
 	s = socket.socket()		  
