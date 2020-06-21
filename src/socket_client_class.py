@@ -4,9 +4,12 @@ import configparser
 from time import sleep
 
 class Client_socket:
+	"""Set up and handle a socket for receiving testtelegrams."""
+	
 	retries = 10	#Maximum Connecting Retries
 	
 	def __init__(self):
+		"""Read starting parameters out of a config-file and create a listening socket."""
 		#starting with reading out configuration parameter for socket out of config-file
 		config = configparser.ConfigParser()	#ConfigParser implementing interpolation
 		#config.sections()   #returns a list of section names, excluding [DEFAULT]
@@ -50,15 +53,20 @@ class Client_socket:
 					print("Client_socket couldn't connect to the testtelegram server. Continuing anyway..")
 					print(e)
 
-
-
 	def run(self, pipe_out, exception_queue, exit):
+		"""Keep receiving data, decode them, convert them into a JSON-string and write them into a pipe.
+		
+		Arguments:
+		pipe_out (named pipe) -- the pipe in which socket-received and decoded data gets written
+		exception_queue
+		exit
+		"""
 		if (self.working):
 			while (not exit.is_set()):
 				try:
 					data_recv = self.client_s.recv(1024)
 					 
-					#decoding data stream into JSON-strings
+					#decoding data stream into readable JSON-string
 					if (self.codec == ""):
 						data_recv = data_recv.decode()
 					else:
@@ -74,7 +82,7 @@ class Client_socket:
 
 					self.localInputBuffer = []
 				except Exception as e:
-					exception_queue.put(["Probleme beim Empfangen der TCP Testtelegramm Messages: ", e])
+					exception_queue.put(["Problems with receiving testtelegram messages detected: ", e])
 					print("Error occured in Client_socket.run()")
 					print(e)
 					exit.set()
