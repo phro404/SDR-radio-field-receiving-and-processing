@@ -16,10 +16,10 @@ class TelegramProcessing:
 		config = configparser.ConfigParser()
 		config.read('import_init_data.conf')
 		if ('PROCESSING_INTERVAL' in config):
-			print("Processing interval section was found.")
+			print("TelegramProcessing: Processing interval section was found.")
 			self.pro_val = config['PROCESSING_INTERVAL']['LINE_DURATION']
 		else:
-			print("Processing interval section is not available! Default value is set.")
+			print("TelegramProcessing: Processing interval section is not available! Default value is set.")
 			self.pro_val = 15
 
 	def processing(self, socket_pipe, dump1090_pipe, out_pipe):
@@ -114,7 +114,7 @@ class TelegramProcessing:
 								lvl_sum += d_element[2]
 
 						else:
-							print("Unknown telegram-type was detected.")
+							print("TelegramProcessing: Unknown telegram-type was detected.")
 						
 						#updating list of current planes
 						if (d_element[3] != None):
@@ -162,10 +162,10 @@ class TelegramProcessing:
 		self.out_buffer = []
 		
 		if (overflow90_cnt > 0):
-			print(overflow90_cnt, "telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
+			print('TelegramProcessing: ' + str(overflow90_cnt) + " telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
 			
 		if (overflow46_cnt > 0):
-			print(overflow46_cnt, "telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
+			print('TelegramProcessing: ' + str(overflow46_cnt) + " telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
 
 		if (socket_sync_flag == 1):
 			t_start = time.time()
@@ -245,7 +245,7 @@ class TelegramProcessing:
 								Llist[str(round(d_element[2],0))[0:3]] += 1	
 								lvl_sum += d_element[2]
 						else:
-							print("Unknown telegram-type was detected.")
+							print("TelegramProcessing: Unknown telegram-type was detected.")
 						
 						#updating list of current planes
 						if (d_element[3] != None):
@@ -258,10 +258,10 @@ class TelegramProcessing:
 								ICAO_list.append(d_element[3])
 
 						if (len(self.socket_buffer) == 0):
-							print("An error occured while trying to read an empty socket buffer.")
+							print("TelegramProcessing: An error occured while trying to read an empty socket buffer.")
 						else:
 							if (len(self.socket_buffer) > 1):
-								print("There are too many arguments in socket buffer. Only the first one will be analyzed")
+								print("TelegramProcessing: There are too many arguments in socket buffer. Only the first one will be analyzed")
 
 							for k in self.socket_buffer[0]['telegrams']:
 								if (k['payload'] != None and k['payload'] != "null"):
@@ -324,19 +324,19 @@ class TelegramProcessing:
 			self.out_buffer.append(AClist)
 			
 			if (overflow90_cnt > 0):
-				print(overflow90_cnt, "telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
+				print('TelegramProcessing: ' + str(overflow90_cnt) + " telegrams had been weaker than -90 dBm and were counted as -90 dBm.")
 			
 			if (overflow46_cnt > 0):
-				print(overflow46_cnt, "telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
+				print('TelegramProcessing: ' + str(overflow46_cnt) + " telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
 
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
-		"""Poll pipes, call processing and send as well as empty the pipes afterwards.
+		"""Read pipes till empty and hand over data to processing(), send processed data through pipe, empty the buffers afterwards.
 		
 		Arguments:
-		socket_pipe (named pipe) -- contains all current informations received via the testtelegram socket
-		dump1090_pipe (named pipe) -- contains all current telegrams received by dump1090
-		out_pipe (named pipe) -- results of processing get written into this pipe in a agreed format
-		exit
+		socket_pipe (named pipe): Contains all current informations received via the testtelegram socket
+		dump1090_pipe (named pipe): Contains by dump1090 received telegrams
+		out_pipe (named pipe): Results of processing() get written into pipe
+		exit: If it is set (by this method or another subprocess), this method will stop looping.
 		"""
 		#in case of a fatale error the whole program will be terminated using exit.set()
 		while (not exit.is_set()):
@@ -348,7 +348,7 @@ class TelegramProcessing:
 				data = dump1090_pipe.recv()
 				self.dump1090_buffer.append(data)
 				
-			self.processing(socket_pipe, dump1090_pipe, out_pipe)	
+			self.processing(socket_pipe, dump1090_pipe, out_pipe)	#Processing() processes data stored in dump1090_buffer and socket_buffer, while still receiving data from pipes
 			
 			for data in self.out_buffer:
 				out_pipe.send(data)
