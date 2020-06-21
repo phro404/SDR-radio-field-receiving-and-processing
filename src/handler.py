@@ -15,7 +15,7 @@ class Handler1:
 	def __init__(self):
 		"""Init method of Handler1"""
 		self.processes = {} 	#all processes are stored inside here
-		self.pipes = []	#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
+		self.pipes = []		#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
 		self.exception_queue = multiprocessing.Queue()
 		self.exit = multiprocessing.Event()	#used to enable every subprocess to close whole program in case of an error
 		
@@ -27,7 +27,8 @@ class Handler1:
 		"""Initialization of every subprocess. Inside of a loop it is checked, whether every subprocess is running. If not, every subprocess is closed and the programm closes itself.
 		
 		Parameters:
-			exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa"""
+		exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa
+		"""
 			
 		def stopAllProcesses():
 			"""Closed every subprocess"""
