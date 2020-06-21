@@ -50,7 +50,7 @@ while True:
 	try:
 		while True: 
 			time.sleep(32)					#TODO: you can choose a sleeping time by yourself e.g:32 seconds
-			randomint = random.randint(1,30) 		#creating a random value between 1 and 30 for the rate
+			randomint = random.randint(1, 30) 		#creating a random value between 1 and 30 for the rate
 			
 			#dictionary for the testtelegrams
 			testtelegrams = {
@@ -58,7 +58,7 @@ while True:
 				'rate': randomint,
 				'amount': 15,
 				'samplerate': 20000000,
-				'telegrams': [telegram_mode_ac,telegram_mode_s_short,telegram_mode_s_long]	}
+				'telegrams': [telegram_mode_ac, telegram_mode_s_short, telegram_mode_s_long]	}
 				
 			testtelegrams = json.dumps(testtelegrams) 	#converting dictionary in json-string
 			c.send(testtelegrams.encode('ascii')) 	
