@@ -5,7 +5,7 @@ import sys
 from time import sleep
 import signal
 from dump1090ToPipe import Dump1090ToPipe
-from socket_client_class import Client_socket
+from socket_client import Client_socket
 from telegramProcessing import TelegramProcessing
 from fileWriter import FileWriter
 
@@ -37,7 +37,7 @@ class Handler1:
 		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exception_queue, self.exit))
 		
 		dump1090ToPipeObj = Dump1090ToPipe()
-		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exception_queue, self.exit))
+		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exit))
 		
 		telegramProcessingObj = TelegramProcessing()
 		self.processes["telegramProcessing"] = multiprocessing.Process(target=telegramProcessingObj.run, args=(self.pipes[1][1], self.pipes[0][1], self.pipes[2][0], self.exit))

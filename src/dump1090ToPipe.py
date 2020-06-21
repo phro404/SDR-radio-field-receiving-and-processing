@@ -34,7 +34,7 @@ class Dump1090ToPipe:
 		else:
 			return True
 					
-	def run(self, pipe_out, exception_queue, exit):
+	def run(self, pipe_out, exit):
 		"""The main loop of dump1090ToPipe. First it tries to connect to the dump1090 socket. If this is successfull, as long as "exit" is not set, the programm will receive dump1090 packets,
 		interpret them and forward them via pipe"""
 		sleep(1)
