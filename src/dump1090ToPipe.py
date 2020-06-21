@@ -4,7 +4,7 @@ import os
 import socket
 import signal
 
-#Pipe-packages contain:
+#Out-pipe-packages contain:
 #[0]: 49(AC), 50(SS), 51(SL) (integer containing the telegram-type)
 #[1]: timestamp in seconds
 #[2]: signal-power
