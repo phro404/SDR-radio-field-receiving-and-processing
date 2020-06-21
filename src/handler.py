@@ -14,9 +14,8 @@ numPipes = 3	#Amount of pipes required
 class Handler1:
 	def __init__(self):
 		"""Init method of Handler1"""
-		self.processes = {} 	#all processes are stored inside here
-		self.pipes = []		#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
-		self.exception_queue = multiprocessing.Queue()
+		self.processes = {}	#all processes are stored inside here
+		self.pipes = []	#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
 		self.exit = multiprocessing.Event()	#used to enable every subprocess to close whole program in case of an error
 		
 		for i in range(numPipes):
@@ -27,11 +26,10 @@ class Handler1:
 		"""Initialization of every subprocess. Inside of a loop it is checked, whether every subprocess is running. If not, every subprocess is closed and the programm closes itself.
 		
 		Parameters:
-		exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa
-		"""
+			exit: Used to enable this method to tell gui.py if the whole programm should be closed and vice versa"""
 			
 		def stopAllProcesses():
-			"""Closed every subprocess"""
+			"""Closes every subprocess"""
 			self.exit.set() 	#The parameter of every while-loop inside every run-method of every subprocess is now not false. Subprocesses will now begin to stop
 			print("Handler1: Starting to terminate all subprocesses")
 			sleep(0.4)
@@ -41,7 +39,7 @@ class Handler1:
 		print("Handler1: starting every subprocess...")
 		
 		socketClientObj = Client_socket()
-		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exception_queue, self.exit))
+		self.processes["client_socket"] = multiprocessing.Process(target=socketClientObj.run, args=(self.pipes[1][0], self.exit))
 		
 		dump1090ToPipeObj = Dump1090ToPipe()
 		self.processes["dump1090ToPipe"] = multiprocessing.Process(target=dump1090ToPipeObj.run, args=(self.pipes[0][0], self.exit))
