@@ -14,7 +14,7 @@ numPipes = 3	#Amount of pipes required
 class Handler1:
 	def __init__(self):
 		"""Init method of Handler1"""
-		self.processes = {} 	#all processes are stored inside here
+		self.processes = {}	#all processes are stored inside here
 		self.pipes = []	#all pipes are stored here like this: [[pipe1_in, pipe1_out], [pipe2_in, pipe2_out], [pipe3_in, pipe3_out]]
 		self.exit = multiprocessing.Event()	#used to enable every subprocess to close whole program in case of an error
 		
