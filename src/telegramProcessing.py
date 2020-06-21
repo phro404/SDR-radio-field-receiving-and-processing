@@ -4,7 +4,10 @@ from datetime import datetime
 import configparser
 
 class TelegramProcessing:
+	"""Calculate all relevant values for the plots"""
+	
 	def __init__(self):
+		"""Set up attributes and read line-duration out of config-file."""
 		self.dump1090_buffer = []
 		self.socket_buffer = []
 		self.out_buffer = []
@@ -20,6 +23,13 @@ class TelegramProcessing:
 			self.pro_val = 15
 
 	def processing(self, socket_pipe, dump1090_pipe, out_pipe):
+		"""Take data from socket and dump1090 into account for calculating defined values.
+		
+		Arguments:
+		socket_pipe (named pipe) -- contains all current informations received via the testtelegram socket
+		dump1090_pipe (named pipe) -- contains all current telegrams received by dump1090
+		out_pipe (named pipe) -- results of processing get written into this pipe in a agreed format
+		"""
 		t_start = time.time()
 
 		#defining dictionaries
@@ -319,8 +329,15 @@ class TelegramProcessing:
 			if (overflow46_cnt > 0):
 				print(overflow46_cnt, "telegrams had been stronger than -46 dBm and were counted as -46 dBm.")
 
-
 	def run(self, socket_pipe, dump1090_pipe, out_pipe, exit):
+		"""Poll pipes, call processing and send as well as empty the pipes afterwards.
+		
+		Arguments:
+		socket_pipe (named pipe) -- contains all current informations received via the testtelegram socket
+		dump1090_pipe (named pipe) -- contains all current telegrams received by dump1090
+		out_pipe (named pipe) -- results of processing get written into this pipe in a agreed format
+		exit
+		"""
 		#in case of a fatale error the whole program will be terminated using exit.set()
 		while (not exit.is_set()):
 			while (socket_pipe.poll()):
