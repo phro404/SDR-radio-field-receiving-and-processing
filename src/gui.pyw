@@ -9,9 +9,10 @@ from time import sleep
 from visualization import visualization
 
 class Userinterface:
+	"""Build the GUI and link its buttons with functions"""
 	
 	def __init__(self):
-		#initalize gui-window
+		"""Create the graphical user interface and distribute it to the screen."""
 		self.window = tk.Tk()
 		self.window.title("radio-field-measurement")
 		self.window.geometry("900x500")
@@ -36,8 +37,8 @@ class Userinterface:
 		self.second_button.place(relx = 0.53, rely = 0.14, relwidth = 0.370, relheight = 0.3)
 		self.third_button.place(relx = 0.1, rely = 0.54, relwidth = 0.8, relheight = 0.3)
 
-
-	def visualizeFiles(self):   #method for second button, opens the file-explorer
+	def visualizeFiles(self):   
+		"""Open a file-explorer window and pass the choosen filepaths to visualization."""
 		unorderedList = filedialog.askopenfilenames(initialdir = "../data", title = "Select files", filetypes = (("csv files", "*.csv"), ("pdf files", "*.pdf"), ("all files", "*.*")))
 		file_path = self.orderPathList(unorderedList)
 		if (file_path != 0):
@@ -75,6 +76,14 @@ class Userinterface:
 			self.closeAll()
 			
 	def orderPathList(self, unorderedList):
+		"""Check a list of filepaths for plausibility and swap its elements into a specific order.
+		
+		Arguments:
+		unorderedList (list of strings) -- contains a list of filepaths 
+		
+		Returns:
+		orderedList (list of strings) -- contains the same filepaths as unordered list, but in a specific order
+		"""
 		if ((len(unorderedList) < 2) or len(unorderedList) % 2 == 1):   #to few or an odd number of files had been selected
 			 tk.messagebox.showinfo("Error", "Wrong data selection, please pick again.")
 			 return 0
