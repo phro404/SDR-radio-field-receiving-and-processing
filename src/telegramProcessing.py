@@ -292,7 +292,7 @@ class TelegramProcessing:
 				Dlist['rx_avg_lvl'] = (lvl_sum / counter)
 			Dlist['curr_ch_occ'] = (ch_occ_cnt / t_measurement)
 			Dlist['curr_planes'] = len(ICAO_list)
-			Dlist['test_tx_cnt'] = self.socket_buffer[0]['amount'] * self.socket_buffer[0]['rate'] * len(self.socket_buffer[0]['telegrams'])
+			Dlist['test_tx_cnt'] = self.socket_buffer[0]['amount'] * len(self.socket_buffer[0]['telegrams'])
 			Dlist['test_rx_succ_cnt_s'] = ss_succ_cnt
 			Dlist['test_rx_succ_cnt_l'] = sl_succ_cnt
 			Dlist['test_rx_succ_cnt_ac'] = ac_succ_cnt
