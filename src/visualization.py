@@ -43,7 +43,7 @@ def make_autopct_for_pie_all_replies(pie_values_all_replies):
 
 #================================================ Visualization program begin ===================================================
 def visualization(orderedList, livePlot):
-	'''Create a plot, which visualizes the datas from the lvl-reply and amp_hist CSV-files. 
+	'''Create a plot, which visualizes the datas from the lvl-reply and amp_hist CSV-files, show and save it. 
 	
 	The plot contains four diagrams. These show:
 		1) the successrate of all test replies in % over the level
@@ -58,11 +58,7 @@ def visualization(orderedList, livePlot):
 		livePlot:	Type: bool
 				If livePlot = True the function expects datas from the Live-CSV-files to create and update a live plot.
 				If livePlot = False the function expects datas from saved CSV-files to create plot. 
-	
-	Output values:
-		There are no output values because the function only creates, shows and saves plots.
 	'''
-	
 	if livePlot == True:
 		mlp.use('Agg')
 		print('Creating Live-Plot')
