@@ -6,6 +6,7 @@ from time import sleep
 class FileWriter(object):							
 	'''Prints the piped data in .csv files and starts the liveplot from visualization.py .''' 
 	def __init__(self): 
+		'''Initializes all needed attributes, such as the first printed lines.''' 
 		self.lvl = ""											#defines string for lvl_reply_date prints
 		self.amp = ""											#defines string for amp_hist_date prints
 		self.d = ""											#defines string for first usage of self.print
