@@ -4,7 +4,7 @@ from datetime import datetime
 import configparser
 
 class TelegramProcessing:
-	"""Calculate all relevant values for the plots"""
+	"""Calculate all relevant values for the plots."""
 	
 	def __init__(self):
 		"""Set up attributes and read line-duration out of config-file."""
