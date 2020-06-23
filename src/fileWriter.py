@@ -23,7 +23,11 @@ class FileWriter(object):
 		
 	def write(self, delete_liveplot_csv):
 		"""Create new files if needed and write the ordered data into the files.
-		Also start the liveplot from visualization.py."""
+		Also start the liveplot from visualization.py.
+		
+		Arguments:
+		delete_liveplot_csv -- for deleting the old liveplot csv data in case an old one exists
+		"""
 		############################################---CSV-write-start---###############################################
 		now = datetime.now()
 
@@ -99,7 +103,11 @@ class FileWriter(object):
 	
 	
 	def sort(self, raw_pipe_out):
-		"""Poll the piped data and save it in attributes for the write function."""
+		"""Poll the piped data and save it in attributes for the write function.
+		
+		Arguments:
+		raw_pipe_out (named pipe) -- contains all data to be written, sent by telegramProcessing.py, handed via run()
+		"""
 		local_buffer = []										#declines the local buffer as an empty array
 		Slist = {}											#declines Slist as an empty list
 		Llist = {}											#declines Llist as an empty list
@@ -147,7 +155,12 @@ class FileWriter(object):
 
 		
 	def run(self, in_pipe, exit):
-		"""Opens the sort and write funtion to write the piped data in .csv files."""
+		"""Opens the sort and write funtion to write the piped data in .csv files.
+		
+		Arguments:
+		in_pipe (named pipe) -- contains all data to be written, sent by telegramProcessing.py
+		exit -- If it is set, this method will stop looping.
+		"""
 		first_run = True
 		delete_live = False
 		
