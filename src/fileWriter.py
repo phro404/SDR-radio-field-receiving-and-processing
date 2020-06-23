@@ -4,9 +4,10 @@ from datetime import datetime
 from time import sleep
 
 class FileWriter(object):							
-	'''Prints the piped data in .csv files and starts the liveplot from visualization.py .''' 
+	"""Print the piped data in .csv files and start the liveplot from visualization.py."""
+	
 	def __init__(self): 
-		'''Initializes all needed attributes, such as the first printed lines.''' 
+		"""Initialize all needed attributes, such as the first printed lines."""
 		self.lvl = ""											#defines string for lvl_reply_date prints
 		self.amp = ""											#defines string for amp_hist_date prints
 		self.d = ""											#defines string for first usage of self.print
@@ -21,8 +22,8 @@ class FileWriter(object):
 		self.ampFirstLine = "time,type,total,-90,-89,-88,-87,-86,-85,-84,-83,-82,-81,-80,-79,-78,-77,-76,-75,-74,-73,-72,-71,-70,-69,-68,-67,-66,-65,-64,-63,-62,-61,-60,-59,-58,-57,-56,-55,-54,-53,-52,-51,-50,-49,-48,-47,-46\n"				#sets the first line for every amp-file
 		
 	def write(self, delete_liveplot_csv):
-		'''Creats new files if needed and writes the ordered data into the files.
-		Also starts the liveplot from visualization.py .'''
+		"""Create new files if needed and write the ordered data into the files.
+		Also start the liveplot from visualization.py."""
 		############################################---CSV-write-start---###############################################
 		now = datetime.now()
 
@@ -98,7 +99,7 @@ class FileWriter(object):
 	
 	
 	def sort(self, raw_pipe_out):
-		'''Polls the piped data and saves it in attributes for the write function.'''
+		"""Poll the piped data and save it in attributes for the write function."""
 		local_buffer = []										#declines the local buffer as an empty array
 		Slist = {}											#declines Slist as an empty list
 		Llist = {}											#declines Llist as an empty list
@@ -146,7 +147,7 @@ class FileWriter(object):
 
 		
 	def run(self, in_pipe, exit):
-		'''Opens the sort and write funtion to write the piped data in .csv files.'''
+		"""Opens the sort and write funtion to write the piped data in .csv files."""
 		first_run = True
 		delete_live = False
 		
