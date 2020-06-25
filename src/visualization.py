@@ -14,6 +14,12 @@ import calendar
 
 # Presentation of the percent values in the pie charts:
 def make_autopct_for_pie_test_replies(pie_values_test_replies):
+	'''Create the form of the percentage in the pie chart, which shows the decoding of all test replies.
+	
+	Percentages should have the following form:
+	value_in_percent%
+	(absolute_value)
+	'''
 	def my_autopct_for_pie_test_replies(pct):
 		total = sum(pie_values_test_replies)
 		val = int(round(pct*total/100.0))
@@ -22,6 +28,12 @@ def make_autopct_for_pie_test_replies(pie_values_test_replies):
 
 # Presentation of the percent values in the pie charts:
 def make_autopct_for_pie_all_replies(pie_values_all_replies):
+	'''Create the form of the percentage in the pie chart, which shows the distribution of all received types.
+	
+	Percentages should have the following form:
+	value_in_percent%
+	(absolute_value)
+	'''
 	def my_autopct_for_pie_all_replies(pct):
 		total = sum(pie_values_all_replies)
 		val = int(round(pct*total/100.0))
@@ -31,7 +43,22 @@ def make_autopct_for_pie_all_replies(pie_values_all_replies):
 
 #================================================ Visualization program begin ===================================================
 def visualization(orderedList, livePlot):
+	'''Create a plot, which visualizes the datas from the lvl-reply and amp_hist CSV-files, show and save it. 
 	
+	The plot contains four diagrams. These show:
+		1) the successrate of all test replies in % over the level
+		2) the decoding of all test replies as a pie chart (percentage and absolute values of received A/C, Mode S Long, Mode S Short test replies and lost test replies)
+		3) the distribution of all received replies over the level (number of replies per s according to the level)
+		4) the distribution of all received types as a pie chart (percentage and absolute values of all A/C, Mode S Long and Mode S Short replies) 
+	
+	Input values:
+		orderedList: 	List of all CSV-files, which contain the datas for the plots. The list has to start with the earliest lvl_reply CSV-file.
+				Then comes the earliest amp_hist CSV-file. The list goes on with the next couples of CSV-files, which always start with the
+				lvl_reply CSV-file. The list ends with the latest amp_hist CSV-file.
+		livePlot:	Type: bool
+				If livePlot = True the function expects datas from the Live-CSV-files to create and update a live plot.
+				If livePlot = False the function expects datas from saved CSV-files to create plot. 
+	'''
 	if livePlot == True:
 		mlp.use('Agg')
 		print('Creating Live-Plot')
