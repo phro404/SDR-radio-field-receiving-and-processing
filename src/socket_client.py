@@ -83,6 +83,6 @@ class Client_socket:
 					exit.set()
 		else:
 			while(not exit.is_set()):
-				sleep(10)	#Keeping subprocess alive, so that handler1 thinks everything is working
+				sleep(3)	#Keeping subprocess alive, so that handler1 thinks everything is working
 			
 			
