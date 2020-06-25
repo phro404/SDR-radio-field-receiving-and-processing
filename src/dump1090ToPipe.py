@@ -24,9 +24,9 @@ class Dump1090ToPipe:
 		"""
 		self.port = port
 		self.host = host
-		devnull = open(os.devnull, 'wb')
+		devnull = open(os.devnull, 'wb')	#Null-Device since we dont need stdout from dump1090
 		curDir = os.getcwd()	#get working directory
-		args = (curDir+'/dump1090', '--net', '--modeac', '--fix', '--fix', '--gain', ' 49,6')
+		args = (curDir+'/dump1090', '--net', '--modeac', '--fix', '--fix', '--gain', ' 49,6', '--raw')
 		self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
 		
 	def checkDump1090Running(self, exit):
@@ -75,21 +75,23 @@ class Dump1090ToPipe:
 						self.checkDump1090Running(exit)
 					
 					for data in dataFull.split("\n\n\n"):	#All dump1090 telegram-packtes are seperated by 3x newline symbols
-						data.replace(chr(0x1A)*2, chr(0x1A))	#since "0x1A" is send as "0x1A0x1A" -> revert this
+						datat = data.replace(chr(0x1A)*2, chr(0x1A))	#since "0x1A" is send as "0x1A0x1A" -> revert this
 						data = data.encode('iso-8859-1')
 						
 						if (len(data) == 0):	#string.split() also returns empty strings
 							continue
 						if (len(data) <= 10): 	#The packet received is shorter than expected 
-							if (data != '\n'):
-								print("dump1090ToPipe: Packet received is broken. Packet: " + str(repr(data)))
+							if (data != b'\n'):
+								print("dump1090ToPipe: Packet received is broken. Packet: " + str(data.hex(':')))
+							continue
+						if (data == b'\x1a\x31\x00\x00\x00\x00\x00\x00\x00\x00\x00'):	#Heartbeat(?) gets ignored
 							continue
 						if (data[0] != 0x1A):	#All packets must begin with '0x1A', otherwise they are broken
 							data = data[1:]	#It is possible that a newline symbol is inserted at the very beginning of the packet. Checking if this is the problem
 							if (data[0] != 0x1A):
-								print("dump1090ToPipe: Error! First Byte of dump1090 packet not 0x1A. Packet: " + str(repr(data)))
+								print("dump1090ToPipe: Error! First Byte of dump1090 packet not 0x1A. Packet: " + str(data.hex(':')))
 								continue
-						
+								
 						msgType = data[1]
 						timeStamp = time() - startTime	#dump1090 return false timestamps. Creating own ones
 						signalPower = int.from_bytes(data[2:6],byteorder='big')/(10**5) * (-1)
@@ -97,7 +99,7 @@ class Dump1090ToPipe:
 							icao = data[7:10].hex()
 						else:
 							icao = data[6:10].hex()
-							
+						
 						msg = data[10:].hex()
 						
 						if (msgType != 49):				#Calibration of ModeS signalpower
