@@ -25,9 +25,11 @@ class Dump1090ToPipe:
 		self.port = port
 		self.host = host
 		devnull = open(os.devnull, 'wb')	#Null-Device since we dont need stdout from dump1090
+		outputFile = open('output3', 'w')
 		curDir = os.getcwd()	#get working directory
-		args = (curDir+'/dump1090', '--net', '--modeac', '--fix', '--fix', '--gain', ' 49,6', '--raw')
-		self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
+		args = (curDir+'/dump1090', '--net', '--net-verbatim', '--modeac', '--fix', '--fix', '--gain', ' 49.6', '--raw')
+		#self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
+		self.dump1090process = subprocess.Popen(args, shell=False, stdout=outputFile, stderr=devnull)
 		
 	def checkDump1090Running(self, exit):
 		"""Returns True if a dump1090 process is running on the local machine. Otherwise returns False and sets the exit variable, leading to a shutdown of the programm.
@@ -54,7 +56,7 @@ class Dump1090ToPipe:
 			print("dump1090ToPipe: dump1090 closed itself immediately")
 		with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 			for i in range(Dump1090ToPipe.retries):
-				try:
+				try:	
 					s.connect((self.host, self.port))
 					print("dump1090ToPipe: Connected to dump1090 socket")
 					break
@@ -68,14 +70,17 @@ class Dump1090ToPipe:
 			startTime = time()
 			while not(exit.is_set()):
 				try:
+					#print('LOLOLOLLOLLL')
 					dataFull = s.recv(1024)	#Receive dump1090 packets
+					
+					#print(dataFull.hex(':'))
 					dataFull = dataFull.decode('iso-8859-1')
 					
 					if len(dataFull) < 3:
 						self.checkDump1090Running(exit)
 					
 					for data in dataFull.split("\n\n\n"):	#All dump1090 telegram-packtes are seperated by 3x newline symbols
-						datat = data.replace(chr(0x1A)*2, chr(0x1A))	#since "0x1A" is send as "0x1A0x1A" -> revert this
+						data = data.replace(chr(0x1A)*2, chr(0x1A))	#since "0x1A" is send as "0x1A0x1A" -> revert this
 						data = data.encode('iso-8859-1')
 						
 						if (len(data) == 0):	#string.split() also returns empty strings
@@ -104,7 +109,7 @@ class Dump1090ToPipe:
 						
 						if (msgType != 49):				#Calibration of ModeS signalpower
 							signalPower = signalPower - 50
-							
+						print(data.hex(':'))
 						pipe_out.send([msgType, timeStamp, signalPower, icao, msg])
 				except Exception as e:
 					print("dump1090ToPipe: Error: " + str(e))
