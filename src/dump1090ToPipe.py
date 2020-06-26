@@ -25,11 +25,11 @@ class Dump1090ToPipe:
 		self.port = port
 		self.host = host
 		devnull = open(os.devnull, 'wb')	#Null-Device since we dont need stdout from dump1090
-		outputFile = open('output3', 'w')
+		#outputFile = open('output3', 'w')
 		curDir = os.getcwd()	#get working directory
 		args = (curDir+'/dump1090', '--net', '--net-verbatim', '--modeac', '--fix', '--fix', '--gain', ' 49.6', '--raw')
-		#self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
-		self.dump1090process = subprocess.Popen(args, shell=False, stdout=outputFile, stderr=devnull)
+		self.dump1090process = subprocess.Popen(args, shell=False, stdout=devnull, stderr=devnull)
+		#self.dump1090process = subprocess.Popen(args, shell=False, stdout=outputFile, stderr=devnull)
 		
 	def checkDump1090Running(self, exit):
 		"""Returns True if a dump1090 process is running on the local machine. Otherwise returns False and sets the exit variable, leading to a shutdown of the programm.
@@ -70,10 +70,7 @@ class Dump1090ToPipe:
 			startTime = time()
 			while not(exit.is_set()):
 				try:
-					#print('LOLOLOLLOLLL')
 					dataFull = s.recv(1024)	#Receive dump1090 packets
-					
-					#print(dataFull.hex(':'))
 					dataFull = dataFull.decode('iso-8859-1')
 					
 					if len(dataFull) < 3:
@@ -109,7 +106,7 @@ class Dump1090ToPipe:
 						
 						if (msgType != 49):				#Calibration of ModeS signalpower
 							signalPower = signalPower - 50
-						print(data.hex(':'))
+						
 						pipe_out.send([msgType, timeStamp, signalPower, icao, msg])
 				except Exception as e:
 					print("dump1090ToPipe: Error: " + str(e))
