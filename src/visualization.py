@@ -60,10 +60,10 @@ def visualization(orderedList, livePlot):
 				If livePlot = False the function expects datas from saved CSV-files to create plot. 
 	'''
 	if livePlot == True:
-		mlp.use('Agg')
+		mlp.use('Agg')		# Definition of the matplotlib backend
 		print('Creating Live-Plot')
 	else:
-		mlp.use('TkAgg')
+		mlp.use('TkAgg')	# Definition of the matplotlib backend
 		print('Creating Data-Plot from:')
 		for index_orderedList in range(len(orderedList)):			# Print the names of the CSV files, which have been used for creating the Data-Plot
 			if (index_orderedList % 2) == 0:
@@ -71,7 +71,7 @@ def visualization(orderedList, livePlot):
 			else:
 				print(f'\t{orderedList[index_orderedList][-26:]}')	# Name of the CSV files without the path
 	
-	#=================================== Implementation of all Variables =======================================
+	#=================================== Implementation of all variables =======================================
 	row_counter_data_paths = 0		# Counter for the index number of orderedList
 		
 	row_counter_lvl_reply = 0		# Counter for all rows in the level_reply CSV file
@@ -108,7 +108,7 @@ def visualization(orderedList, livePlot):
 	list_level_S_long = np.zeros(45)			# List for the current number of Mode S Long replies
 	list_level_S_short = np.zeros(45)			# List for the current number of Mode S Short replies
 	level_for_distribution_chart = np.arange(-90, -45, 1)	# List of levels for flight replies
-	#=================================== Implementation of all Variables =======================================
+	#=================================== Implementation of all variables =======================================
 
 	
 	#================================ Collecting the data from the CSV files ===================================
