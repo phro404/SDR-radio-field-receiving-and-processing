@@ -324,7 +324,7 @@ def visualization(orderedList, livePlot):
 	plt.grid(True)										# Grid
 	plt.title(f'Distribution of all replies \n(abs.: {all_replies_sum}; avg.: {round((all_replies_sum / time_space), 2)} per s)')
 		
-	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nTime space: {round(time_space_for_plot, 2)}s \nOccupancy of the channel: {round(occupancy_channel, 6)} \nFlights on average: {round(curr_planes, 2)}', fontsize=14)
+	plt.suptitle(f'Evaluation for the time from {str_time_begin[0:19]} to {str_time_end[0:19]} \nTime space: {round(time_space_for_plot, 2)}s \nOccupancy of the channel: {round(occupancy_channel, 6)} \nFlights on average (calculated for Mode S): {round(curr_planes, 2)}', fontsize=14)
 						
 	plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.75, wspace = 0.25, hspace = 0.55)	# Distances of the sobplots
 	
