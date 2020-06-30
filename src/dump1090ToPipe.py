@@ -75,8 +75,9 @@ class Dump1090ToPipe:
 					
 					if len(dataFull) < 3:
 						self.checkDump1090Running(exit)
-					
-					for data in dataFull.split("\n\n\n"):	#All dump1090 telegram-packtes are seperated by 3x newline symbols
+					dataFullReverse = dataFull[::-1]
+					for data in dataFullReverse.split("\n\n\n"):	#All dump1090 telegram-packtes are seperated by 3x newline symbols
+						data = data[::-1]
 						data = data.replace(chr(0x1A)*2, chr(0x1A))	#since "0x1A" is send as "0x1A0x1A" -> revert this
 						data = data.encode('iso-8859-1')
 						
